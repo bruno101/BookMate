@@ -13,7 +13,9 @@ const ListOfOptions = (props) => {
     ];
 
     return (
+
         <View>
+
             <Text style={{
                 fontSize: 22,
                 fontFamily: 'WorkSans-Bold',
@@ -24,12 +26,14 @@ const ListOfOptions = (props) => {
                 marginTop: 20,
                 marginBottom: 20
             }}> Options </Text>
+
             <FlatList
                 contentContainerStyle={{ padding: 16 }}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 data={listOfOptions}
                 renderItem={({ item }) => (
+
                     <Option
                         id={item.id}
                         title={item.title}
@@ -37,10 +41,13 @@ const ListOfOptions = (props) => {
                         imagePath={item.imagePath}
                         navigation={props.navigation}
                     />
+
                 )}
                 keyExtractor={item => item.id.toString()}
             />
+
         </View>
+
     )
 }
 
