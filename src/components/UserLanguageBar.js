@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, Image, Dimensions } from 'react-native'
 var device = Dimensions.get('window');
 
 //Essa componente é sempre mostrada no limite superior da tela, e permite ao usuário alterar o idioma para o qual deve se traduzir
-const UserLanguage = (props) => {
+const UserLanguageBar = (props) => {
 
     //Dado o código de um idioma, essa função retorna o nome dele
     const fromCodeToLanguage = (code) => {
@@ -63,4 +63,4 @@ const UserLanguage = (props) => {
 
 }
 
-export default UserLanguage;
+export default UserLanguageBar;

@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './pages/Home/index';
 import ReadBook from './pages/ReadBook/index';
 import ChangeLanguage from './pages/ChangeLanguage/index';
-import UserLanguage from './components/UserLanguage';
+import UserLanguageBar from './components/UserLanguageBar';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +17,7 @@ const App = () => {
 
         headerTitle: (props) => (
 
-            <UserLanguage navigation = {navigation} />
+            <UserLanguageBar navigation = {navigation} />
 
         ),
 
