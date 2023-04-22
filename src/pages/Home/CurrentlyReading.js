@@ -9,8 +9,6 @@ var device = Dimensions.get('window');
 
 const CurrentlyReading = (props) => {
 
-    const backgroundImgSrc = "https://i.pinimg.com/originals/c3/56/8d/c3568daa18802ccbae94d214b1cff27b.jpg"
-
     //Essa função leva o usuário para a tela de leitura de livros
     const goToBook = () => {
         props.navigation.navigate('ReadBook', { bookKey: currentlyReading })
@@ -49,7 +47,7 @@ const CurrentlyReading = (props) => {
 
                 <TouchableOpacity style={{ width: device.width * 0.9, height: 160, marginTop: 40, marginBottom: 40 }} onPress={() => goToBook()}>
 
-                    <ImageBackground source={{ uri: backgroundImgSrc }}
+                    <ImageBackground source={ require('../../assets/backgroundImage.jpg') }
                         style={{ width: "100%", height: "100%", flexDirection: 'row', flexWrap: 'wrap' }}
                         resizeMode="stretch"
                     >
