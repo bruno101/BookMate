@@ -3,8 +3,9 @@ import { View, ImageBackground, TouchableOpacity, Image, Text } from 'react-nati
 //Corresponde a cada livro da biblioteca do usuário
 const Book = (props) => {
 
-    const readBook = () => {
-        //Essa função deve levar o usuário para a tela de leitura de livros
+    //Essa função leva o usuário para a tela de leitura de livros
+    const goToBook = () => {
+        props.navigation.navigate('ReadBook', { bookKey: props.bookKey })
     }
 
     const deleteBook = () => {
@@ -15,7 +16,7 @@ const Book = (props) => {
 
         //O livro é clicável; o clique chama a função "readBook"
         //Note que dentro dessa "TouchableOpacity" há outra "TouchableOpacity", que corresponde ao botão de deletar o livro; clicar nessa segunda opacidade chama a função "deleteBook"
-        <TouchableOpacity onPress={readBook} style={{ width: "44%", marginRight: "5%", marginBottom: "4%" }}>
+        <TouchableOpacity onPress={goToBook} style={{ width: "44%", marginRight: "5%", marginBottom: "4%" }}>
 
             <View>
 

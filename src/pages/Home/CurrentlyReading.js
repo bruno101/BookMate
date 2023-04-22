@@ -11,8 +11,9 @@ const CurrentlyReading = (props) => {
 
     const backgroundImgSrc = "https://i.pinimg.com/originals/c3/56/8d/c3568daa18802ccbae94d214b1cff27b.jpg"
 
+    //Essa função leva o usuário para a tela de leitura de livros
     const goToBook = () => {
-        //Deve redirecionar o usuário para a tela de leitura de livro
+        props.navigation.navigate('ReadBook', { bookKey: currentlyReading })
     }
 
     //Essa componente deve mostrar a capa do livro, o título e o autor
