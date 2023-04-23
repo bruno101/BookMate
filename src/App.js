@@ -2,6 +2,7 @@ import * as React from 'react'
 import {TouchableOpacity, Image} from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import Home from './pages/Home/index';
 import ReadBook from './pages/ReadBook/index';
@@ -38,28 +39,32 @@ const App = () => {
     //Abaixo estão definidas as telas do app
     return (
 
-        <NavigationContainer>
+        <SafeAreaProvider>
 
-            <Stack.Navigator>
+            <NavigationContainer>
 
-                <Stack.Screen
-                    name="Home"
-                    component={Home}
-                    options={Options}
-                />
-                <Stack.Screen
-                    name="ReadBook"
-                    component={ReadBook}
-                    options={Options}
-                />
-                <Stack.Screen
-                    name="ChangeLanguage"
-                    component={ChangeLanguage}
-                />
+                <Stack.Navigator>
 
-            </Stack.Navigator>
+                    <Stack.Screen
+                        name="Home"
+                        component={Home}
+                        options={Options}
+                    />
+                    <Stack.Screen
+                        name="ReadBook"
+                        component={ReadBook}
+                        options={Options}
+                    />
+                    <Stack.Screen
+                        name="ChangeLanguage"
+                        component={ChangeLanguage}
+                    />
 
-        </NavigationContainer>
+                </Stack.Navigator>
+
+            </NavigationContainer>
+
+        </SafeAreaProvider>
 
     )
 

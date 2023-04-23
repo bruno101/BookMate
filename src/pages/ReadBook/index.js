@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { View, ScrollView } from "react-native"
 import GestureRecognizer from 'react-native-swipe-gestures'
 import Paragraph from './Paragraph'
+import CustomSlider from './CustomSlider';
 
 //Vamos supor que as páginas a serem exibidas são as descritas abaixo
 const bookContent = [
@@ -58,12 +59,21 @@ const ReadBook = ({ route }) => {
 
     return (
         //Mostramos os parágrafos do livro (várias componentes do tipo Paragraph)
-        <GestureRecognizer onSwipeRight={onSwipeRight} onSwipeLeft={onSwipeLeft} config={config} style={{ flex: 1 }}>
+        //Na parte inferior da tela mostramos a componente "CustomSlider", que permite ao usuário mudar de página
+        <GestureRecognizer onSwipeRight={onSwipeRight} onSwipeLeft={onSwipeLeft} config={config} style={{ flex: 1, backgroundColor: "white" }}
+        >
             <ScrollView style={{ backgroundColor: "white" }}>
+
                 <View style={{ marginTop: 15 }}>
+
                     {paragraphsToShow}
+
                 </View>
+
             </ScrollView>
+
+            <CustomSlider currentPage={currentPage} bookLength={bookContent.length} setCurrentPage={setCurrentPage} />
+                
         </GestureRecognizer>
 
     )
