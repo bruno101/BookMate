@@ -35,7 +35,7 @@ const Paragraph = (props) => {
     //Senão mostramos o texto; a direita do texto há um ícone no qual o usuário clica para traduzir o parágrafo inteiro
     return (
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 3 }} >
-            <Text style={{ fontSize: 16, fontFamily: "serif", color: "black", marginLeft: 15, width: device.width - 60 }}> {wordsToShow} </Text>
+            <Text style={{ fontSize: 17, fontFamily: "serif", color: "black", marginLeft: 15, width: device.width - 60 }}> {wordsToShow} </Text>
             <TouchableOpacity onPress={translateParagraph} style={{ width: 30, height: 30, marginLeft: 5 }}>
                 <Image
                     source={require('../../assets/translate.png')}
