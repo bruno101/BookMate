@@ -1,6 +1,5 @@
-//Por enquanto supomos que o idioma nativo (para o qual se traduz) é o português e o aprendido é o inglês (do qual se traduz)
+//Por enquanto supomos que o idioma nativo (para o qual se traduz) é o português
 global.nativeLanguage = "pt"
-global.learnedLanguage = "en"
 
 //Essa é uma lista hipotética de livros do usuário com seus dados para exibição
 global.bookIndex = [

@@ -1,8 +1,11 @@
 import { useState } from 'react'
-import { View, ScrollView } from "react-native"
-import GestureRecognizer from 'react-native-swipe-gestures'
-import Paragraph from './Paragraph'
-import CustomSlider from './CustomSlider';
+import { View, Dimensions } from "react-native"
+import PageContent from './PageContent'
+import CustomSlider from './CustomSlider'
+import ParagraphTranslationModal from './Modals/ParagraphTranslationModal'
+import WordModals from './Modals/WordModals'
+
+const device = Dimensions.get("window")
 
 //Vamos supor que as páginas a serem exibidas são as descritas abaixo
 const bookContent = [
@@ -24,57 +27,88 @@ const bookContent = [
 
 ]
 
-const ReadBook = ({ route }) => {
+
+const ReadBook = (props) => {
 
     //Por enquanto "currentPage" é inicializado como 0, mas idealmente devemos salvar o número da página em que o usuário estava na última vez que leu o livro
     const [currentPage, setCurrentPage] = useState(0)
 
-    //Pegamos o texto da página e dividimos em parágrafos. Passamos para a componente "Paragraph" o conteúdo de cada parágrafo.
-    let textToShow = bookContent[currentPage].pageContent
-    let paragraphsToShow = (textToShow.split("\n")).map(
-        (paragraph, index) => {
-            return < Paragraph key={index} content={paragraph} />
-        }
-    )
+    //Indica se o usuário deu um duplo clique na tela, para determinar se o slider para mudança de tela deve ser mostrado
+    const [screenTapped, setScreenTapped] = useState(false)
 
-    //Se o usuário deslizou para a direita, vamos para a próxima página
-    const onSwipeRight = () => {
-        if (currentPage > 0) {
-            setCurrentPage(currentPage - 1)
-        }
+    //Armazena a palavra a ser traduzida (ou "", se não houver)
+    const [wordToTranslate, setWordToTranslate] = useState("")
+
+    //Armazena a frase a ser traduzida (ou "", se não houver)
+    const [paragraphToTranslate, setParagraphToTranslate] = useState("")
+
+    //Se o usuário dá um clique duplo, alternamos as versões da tela com ou sem o slider para mudança de página
+    const onDoublePress = () => {
+        setScreenTapped(!screenTapped);
     }
 
-    //Se o usuário deslizou para a direita, vamos para a página anterior
-    const onSwipeLeft = () => {
-        if (currentPage + 1 < bookContent.length) {
-            setCurrentPage(currentPage + 1)
-        }
-    }
+    //Essa variável e a função abaixo são usadas para determinar quando o usuário dá um clique duplo na tela
+    let lastPress = 0;
 
-    //Configurações para a detecção de quanto o usuário desliza para mudar de tela
-    const config = {
-        velocityThreshold: 0.3,
-        directionalOffsetThreshold: 50
+    const onPress = () => {
+        const time = new Date().getTime();
+        const delta = time - lastPress;
+
+        const DOUBLE_PRESS_DELAY = 400;
+        if (delta < DOUBLE_PRESS_DELAY) {
+            //Detectado um clique duplo
+            onDoublePress()
+        } else {
+            //Sempre que há um clique na tela, verificamos se há uma palavra ou parágrafo cujas traduções estão sendo mostrados no momento
+            //Se houver, "ressetamos" essas variáveis para que as suas modais deixem de ser mostradas (nessa situação, o clique deve fechar as modais)
+            if (wordToTranslate != "" || paragraphToTranslate != "") {
+                setWordToTranslate("")
+                setParagraphToTranslate("")
+            }
+        }
+        lastPress = time;
     };
 
+    //Determina se as modais com informações sobre palavras ou trechos de texto devem ser mostradas
+    const bottomModals = () => {
+        if (wordToTranslate != "") {
+            return <WordModals wordToTranslate={wordToTranslate} />
+        } else if (paragraphToTranslate != "") {
+            return <ParagraphTranslationModal paragraphToTranslate={paragraphToTranslate} />
+        }
+        return
+    }
+
+    //Determina se o "Slider" para mudança de página do livro deve ser mostrado
+    const slider = () => {
+        if (screenTapped) {
+            return <CustomSlider bookLength={bookContent.length} setCurrentPage={setCurrentPage} currentPage={currentPage} />
+        }
+    }
+
+    //Mostramos o conteúdo da página e possivelmente (conforme determinado acima) o "Slider" e as modais
+
     return (
-        //Mostramos os parágrafos do livro (várias componentes do tipo Paragraph)
-        //Na parte inferior da tela mostramos a componente "CustomSlider", que permite ao usuário mudar de página
-        <GestureRecognizer onSwipeRight={onSwipeRight} onSwipeLeft={onSwipeLeft} config={config} style={{ flex: 1, backgroundColor: "white" }}
+
+        <View
+            style={{ backgroundColor: "white" }}
+            flex={1}
         >
-            <ScrollView style={{ backgroundColor: "white" }}>
 
-                <View style={{ marginTop: 15 }}>
+            <View
+                onStartShouldSetResponder={(evt) => onPress()}
+                style={{ height: screenTapped ? device.height - 120 : device.height - 80 }}
+            >
 
-                    {paragraphsToShow}
+                <PageContent textToShow={bookContent[currentPage].pageContent} currentPage={currentPage} setCurrentPage={setCurrentPage} wordToTranslate={wordToTranslate} setWordToTranslate={setWordToTranslate} paragraphToTranslate={paragraphToTranslate} setParagraphToTranslate={setParagraphToTranslate} bookLength={bookContent.length} />
 
-                </View>
+            </View>
 
-            </ScrollView>
+            {bottomModals()}
 
-            <CustomSlider currentPage={currentPage} bookLength={bookContent.length} setCurrentPage={setCurrentPage} />
-                
-        </GestureRecognizer>
+            {slider()}
+
+        </View>
 
     )
 
