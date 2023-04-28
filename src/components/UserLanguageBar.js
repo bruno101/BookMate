@@ -5,22 +5,6 @@ var device = Dimensions.get('window');
 //Essa componente é sempre mostrada no limite superior da tela, e permite ao usuário alterar o idioma para o qual deve se traduzir
 const UserLanguageBar = (props) => {
 
-    //Dado o código de um idioma, essa função retorna o nome dele
-    const fromCodeToLanguage = (code) => {
-        switch (code) {
-            case "en":
-                return "English";
-            case "es":
-                return "Spanish";
-            case "ru":
-                return "Russian";
-            case "pt":
-                return "Portuguese";
-            case "de":
-                return "German";
-        }
-    }
-
     //Essa função redireciona o usuário para a tela de mudança de idioma
     const changeLanguage = () => { props.navigation.navigate('ChangeLanguage') }
 
@@ -48,7 +32,7 @@ const UserLanguageBar = (props) => {
                         fontWeight: 'bold',
                         color: "black",
                         letterSpacing: 0.2,
-                    }}>  {fromCodeToLanguage(nativeLanguage)}</Text>
+                    }}>  {nativeLanguage.name}</Text>
 
                     <Image source={require('../assets/change.png')}
                         style={{ width: 21, marginLeft: "2%", height: 21 }}

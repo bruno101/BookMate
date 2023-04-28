@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { View, Dimensions } from "react-native"
 import PageContent from './PageContent'
 import CustomSlider from './CustomSlider'
-import ParagraphTranslationModal from './Modals/ParagraphTranslationModal'
-import WordModals from './Modals/WordModals'
+import TranslationsView from './TranslationsView'
 
 const device = Dimensions.get("window")
 
@@ -42,7 +41,9 @@ const ReadBook = (props) => {
     //Armazena a frase a ser traduzida (ou "", se não houver)
     const [paragraphToTranslate, setParagraphToTranslate] = useState("")
 
-    //Se o usuário dá um clique duplo, alternamos as versões da tela com ou sem o slider para mudança de página
+    const [translationsViewPosition, setTranslationsViewPosition] = useState("top")
+
+    //Se o usuário dá um clique duplo, alternamos as versões da tela com ou sem o slider para mudança de página (para isso alteramos o estado descreenTapped)
     const onDoublePress = () => {
         setScreenTapped(!screenTapped);
     }
@@ -69,16 +70,6 @@ const ReadBook = (props) => {
         lastPress = time;
     };
 
-    //Determina se as modais com informações sobre palavras ou trechos de texto devem ser mostradas
-    const bottomModals = () => {
-        if (wordToTranslate != "") {
-            return <WordModals wordToTranslate={wordToTranslate} />
-        } else if (paragraphToTranslate != "") {
-            return <ParagraphTranslationModal paragraphToTranslate={paragraphToTranslate} />
-        }
-        return
-    }
-
     //Determina se o "Slider" para mudança de página do livro deve ser mostrado
     const slider = () => {
         if (screenTapped) {
@@ -86,7 +77,7 @@ const ReadBook = (props) => {
         }
     }
 
-    //Mostramos o conteúdo da página e possivelmente (conforme determinado acima) o "Slider" e as modais
+    //Mostramos o conteúdo da página ("PageContent"), a "Translations View" (em que, se for necessário, são mostradas as modais com traduções etc.) e possivelmente (conforme determinado acima) o "Slider"
 
     return (
 
@@ -104,7 +95,7 @@ const ReadBook = (props) => {
 
             </View>
 
-            {bottomModals()}
+            < TranslationsView wordToTranslate={wordToTranslate} paragraphToTranslate={paragraphToTranslate} viewPosition={translationsViewPosition} />
 
             {slider()}
 

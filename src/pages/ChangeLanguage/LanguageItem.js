@@ -9,7 +9,7 @@ const LanguageItem = (props) => {
 
     //Se o idioma do item já é o escolhido, ele não deve ser clicável
     //nativeLanguage por enquanto está registrado em "dummyData" como português
-    if (props.value == nativeLanguage) {
+    if (props.value == nativeLanguage.code) {
 
         return (
 

@@ -20,10 +20,10 @@ const CustomSlider = (props) => {
     //Quando o usuário muda para outra página no Slider ("onSlidingComplete"), chamamos a função "setCurrentPage", que foi passada como "prop"
     return (
 
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', height: 40 }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', height: 40, backgroundColor: "white" }}>
 
             <Slider
-                style={{ height: 40, backgroundColor: "white", width: device.width - 120, marginLeft: 20 }}
+                style={{ height: 40, width: device.width - 120, marginLeft: 20 }}
                 minimumValue={1}
                 maximumValue={props.bookLength}
                 minimumTrackTintColor="#53a3cb"

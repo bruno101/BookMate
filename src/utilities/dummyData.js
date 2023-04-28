@@ -1,5 +1,5 @@
 //Por enquanto supomos que o idioma nativo (para o qual se traduz) é o português
-global.nativeLanguage = "pt"
+global.nativeLanguage = { name: "Portuguese", code: "pt"}
 
 //Essa é uma lista hipotética de livros do usuário com seus dados para exibição
 global.bookIndex = [

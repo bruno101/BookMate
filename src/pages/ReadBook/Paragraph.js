@@ -5,24 +5,24 @@ const device = Dimensions.get("window")
 //A componente abaixo mostra cada parágrafo do texto
 const Paragraph = (props) => {
 
-    const translateWord = (word) => {
-        const onWordPress = () => {
+    const onWordPress = (word) => {
+        const onPress = () => {
             if (props.wordToTranslate != "" || props.paragraphToTranslate != "") {
                 //Sempre que há um clique na tela (incluindo em uma palavra), verificamos se já há uma palavra ou parágrafo cujas traduções estão sendo mostrados no momento
                 //Se houver, "ressetamos" essas variáveis para que as suas modais deixem de ser mostradas (nessa situação, o clique deve fechar as modais)
                 props.setWordToTranslate("")
                 props.setParagraphToTranslate("")
             } else {
-                //Senão, as modais relacionadas à palavra
+                //Senão, mostramos as modais relacionadas à palavra
                 props.setWordToTranslate(word)
                 props.setParagraphToTranslate("")
             }
         }
-        return onWordPress
+        return onPress
     }
 
     //Mostramos a modal com a tradução do parágrafo
-    const translateParagraph = (word) => {
+    const onParagraphIconPress = (word) => {
         props.setParagraphToTranslate(props.content)
         props.setWordToTranslate("")
     }
@@ -32,7 +32,7 @@ const Paragraph = (props) => {
         (word, index) => {
             return <Text
                 key={index}
-                onPress={translateWord(word)}
+                onPress={onWordPress(word)}
             > {word} </Text>
         }
     )
@@ -43,16 +43,27 @@ const Paragraph = (props) => {
     }
     //Senão mostramos o texto; à direita do texto há um ícone no qual o usuário clica para traduzir o parágrafo inteiro
     return (
+
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 3 }} >
-            <Text style={{ fontSize: 18, fontFamily: "serif", color: "black", marginLeft: 15, width: device.width - 60 }}> {wordsToShow} </Text>
-            <TouchableOpacity onPress={translateParagraph} style={{ width: 30, height: 30, marginLeft: 5 }}>
+
+            <Text style={{ fontSize: 18, fontFamily: "serif", color: "black", marginLeft: 15, width: device.width - 60 }}>
+
+                {wordsToShow}
+
+            </Text>
+
+            <TouchableOpacity onPress={onParagraphIconPress} style={{ width: 30, height: 30, marginLeft: 5 }}>
+
                 <Image
                     source={require('../../assets/translate.png')}
                     style={{ width: "100%", height: "100%" }}
                     resizeMode="contain"
                 />
+
             </TouchableOpacity>
+
         </View>
+
     )
 
 }
