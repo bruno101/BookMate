@@ -41,8 +41,6 @@ const ReadBook = (props) => {
     //Armazena a frase a ser traduzida (ou "", se não houver)
     const [paragraphToTranslate, setParagraphToTranslate] = useState("")
 
-    const [translationsViewPosition, setTranslationsViewPosition] = useState("top")
-
     //Se o usuário dá um clique duplo, alternamos as versões da tela com ou sem o slider para mudança de página (para isso alteramos o estado descreenTapped)
     const onDoublePress = () => {
         setScreenTapped(!screenTapped);
@@ -95,7 +93,7 @@ const ReadBook = (props) => {
 
             </View>
 
-            < TranslationsView wordToTranslate={wordToTranslate} paragraphToTranslate={paragraphToTranslate} viewPosition={translationsViewPosition} />
+            < TranslationsView wordToTranslate={wordToTranslate} paragraphToTranslate={paragraphToTranslate} />
 
             {slider()}
 
