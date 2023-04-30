@@ -36,7 +36,6 @@ const LanguagePicker = (props) => {
             textStyle={{
                 fontSize: 13
             }}
-            maxHeight={300}
             open={open}
             items={props.languages}
             setOpen={setOpen}

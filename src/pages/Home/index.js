@@ -14,8 +14,8 @@ const Home = ({ navigation }) => {
 
         <ScrollView style={{ backgroundColor: "white" }}>
             <CurrentlyReading navigation={navigation}/>
-            <ListOfOptions navigation={navigation}/>
             <Bookshelf navigation={navigation} />
+            <ListOfOptions navigation={navigation} />
         </ScrollView>
 
         )

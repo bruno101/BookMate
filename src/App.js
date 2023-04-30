@@ -1,18 +1,19 @@
 import * as React from 'react'
-import {TouchableOpacity, Image} from 'react-native'
+import { TouchableOpacity, Image } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from './pages/Home/index';
 import ReadBook from './pages/ReadBook/index';
 import ChangeLanguage from './pages/ChangeLanguage/index';
+import WordReview from './pages/WordReview/index';
 import UserLanguageBar from './components/UserLanguageBar';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
 
-    //Essa componente define o que deve aparecer na parte superior da tela do aplicativo; ela usa a componente UserLanguage
+    //Essa componente define o que deve aparecer na parte superior da tela do aplicativo; ela usa a componente UserLanguageBar
     const Options = ({ navigation, route }) => ({
 
         headerTitle: (props) => (
@@ -55,6 +56,10 @@ const App = () => {
                     <Stack.Screen
                         name="ChangeLanguage"
                         component={ChangeLanguage}
+                    />
+                    <Stack.Screen
+                        name="WordReview"
+                        component={WordReview}
                     />
 
                 </Stack.Navigator>

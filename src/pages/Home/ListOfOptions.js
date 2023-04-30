@@ -8,13 +8,13 @@ const ListOfOptions = (props) => {
     //Note que essa lista é passada como "data" para a FlatList
     const listOfOptions = [
         { id: '1', title: 'Import Book', subtitle: 'Import an epub file from your own device', imagePath: require('../../assets/addBook.png') },
-        { id: '2', title: 'Search Book', subtitle: 'Search for books on the Project Gutenberg catalogue', imagePath: require('../../assets/searchBook.png') },
-        { id: '3', title: 'Review words', subtitle: 'See if you can recall the words you have been clicking on', imagePath: require('../../assets/review.png') }
+        { id: '2', title: 'Review words', subtitle: 'Remember the meaning of the words you have been clicking on', imagePath: require('../../assets/review.png') },
+        { id: '3', title: 'Search Book', subtitle: 'Search for books on the Project Gutenberg catalogue', imagePath: require('../../assets/searchBook.png') }
     ];
 
     return (
 
-        <View>
+        <View style={{marginBottom: 50}}>
 
             <Text style={{
                 fontSize: 22,
@@ -25,7 +25,7 @@ const ListOfOptions = (props) => {
                 marginLeft: 20,
                 marginTop: 20,
                 marginBottom: 20
-            }}> Options </Text>
+            }}> More </Text>
 
             <FlatList
                 contentContainerStyle={{ padding: 16 }}

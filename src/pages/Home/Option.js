@@ -8,17 +8,25 @@ const Option = (props) => {
         //Deve importar um livro dos arquivos do usuário
     }
 
+    const reviewWords = () => {
+        //Deve redirecionar à tela de revisão de palavras
+        props.navigation.navigate('WordReview')
+    }
+
     const searchBook = () => {
         //Deve redirecionar à tela de busca por livros
 
     }
 
-    const reviewWords = () => {
-        //Deve redirecionar à tela de revisão de palavras
-    }
-
     handlePress = () => {
         //De acordo com o índice do elemento da lista em que o usuário clica, chamamos uma das três funções acima (esse índice é dado por "props.id")
+        if (props.id == "1") {
+            importBook()
+        } else if (props.id == "2") {
+            reviewWords()
+        } else {
+            searchBook()
+        }
     }
 
 
@@ -29,7 +37,7 @@ const Option = (props) => {
 
             <TouchableOpacity
                 style={{ height: 134, width: 300, marginRight: 20 }}
-                onPress={() => handlePress()}
+                onPress={handlePress}
             >
 
                 <View style={{
