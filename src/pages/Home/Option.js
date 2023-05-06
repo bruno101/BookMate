@@ -1,10 +1,27 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
+import DocumentPicker from 'react-native-document-picker'
 
 //Essa componente corresponde a uma opção individual da lista de opções acima
 //Note que ela recebe as props "id", "title", "subtitle", "imagePath" e "navigation" mostradas na componente anterior
 const Option = (props) => {
 
-    const importBook = () => {
+    const importBook = async () => {
+
+        //Na importação de um livro usamos um DocumentPicker para obtermos a uri
+        try {
+
+            const response = await DocumentPicker.pick({
+                presentationStyle: 'fullScreen',
+                type: ['application/epub+zip']
+            });
+            console.log(response[0].uri)
+
+        } catch (e) {
+
+            console.log(e)
+
+        }
+
         //Deve importar um livro dos arquivos do usuário
     }
 
@@ -51,19 +68,24 @@ const Option = (props) => {
                         style={{ ...StyleSheet.absoluteFillObject, flexDirection: 'row' }}
                     >
                         <View style={{ paddingVertical: 24, paddingLeft: 16 }}>
+
                             <Image
                                 style={{ flex: 1, aspectRatio: 1.0, marginLeft: -60 }}
                                 source={props.imagePath}
                             />
+
                         </View>
 
                         <View style={{ flex: 1, paddingLeft: 16, paddingVertical: 16 }}>
+
                             <Text style={{
                                 textAlignVertical: "center", color: 'black', fontWeight: "bold", fontSize: 18, marginTop: 15, marginLeft: "5%"
                             }}> {props.title} </Text>
+
                             <Text style={{
                                 color: 'black', fontSize: 14, marginTop: 3, marginLeft: "5%"
                             }}> {props.subtitle} </Text>
+
                         </View>
 
                     </View>

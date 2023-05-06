@@ -1,51 +1,92 @@
-import { ScrollView } from "react-native"
-import GestureRecognizer from 'react-native-swipe-gestures'
-import Paragraph from './Paragraph'
+import { useRef } from 'react'
+import { TouchableWithoutFeedback, Dimensions, View } from "react-native"
+import { WebView } from 'react-native-webview';
+import webviewHtmlContent from '../../utilities/webviewHtmlContent'
+
+const device = Dimensions.get("window")
 
 const PageContent = (props) => {
 
-    //Pegamos o texto da página e dividimos em parágrafos. Passamos para a componente "Paragraph" o conteúdo de cada parágrafo.
-    let paragraphsToShow = (props.textToShow.split("\n")).map(
-        (paragraph, index) => {
-            return < Paragraph key={index} content={paragraph} wordToTranslate={props.wordToTranslate} setWordToTranslate={props.setWordToTranslate} paragraphToTranslate={props.paragraphToTranslate} setParagraphToTranslate={props.setParagraphToTranslate} />
-        }
-    )
+    //Chamada quando o usuário seleciona texto
+    function onSelection(data) {
 
-    //Se o usuário deslizou para a direita, vamos para a próxima página
-    const onSwipeRight = () => {
-        if (props.currentPage > 0) {
-            props.setCurrentPage(props.currentPage - 1)
+        //De acordo com a posição do texto selecionado, devemos decidir onde posicionar a modal de modo a não atrapalhar a leitura (ainda não implementado)
+        let bottomPosition = data.coordinates["0"].bottom
+
+        if ((bottomPosition * 2) > (device.height - 80)) {
+            console.log("Deve mostrar a modal de tradução no topo")
+        } else {
+            console.log("Deve mostrar a modal de tradução na parte de baixo")
         }
+
+        content = data.selected;
+        reWhiteSpace = new RegExp("\\s+");
+
+        if (reWhiteSpace.test(content)) {
+
+            //Se o conteúdo selecionado tem mais que uma palavra:
+            props.setPhraseToTranslate(content)
+            props.setWordToTranslate("")
+
+        } else {
+
+            //Se o conteúdo selecionado tem apenas uma palavra
+            props.setWordToTranslate(content)
+            props.setPhraseToTranslate("")
+
+        };
+
     }
 
-    //Se o usuário deslizou para a direita, vamos para a página anterior
-    const onSwipeLeft = () => {
-        if (props.currentPage + 1 < props.bookLength) {
-            props.setCurrentPage(props.currentPage + 1)
+    //Lida com as mensagens em formato JSON do código executado na Webview
+    function handleMessage(e) {
+
+        let parsedData = JSON.parse(e.nativeEvent.data);
+
+        if (parsedData.type == 'selected') {
+
+            onSelection(parsedData)
         }
+
+        if (parsedData.type == 'locations') {
+            //Nesse caso "parsedData.locations" conterá as Locations do arquivo, útil para determinarmos a posição de cada página (ainda não implementado)
+        }
+
+        return;
+
     }
 
-    //Configurações para a detecção de quanto o usuário desliza para mudar de tela
-    const config = {
-        velocityThreshold: 0.15,
-        directionalOffsetThreshold: 15
-    };
+    const webview = useRef();
+
+    //Essa variável guarda, em formato de texto, o conteúdo html a ser executado na Webview
+    //Ela recebe a url em que o livro está sendo servido e o EpubCfi indicando a localização da página a ser mostrada (nesse caso, mostramos o início do terceiro capítulo, na Location "4")
+    const htmlContent = webviewHtmlContent(props.bookUrl, 4)
 
     return (
-        //Mostramos os parágrafos do livro (várias componentes do tipo Paragraph)
 
-        <GestureRecognizer onSwipeRight={onSwipeRight} onSwipeLeft={onSwipeLeft} config={config} style={{ backgroundColor: "white", flex: 1 }}>
+        <View style={{ height: device.height - 80, width: 800 }}>
+
+            <TouchableWithoutFeedback onPress={props.onPress}>
+
+                <WebView
+                    ref={webview}
+                    originWhitelist={['*']}
+                    source={{
+                        html: htmlContent
+                    }}
+                    javaScriptEnabled={true}
+                    javaScriptEnabledAndroid={true}
+                    domStorageEnabled
+                    mixedContentMode="always"
+                    scalesPageToFit
+                    onMessage={handleMessage}
+                    automaticallyAdjustContentInsets={false}
+                />
+
+            </TouchableWithoutFeedback>
 
 
-            <ScrollView
-                      style={{ marginTop: 10 }}
-            >
-
-                {paragraphsToShow}
-
-            </ScrollView>
-
-            </GestureRecognizer>
+        </View>
 
 
     )

@@ -2,7 +2,11 @@ import { useState } from 'react'
 import { View, ScrollView, Text } from 'react-native'
 import LanguagePicker from '../../../components/LanguagePicker'
 
+
+
 const TranslationModal = (props) => {
+
+    const [translation, setTranslation] = useState()
 
     //Essa variável é usada pelo LanguagePicker
     const supportedLanguages = [
@@ -31,7 +35,7 @@ const TranslationModal = (props) => {
 
             <ScrollView style={{ width: "90%", marginLeft: "5%", marginTop: 5, borderColor: "#E5E5E5", borderWidth: 1.5, borderRadius: 4 }} >
 
-                <Text style={{ color: "grey", fontSize: 14, marginLeft: 5, marginTop: 10 }}> Translation of "{props.contentToTranslate}" in {translationLanguage} </Text>
+                <Text style={{ color: "grey", fontSize: 14, marginLeft: 5, marginTop: 10 }}> Translation of "{props.contentToTranslate}" in {translationLanguage} is "{translation}" </Text>
 
             </ScrollView>
 

@@ -38,24 +38,24 @@ const TranslationsView = (props) => {
 
     )
 
-    //No caso em que se clicou para traduzir um parágrafo, mostramos apenas a "TranslationModal"
-    const paragraphTranslationModal = (
+    //No caso em que se tem uma frase para traduzir, mostramos apenas a "TranslationModal"
+    const phraseTranslationModal = (
 
         <View style={{ height: device.height * 0.3, marginTop: -device.height * 0.3, marginLeft: device.width * 0.15 }}>
 
             <View elevation={40} style={styles.modalsStyle} >
-                <TranslationModal contentToTranslate={props.paragraphToTranslate} />
+                <TranslationModal contentToTranslate={props.phraseToTranslate} />
             </View>
 
         </View>
 
     )
 
-    //Se houver uma palavra para traduzir, mostramos "wordModals", se houver um parágrafo, mostramos "paragraphTranslationModal"
+    //Se houver uma palavra para traduzir, mostramos "wordModals", se houver uma frase, mostramos "phraseTranslationModal"
     if (props.wordToTranslate != "") {
         return wordModals
-    } else if (props.paragraphToTranslate != "") {
-        return paragraphTranslationModal
+    } else if (props.phraseToTranslate != "") {
+        return phraseTranslationModal
     }
     return
 
