@@ -10,13 +10,13 @@ const PageContent = (props) => {
     //Chamada quando o usuário seleciona texto
     function onSelection(data) {
 
-        //De acordo com a posição do texto selecionado, devemos decidir onde posicionar a modal de modo a não atrapalhar a leitura (ainda não implementado)
+        //De acordo com a posição do texto selecionado, devemos decidir onde posicionar a modal de modo a não atrapalhar a leitura
         let bottomPosition = data.coordinates["0"].bottom
 
-        if ((bottomPosition * 2) > (device.height - 80)) {
-            console.log("Deve mostrar a modal de tradução no topo")
+        if ((bottomPosition + 0.3*device.height) > (device.height - 80)) {
+            props.setPositionTranslationModals("top");
         } else {
-            console.log("Deve mostrar a modal de tradução na parte de baixo")
+            props.setPositionTranslationModals("bottom");
         }
 
         content = data.selected;

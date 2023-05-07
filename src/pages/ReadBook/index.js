@@ -16,6 +16,9 @@ const ReadBook = (props) => {
     //Armazena a frase a ser traduzida (ou "", se não houver)
     const [phraseToTranslate, setPhraseToTranslate] = useState("")
 
+    //Define em que posição das telas as modais com as traduções devem aparecer ("bottom" ou "top")
+    const [positionTranslationModals, setPositionTranslationModals] = useState("bottom")
+
     const [currentPage, setCurrentPage] = useState(1)
 
     const [showSlider, setShowSlider] = useState(false)
@@ -132,9 +135,11 @@ const ReadBook = (props) => {
             flex={1}
         >
 
-            <PageContent bookUrl={bookUrl} onPress={onScreenPress} setWordToTranslate={setWordToTranslate} setPhraseToTranslate={setPhraseToTranslate} webviewHeight={showSlider ? device.height - 120 : device.height - 80} />
+            {positionTranslationModals == "top" ? <TranslationsView wordToTranslate={wordToTranslate} phraseToTranslate={phraseToTranslate} positionTranslationModals={positionTranslationModals} /> : <View></View>}
 
-            <TranslationsView wordToTranslate={wordToTranslate} phraseToTranslate={phraseToTranslate} />
+            <PageContent bookUrl={bookUrl} onPress={onScreenPress} setWordToTranslate={setWordToTranslate} setPhraseToTranslate={setPhraseToTranslate} setPositionTranslationModals={setPositionTranslationModals} webviewHeight={showSlider ? device.height - 120 : device.height - 80} />
+
+            {positionTranslationModals == "bottom" ? <TranslationsView wordToTranslate={wordToTranslate} phraseToTranslate={phraseToTranslate} positionTranslationModals={positionTranslationModals} /> : <View></View>}
 
             {showSlider? < CustomSlider currentPage={currentPage} setCurrentPage={setCurrentPage} bookLength={100} /> : <View></ View>}
 
