@@ -1,25 +1,38 @@
 import { useState, useEffect } from 'react'
-import { View } from "react-native"
+import { View, Dimensions } from "react-native"
 import TranslationsView from './TranslationsView'
 import StaticServer from 'react-native-static-server';
 import RNFS from 'react-native-fs';
 import PageContent from './PageContent';
+import CustomSlider from './CustomSlider';
+
+const device = Dimensions.get("window")
 
 const ReadBook = (props) => {
+
+    //Armazena a palavra a ser traduzida (ou "", se não houver)
+    const [wordToTranslate, setWordToTranslate] = useState("")
+
+    //Armazena a frase a ser traduzida (ou "", se não houver)
+    const [phraseToTranslate, setPhraseToTranslate] = useState("")
+
+    const [currentPage, setCurrentPage] = useState(1)
+
+    const [showSlider, setShowSlider] = useState(false)
 
     const [bookUrl, setBookUrl] = useState()
 
     //Vamos mostrar o arquivo epub do link abaixo para fins de exemplo
     //Nas próximas versões do projeto, em vez de fazermos o "download" do arquivo de um link, deveremos acessar os arquivos a partir sistema de arquivos do usuário
-    sampleEpubURL = "https://filesamples.com/samples/ebook/epub/Alices%20Adventures%20in%20Wonderland.epub"
+    const sampleEpubURL = "https://filesamples.com/samples/ebook/epub/Alices%20Adventures%20in%20Wonderland.epub"
+
+    //Vamos salvar o arquivo no caminho abaixo
+    const filePath = `${RNFS.DocumentDirectoryPath}/sampleEpub.epub`
 
     //Ao abrirmos a tela, chamamos "downloadSampleFile()"
     useEffect(() => {
         downloadSampleFile()
     }, [])
-
-    //Vamos salvar o arquivo no caminho abaixo
-    filePath = `${RNFS.DocumentDirectoryPath}/sampleEpub.epub`
 
     const downloadSampleFile = async () => {
 
@@ -73,13 +86,12 @@ const ReadBook = (props) => {
 
     }
 
-    //Armazena a palavra a ser traduzida (ou "", se não houver)
-    const [wordToTranslate, setWordToTranslate] = useState("")
+    //Se o usuário dá um clique duplo, alternamos as versões da tela com ou sem o slider para mudança de página (para isso alteramos o estado descreenTapped)
+    const onDoublePress = () => {
+        setShowSlider(!showSlider);
+    }
 
-    //Armazena a frase a ser traduzida (ou "", se não houver)
-    const [phraseToTranslate, setPhraseToTranslate] = useState("")
-
-    const onPress = () => {
+    const onSinglePress = () => {
 
         //Sempre que há um clique na tela, verificamos se há uma palavra ou parágrafo cujas traduções estão sendo mostrados no momento
         //Se houver, "ressetamos" essas variáveis para que as suas modais deixem de ser mostradas (nessa situação, o clique deve fechar as modais)
@@ -90,9 +102,29 @@ const ReadBook = (props) => {
 
         }
 
+    }
+
+    //Essa variável e a função abaixo são usadas para determinar quando o usuário dá um clique duplo na tela
+    let lastPress = 0;
+
+    const onScreenPress = () => {
+
+        const time = new Date().getTime();
+        const delta = time - lastPress;
+
+        const DOUBLE_PRESS_DELAY = 400;
+
+        if (delta < DOUBLE_PRESS_DELAY) {
+            //Detectado um clique duplo
+            onDoublePress()
+        } else {
+            onSinglePress()
+            lastPress = time;
+        }
+
     };
 
-    //Mostramos o conteúdo da página ("PageContent"), a "Translations View" (em que, se for necessário, são mostradas as modais com traduções etc.)
+    //Mostramos o conteúdo da página ("PageContent"), a "Translations View" (em que, se for necessário, são mostradas as modais com traduções etc.), e o Slider para mudança de página
     return (
 
         <View
@@ -100,9 +132,11 @@ const ReadBook = (props) => {
             flex={1}
         >
 
-            <PageContent bookUrl={bookUrl} onPress={onPress} setWordToTranslate={setWordToTranslate} setPhraseToTranslate={setPhraseToTranslate} />
+            <PageContent bookUrl={bookUrl} onPress={onScreenPress} setWordToTranslate={setWordToTranslate} setPhraseToTranslate={setPhraseToTranslate} webviewHeight={showSlider ? device.height - 120 : device.height - 80} />
 
             <TranslationsView wordToTranslate={wordToTranslate} phraseToTranslate={phraseToTranslate} />
+
+            {showSlider? < CustomSlider currentPage={currentPage} setCurrentPage={setCurrentPage} bookLength={100} /> : <View></ View>}
 
          </ View>
 

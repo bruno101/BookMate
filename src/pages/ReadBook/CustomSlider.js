@@ -7,13 +7,12 @@ const device = Dimensions.get("window")
 //Essa componente aparece na parte inferior da tela e permite ao usuário mudar de página
 const CustomSlider = (props) => {
 
-    //Note que o valor mostrado no slider é o valor do índice da página (que varia entre 0 e n-1) somado a 1, para que ele varie entre 1 e n
-    const [sliderValue, setSliderValue] = useState(props.currentPage + 1)
+    const [sliderValue, setSliderValue] = useState(props.currentPage)
 
-    //Quando o número da página muda (por exemplo, porque o usuário deslizou a tela para a direita ou esquerda), atualizamos também o valor mostrado ao lado do slider
+    //Quando o número da página muda, atualizamos também o valor mostrado ao lado do slider
     //Por isso observamos mudanças na variável "props.currentPage" abaixo
     useEffect(() => {
-        setSliderValue(props.currentPage + 1);
+        setSliderValue(props.currentPage);
     }, [props.currentPage]);
 
     //Mostramos o Slider, e à direita o texto em que aparece o número da página atual
@@ -31,7 +30,7 @@ const CustomSlider = (props) => {
                 step={1}
                 value={sliderValue}
                 onValueChange={(value) => { setSliderValue(value) }}
-                onSlidingComplete={(value) => { props.setCurrentPage(parseInt(value - 1)) }}
+                onSlidingComplete={(value) => { props.setCurrentPage(parseInt(value)) }}
                 trackStyle={{ height: 2.5 }}
                 thumbStyle={{ height: 13, width: 13, backgroundColor: '#088F8F' }}
             />

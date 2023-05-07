@@ -64,7 +64,7 @@ const PageContent = (props) => {
 
     return (
 
-        <View style={{ height: device.height - 80, width: 800 }}>
+        <View style={{ height: props.webviewHeight, width: 800 }}>
 
             <TouchableWithoutFeedback onPress={props.onPress}>
 
