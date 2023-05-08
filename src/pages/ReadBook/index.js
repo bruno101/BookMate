@@ -89,7 +89,7 @@ const ReadBook = (props) => {
 
     }
 
-    //Se o usuário dá um clique duplo, alternamos as versões da tela com ou sem o slider para mudança de página (para isso alteramos o estado descreenTapped)
+    //Se o usuário dá um clique duplo, alternamos as versões da tela com ou sem o slider para mudança de página
     const onDoublePress = () => {
         setShowSlider(!showSlider);
     }
@@ -137,11 +137,11 @@ const ReadBook = (props) => {
 
             {positionTranslationModals == "top" ? <TranslationsView wordToTranslate={wordToTranslate} phraseToTranslate={phraseToTranslate} positionTranslationModals={positionTranslationModals} /> : <View></View>}
 
-            <PageContent bookUrl={bookUrl} onPress={onScreenPress} setWordToTranslate={setWordToTranslate} setPhraseToTranslate={setPhraseToTranslate} setPositionTranslationModals={setPositionTranslationModals} webviewHeight={showSlider ? device.height - 120 : device.height - 80} />
+            <PageContent bookUrl={bookUrl} onPress={onScreenPress} currentPage={currentPage} setCurrentPage={setCurrentPage} bookLength={bookLocations.length} setWordToTranslate={setWordToTranslate} setPhraseToTranslate={setPhraseToTranslate} setPositionTranslationModals={setPositionTranslationModals}/>
 
             {positionTranslationModals == "bottom" ? <TranslationsView wordToTranslate={wordToTranslate} phraseToTranslate={phraseToTranslate} positionTranslationModals={positionTranslationModals} /> : <View></View>}
 
-            {showSlider? < CustomSlider currentPage={currentPage} setCurrentPage={setCurrentPage} bookLength={100} /> : <View></ View>}
+            {showSlider? < CustomSlider currentPage={currentPage} setCurrentPage={setCurrentPage} bookLength={bookLocations.length} /> : <View></ View>}
 
          </ View>
 

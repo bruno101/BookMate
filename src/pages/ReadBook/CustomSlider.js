@@ -16,10 +16,10 @@ const CustomSlider = (props) => {
     }, [props.currentPage]);
 
     //Mostramos o Slider, e à direita o texto em que aparece o número da página atual
-    //Quando o usuário muda para outra página no Slider ("onSlidingComplete"), chamamos a função "setCurrentPage", que foi passada como "prop"
+    //Quando o usuário muda para outra página no Slider ("onSlidingComplete"), deveremos chamar a função "setCurrentPage", que foi passada como "prop"
     return (
 
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', height: 40, backgroundColor: "white" }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', height: 40, marginTop: -40, backgroundColor: "white" }}>
 
             <Slider
                 style={{ height: 40, width: device.width - 120, marginLeft: 20 }}
@@ -30,7 +30,7 @@ const CustomSlider = (props) => {
                 step={1}
                 value={sliderValue}
                 onValueChange={(value) => { setSliderValue(value) }}
-                onSlidingComplete={(value) => { props.setCurrentPage(parseInt(value)) }}
+                onSlidingComplete={(value) => { /*props.setCurrentPage(parseInt(value))*/ }}
                 trackStyle={{ height: 2.5 }}
                 thumbStyle={{ height: 13, width: 13, backgroundColor: '#088F8F' }}
             />

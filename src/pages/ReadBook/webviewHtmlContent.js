@@ -79,6 +79,7 @@ const webviewHtmlContent = (bookUrl, initialLocation) => {
 
 		});
 
+
 </script>
 
 </html>
