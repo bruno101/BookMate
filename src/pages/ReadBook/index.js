@@ -137,11 +137,11 @@ const ReadBook = (props) => {
 
             {positionTranslationModals == "top" ? <TranslationsView wordToTranslate={wordToTranslate} phraseToTranslate={phraseToTranslate} positionTranslationModals={positionTranslationModals} /> : <View></View>}
 
-            <PageContent bookUrl={bookUrl} onPress={onScreenPress} currentPage={currentPage} setCurrentPage={setCurrentPage} bookLength={bookLocations.length} setWordToTranslate={setWordToTranslate} setPhraseToTranslate={setPhraseToTranslate} setPositionTranslationModals={setPositionTranslationModals}/>
+            <PageContent bookUrl={bookUrl} onPress={onScreenPress} currentPage={currentPage} setCurrentPage={setCurrentPage} bookLength={100} setWordToTranslate={setWordToTranslate} setPhraseToTranslate={setPhraseToTranslate} setPositionTranslationModals={setPositionTranslationModals}/>
 
             {positionTranslationModals == "bottom" ? <TranslationsView wordToTranslate={wordToTranslate} phraseToTranslate={phraseToTranslate} positionTranslationModals={positionTranslationModals} /> : <View></View>}
 
-            {showSlider? < CustomSlider currentPage={currentPage} setCurrentPage={setCurrentPage} bookLength={bookLocations.length} /> : <View></ View>}
+            {showSlider? < CustomSlider currentPage={currentPage} setCurrentPage={setCurrentPage} bookLength={100} /> : <View></ View>}
 
          </ View>
 

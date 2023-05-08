@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef } from 'react'
 import { TouchableWithoutFeedback, Dimensions, View } from "react-native"
 import { WebView } from 'react-native-webview'
 import GestureRecognizer from 'react-native-swipe-gestures'
