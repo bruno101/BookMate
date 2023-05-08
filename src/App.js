@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { TouchableOpacity, Image } from 'react-native'
+import { TouchableOpacity, Image, View } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { ModalPortal } from 'react-native-modals';
 
 import Home from './pages/Home/index';
 import ReadBook from './pages/ReadBook/index';
@@ -64,7 +65,9 @@ const App = () => {
 
                 </Stack.Navigator>
 
-            </NavigationContainer>
+            <ModalPortal />
+
+        </NavigationContainer>
 
     )
 

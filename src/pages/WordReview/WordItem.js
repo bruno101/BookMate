@@ -31,8 +31,8 @@ const WordItem = (props) => {
                         <HighlightText
                             highlightStyle={{ backgroundColor: 'yellow' }}
                             searchWords={[regex]}
-                            textToHighlight={props.fullParagraph}
-                            style={{ fontSize: 15, marginRight: 20}}
+                            textToHighlight={props.fullPhrase}
+                            style={{ fontSize: 15, marginRight: 20, color: "#757575"}}
                         />
 
                     </View>

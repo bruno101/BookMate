@@ -1,7 +1,11 @@
-import { View, TouchableOpacity, Image, Text, Button } from 'react-native'
+import { useState } from 'react'
+import { View, TouchableOpacity, Image, Text } from 'react-native'
+import CustomBottomModal from './CustomBottomModal'
 
 //Corresponde a cada livro da biblioteca do usuário
 const Book = (props) => {
+
+    const [showModal, setShowModal] = useState(false)
 
     //Essa função leva o usuário para a tela de leitura de livros
     const onPress = () => {
@@ -9,14 +13,13 @@ const Book = (props) => {
     }
 
     const onLongPress = () => {
-        //Deve oferecer a opção de editar ou deletar o livro
-        console.log("Detected long press")
+        //Abre a modal que oferece a opção de editar ou deletar o livro
+        setShowModal(true)
     }
 
     return (
 
-        //O livro é clicável; o clique chama a função "readBook"
-        //Note que dentro dessa "TouchableOpacity" há outra "TouchableOpacity", que corresponde ao botão de deletar o livro; clicar nessa segunda opacidade chama a função "deleteBook"
+        //O livro é clicável; o clique chama a função "readBook"; um clique longo abre a modal "CustomBottomModal"
         <TouchableOpacity onLongPress={onLongPress} onPress={onPress} style={{ width: "44%", marginRight: "5%", marginBottom: "4%" }}>
 
             <View>
@@ -30,6 +33,8 @@ const Book = (props) => {
                 <Text style={{ textAlign: 'center', color: 'black', color: '#2f354b', fontSize: 13 }}> by {props.author} </Text>
 
             </View>
+
+            <CustomBottomModal showModal={showModal} setShowModal={setShowModal} bookKey={props.bookKey} title={props.title} author={props.author} srcBookCover={props.srcBookCover} />
 
         </TouchableOpacity>
 

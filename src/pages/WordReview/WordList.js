@@ -14,7 +14,7 @@ const WordList = (props) => {
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => {
 
-                    return <WordItem word={item.word} translation={item.translation} language={item.language} fullParagraph={item.fullParagraph} />
+                    return <WordItem word={item.word} translation={item.translation} language={item.language} fullPhrase={item.fullPhrase} />
 
                 }}
             />
