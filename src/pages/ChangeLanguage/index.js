@@ -5,6 +5,18 @@ import Confirmation from './Confirmation'
 //Nessa componente o usuário altera o idioma para o qual se deve traduzir
 const ChangeLanguage = ({ navigation }) => {
 
+    //Não exibimos a barra inferior
+    useEffect(() => {
+        navigation.getParent()?.setOptions({
+            tabBarStyle: {
+                display: "none"
+            }
+        });
+        return () => navigation.getParent()?.setOptions({
+            tabBarStyle: undefined
+        });
+    }, []);
+
     const onConfirm = () => {
         //Salvar alteração de idioma do usuário após ele clicar em "SAVE CHANGES"
     }

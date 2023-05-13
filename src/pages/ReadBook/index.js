@@ -6,9 +6,19 @@ import RNFS from 'react-native-fs';
 import PageContent from './PageContent';
 import CustomSlider from './CustomSlider';
 
-const device = Dimensions.get("window")
+const ReadBook = ({ navigation }) => {
 
-const ReadBook = (props) => {
+    //Não exibimos a barra inferior
+    useEffect(() => {
+        navigation.getParent()?.setOptions({
+            tabBarStyle: {
+                display: "none"
+            }
+        });
+        return () => navigation.getParent()?.setOptions({
+            tabBarStyle: undefined
+        });
+    }, []);
 
     //Armazena a palavra a ser traduzida (ou "", se não houver)
     const [wordToTranslate, setWordToTranslate] = useState("")

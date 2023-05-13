@@ -1,73 +1,147 @@
 import * as React from 'react'
-import { TouchableOpacity, Image, View } from 'react-native'
+import { Image } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ModalPortal } from 'react-native-modals';
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from './pages/Home/index';
 import ReadBook from './pages/ReadBook/index';
 import ChangeLanguage from './pages/ChangeLanguage/index';
 import WordReview from './pages/WordReview/index';
+import ImportBook from './pages/ImportBook/index';
+import Settings from './pages/Settings/index';
 import UserLanguageBar from './components/UserLanguageBar';
 
-const Stack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator();
 
-const App = () => {
+const Tab = createBottomTabNavigator();
+
+//Abaixo estão definidas as telas que podem ser acessadas diretamente (sem usar a barra inferior) da tela inicial: "Home", "ChangeLanguage" e "ReadBook"
+const HomeScreenStack = () => {
 
     //Essa componente define o que deve aparecer na parte superior da tela do aplicativo; ela usa a componente UserLanguageBar
-    const Options = ({ navigation, route }) => ({
+    const Options = ({ navigation }) => ({
 
-        headerTitle: (props) => (
+        headerTitle: () => (
 
-            <UserLanguageBar navigation = {navigation} />
+            <UserLanguageBar navigation={navigation} />
 
         ),
 
-        headerRight: () => (
+    })
 
-            <TouchableOpacity>
+    return (
+        <HomeStack.Navigator>
 
-                <Image source={require('./assets/settings.png')}
-                    style={{ width: 30, marginLeft: -20, height: 30 }}
-                    resizeMode="stretch" />
+            <HomeStack.Screen
+                name="Home Screen"
+                component={Home}
+                options={Options}
+                    />
+            <HomeStack.Screen
+                name="ChangeLanguage"
+                component={ChangeLanguage}
+            />
+            <HomeStack.Screen
+                name="ReadBook"
+                component={ReadBook}
+                options={Options}
+            />
 
-            </TouchableOpacity>
+            </ HomeStack.Navigator>
 
         )
 
-    })
+}
 
-    //Abaixo estão definidas as telas do app
+//Abaixo estão definidas as telas do app que são acessadas a partir da barra inferior: "Home" (e conforme definido acima, a partir dela são acessadas outras telas), "ImportBook", "WordReview" e "Settings"
+const App = () => {
+
     return (
+
+        <GestureHandlerRootView style={{ flex: 1 }}>
 
             <NavigationContainer>
 
-                <Stack.Navigator>
+                <Tab.Navigator backBehavior={"history"}>
 
-                    <Stack.Screen
+                    <Tab.Screen
                         name="Home"
-                        component={Home}
-                        options={Options}
+                        component={HomeScreenStack}
+                        options={{
+                            unmountOnBlur: true,
+                            headerShown: false,
+                            tabBarIcon: (tabInfo) => {
+                                return (
+                                    <Image
+                                        source={require("./assets/house.png")}
+                                        style={{ height: 24, aspectRatio: 1 }}
+                                    />
+                                );
+                            },
+                        }}
                     />
-                    <Stack.Screen
-                        name="ReadBook"
-                        component={ReadBook}
-                        options={Options}
+
+                    <Tab.Screen
+                        name="Import"
+                        component={ImportBook}
+                        options={{
+                            unmountOnBlur: true,
+                            headerShown: false,
+                            tabBarIcon: (tabInfo) => {
+                                return (
+                                    <Image
+                                        source={require("./assets/book.png")}
+                                        style={{ height: 24, aspectRatio: 1 }}
+                                    />
+                                );
+                            },
+                        }}
                     />
-                    <Stack.Screen
-                        name="ChangeLanguage"
-                        component={ChangeLanguage}
-                    />
-                    <Stack.Screen
-                        name="WordReview"
+
+                    <Tab.Screen
+                        name="Review"
                         component={WordReview}
+                        options={{
+                            unmountOnBlur: true,
+                            headerShown: false,
+                            tabBarIcon: (tabInfo) => {
+                                return (
+                                    <Image
+                                        source={require("./assets/alphabet.png")}
+                                        style={{ height: 24, aspectRatio: 1 }}
+                                    />
+                                );
+                            },
+                        }}
                     />
 
-                </Stack.Navigator>
+                    <Tab.Screen
+                        name="Settings"
+                        component={Settings}
+                        options={{
+                            unmountOnBlur: true,
+                            headerShown: false,
+                            tabBarIcon: (tabInfo) => {
+                                return (
+                                    <Image
+                                        source={require("./assets/settings.png")}
+                                        style={{ height: 24, aspectRatio: 1 }}
+                                        />
+                                );
+                            },
+                        }}
+                    />
 
-            <ModalPortal />
+                </Tab.Navigator>
 
-        </NavigationContainer>
+                <ModalPortal />
+
+            </NavigationContainer>
+
+        </GestureHandlerRootView>
 
     )
 

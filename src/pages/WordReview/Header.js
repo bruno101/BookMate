@@ -1,13 +1,13 @@
 import {View, Image, Text} from 'react-native'
 
-//Define a aparência da barra superior da tela
-const TopBar = () => {
+//Define a aparência da parte superior da tela
+const Header = () => {
 
     return (
-        <View style={{ flexDirection: "row", height: 50 }}>
+        <View style={{ flexDirection: "row", height: 50, marginTop: 10 }}>
 
             <Image source={require('../../assets/dictionary.png')}
-                style={{ height: 50, width: 50 }}
+                style={{ height: 50, width: 50, marginLeft: 30 }}
             />
 
             <Text style={{
@@ -25,4 +25,4 @@ const TopBar = () => {
 
 }
 
-export default TopBar;
+export default Header;

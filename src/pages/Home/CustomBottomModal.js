@@ -21,6 +21,9 @@ const CustomBottomModal = (props) => {
             onTouchOutside={() => {
                 props.setShowModal(false)
             }}
+            onSwipeOut={() => {
+                props.setShowModal(false)
+            }}
         >
 
             <ModalContent>

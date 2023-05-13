@@ -1,5 +1,4 @@
 import React from 'react';
-import ListOfOptions from './ListOfOptions';
 import Bookshelf from './Bookshelf';
 import CurrentlyReading from './CurrentlyReading';
 import {
@@ -7,7 +6,7 @@ import {
 } from 'react-native'
 
 //"Home" é a tela inicial, onde é mostrada a lista de livros do usuário
-//Ela usa as componentes 'ListOfOptions', 'Bookshelf' e 'CurrentlyReading'. 'Bookshelf' usa a componente 'Book', e 'ListOfOptions' usa a componente 'Option'
+//Ela usa as componentes 'Bookshelf' e 'CurrentlyReading'. 'Bookshelf' usa a componente 'Book', que usa a 'CustomBottomModal'
 const Home = ({ navigation }) => {
 
     return (
@@ -15,7 +14,6 @@ const Home = ({ navigation }) => {
         <ScrollView style={{ backgroundColor: "white" }}>
             <CurrentlyReading navigation={navigation}/>
             <Bookshelf navigation={navigation} />
-            <ListOfOptions navigation={navigation} />
         </ScrollView>
 
         )

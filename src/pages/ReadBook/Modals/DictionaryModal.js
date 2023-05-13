@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View, ScrollView, Text } from 'react-native'
+import { View, ScrollView, Text, Image } from 'react-native'
 import LanguagePicker from '../../../components/LanguagePicker'
 
 const DictionaryModal = (props) => {
@@ -27,7 +27,10 @@ const DictionaryModal = (props) => {
 
         <View style={{ flex: 1 }}>
 
-            <Text style={{ color: "black", fontSize: 20, marginLeft: 5, marginTop: 10 }} > Dictionary </Text>
+            <View style={{ flexDirection: "row" }}>
+                <Image source={require("../../../assets/dictionaryLookup.png")} style={{ marginLeft: 14, width: 30, aspectRatio: 1, marginTop: 8, marginBottom: 5 }} />
+                <Text style={{ color: "black", fontSize: 18, marginLeft: 5, marginTop: 8 }} > Dictionary </Text>
+            </View>
 
             <ScrollView style={{ width: "90%", marginLeft: "5%", marginTop: 5, borderColor: "#E5E5E5", borderWidth: 1.5, borderRadius: 4 }} >
 

@@ -1,7 +1,8 @@
-import { View, ScrollView, Dimensions, StyleSheet } from 'react-native'
+import { View, Dimensions, StyleSheet } from 'react-native'
 import TranslationModal from './Modals/TranslationModal'
 import DictionaryModal from './Modals/DictionaryModal'
 import ReversoContextModal from './Modals/ReversoContextModal'
+import Carousel from "react-native-reanimated-carousel";
 
 const device = Dimensions.get("window")
 
@@ -16,46 +17,50 @@ const TranslationsView = (props) => {
         viewStyle = styles.topViewStyle
     }
 
-
     //No caso em que se clicou em uma palavra, chamamos "TranslationModal", "DictionaryModal" e "ReversoContextModal"
+
+    const modals = [
+        { modal: < TranslationModal contentToTranslate={props.wordToTranslate} /> },
+        { modal: < DictionaryModal contentToTranslate={props.wordToTranslate} /> },
+        { modal: < ReversoContextModal contentToTranslate={props.wordToTranslate} /> }
+    ]
+
     const wordModals = (
 
-        <ScrollView horizontal={true} style={viewStyle} showsHorizontalScrollIndicator={false}>
+        <View style={viewStyle}>
 
-            <View style={{ opacity: 0, width: device.width * 0.1 }}></View>
+            <Carousel
+                vertical={false}
+                width={300}
+                height={300}
+                loop={false}
+                style={{ width: "100%", height: device.height * 0.3 }}
+                autoPlay={false}
+                data={modals}
+                pagingEnabled={true}
+                renderItem={({ item }) => (
 
-            <View elevation={10} style={modalsStyle} >
-                <TranslationModal contentToTranslate={props.wordToTranslate} />
-            </View>
+                    <View elevation={10} style={modalsStyle}>
+                        {item.modal}
+                    </View>
 
-            <View elevation={10} style={modalsStyle} >
-                <DictionaryModal word={props.wordToTranslate} />
-            </View>
+                    )}        
+            />
 
-            <View elevation={10} style={modalsStyle} >
-                <ReversoContextModal word={props.wordToTranslate} />
-            </View>
-
-            <View style={{ opacity: 0, width: device.width * 0.1 }}></View>
-
-        </ScrollView>
+        </View>
 
     )
 
     //No caso em que se tem uma frase para traduzir, mostramos apenas a "TranslationModal"
     const phraseTranslationModal = (
 
-        <ScrollView horizontal={true} style={viewStyle} showsHorizontalScrollIndicator={false}>
-
-            <View style={{ opacity: 0, width: device.width * 0.1 }}></View>
+        <View style={viewStyle}>
 
             <View elevation={10} style={modalsStyle} >
                 <TranslationModal contentToTranslate={props.phraseToTranslate} />
             </View>
 
-            <View style={{ opacity: 0, width: device.width * 0.1 }}></View>
-
-        </ScrollView>
+        </View>
 
     )
 
@@ -73,17 +78,16 @@ const TranslationsView = (props) => {
 const styles = StyleSheet.create({
 
     bottomViewStyle: {
-        height: device.height * 0.3,
+        height: device.height * 0.30,
         marginTop: -device.height * 0.31,
         flexDirection: "row",
         zIndex: 1
     },
 
     bottomModalsStyle: {
-        backgroundColor: "white",
         marginTop: device.height * 0.01,
-        marginLeft: device.width * 0.02,
-        height: device.height * 0.3,
+        marginLeft: device.width * 0.15,
+        height: device.height * 0.28,
         width: device.width * 0.7,
         backgroundColor: "white",
         shadowColor: "#000000",
@@ -96,17 +100,17 @@ const styles = StyleSheet.create({
     },
 
     topViewStyle: {
-        height: device.height * 0.3,
-        marginBottom: -device.height * 0.37,
+        height: device.height * 0.30,
+        marginBottom: -device.height * 0.30,
         flexDirection: "row",
         zIndex: 1
     },
 
     topModalsStyle: {
         backgroundColor: "white",
-        marginTop: device.height * 0.05,
-        marginLeft: device.width * 0.02,
-        height: device.height * 0.3,
+        marginTop: device.height * 0.01,
+        marginLeft: device.width * 0.15,
+        height: device.height * 0.28,
         width: device.width * 0.7,
         backgroundColor: "white",
         shadowColor: "#000000",
