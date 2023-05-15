@@ -8,37 +8,6 @@ const device = Dimensions.get("window")
 
 const PageContent = (props) => {
 
-    //Chamada quando o usuário seleciona texto
-    function onSelection(data) {
-
-        //De acordo com a posição do texto selecionado, devemos decidir onde posicionar a modal de modo a não atrapalhar a leitura
-        let bottomPosition = data.coordinates["0"].bottom
-
-        if ((bottomPosition + 0.3*device.height) > (device.height - 80)) {
-            props.setPositionTranslationModals("top");
-        } else {
-            props.setPositionTranslationModals("bottom");
-        }
-
-        content = data.selected;
-        reWhiteSpace = new RegExp("\\s+");
-
-        if (reWhiteSpace.test(content)) {
-
-            //Se o conteúdo selecionado tem mais que uma palavra:
-            props.setPhraseToTranslate(content)
-            props.setWordToTranslate("")
-
-        } else {
-
-            //Se o conteúdo selecionado tem apenas uma palavra
-            props.setWordToTranslate(content)
-            props.setPhraseToTranslate("")
-
-        };
-
-    }
-
     //Lida com as mensagens em formato JSON do código executado na Webview
     function handleMessage(e) {
 
@@ -46,7 +15,7 @@ const PageContent = (props) => {
 
         if (parsedData.type == 'selected') {
 
-            onSelection(parsedData)
+            props.onSelection(parsedData)
         }
 
         if (parsedData.type == 'locations') {

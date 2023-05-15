@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { View, Dimensions } from "react-native"
 import TranslationsView from './TranslationsView'
 import StaticServer from 'react-native-static-server';
 import RNFS from 'react-native-fs';
 import PageContent from './PageContent';
 import CustomSlider from './CustomSlider';
+
+const device = Dimensions.get("window")
 
 const ReadBook = ({ navigation }) => {
 
@@ -118,12 +120,13 @@ const ReadBook = ({ navigation }) => {
     }
 
     //Essa variável e a função abaixo são usadas para determinar quando o usuário dá um clique duplo na tela
-    let lastPress = 0;
+    let lastPress = useRef(0);
+    let lastSelection = useRef(0);
 
     const onScreenPress = () => {
 
         const time = new Date().getTime();
-        const delta = time - lastPress;
+        const delta = time - lastPress.current;
 
         const DOUBLE_PRESS_DELAY = 400;
 
@@ -131,11 +134,52 @@ const ReadBook = ({ navigation }) => {
             //Detectado um clique duplo
             onDoublePress()
         } else {
-            onSinglePress()
-            lastPress = time;
+
+            //Se o usuário acabou de selecionar texto, desconsideramos esse clique; caso contrário, chamamos onSinglePress()
+            if (time - lastSelection.current > 400) {
+                onSinglePress()
+            }
+            
+            lastPress.current = time;
+
         }
 
     };
+
+    //Chamada quando o usuário seleciona texto
+    function onSelection(data) {
+
+        //Atualizamos o tempo da última seleção
+        const time = new Date().getTime();
+        lastSelection.current = time;
+
+        //De acordo com a posição do texto selecionado, devemos decidir onde posicionar a modal de modo a não atrapalhar a leitura
+        let bottomPosition = data.coordinates["0"].bottom
+
+        if ((bottomPosition + 0.3 * device.height) > (device.height - 80)) {
+            setPositionTranslationModals("top");
+        } else {
+            setPositionTranslationModals("bottom");
+        }
+
+        content = data.selected;
+        reWhiteSpace = new RegExp("\\s+");
+
+        if (reWhiteSpace.test(content)) {
+
+            //Se o conteúdo selecionado tem mais que uma palavra:
+            setPhraseToTranslate(content)
+            setWordToTranslate("")
+
+        } else {
+
+            //Se o conteúdo selecionado tem apenas uma palavra
+            setWordToTranslate(content)
+            setPhraseToTranslate("")
+
+        };
+
+    }
 
     //Mostramos o conteúdo da página ("PageContent"), a "Translations View" (em que, se for necessário, são mostradas as modais com traduções etc.), e o Slider para mudança de página
     return (
@@ -147,7 +191,7 @@ const ReadBook = ({ navigation }) => {
 
             {positionTranslationModals == "top" ? <TranslationsView wordToTranslate={wordToTranslate} phraseToTranslate={phraseToTranslate} positionTranslationModals={positionTranslationModals} /> : <View></View>}
 
-            <PageContent bookUrl={bookUrl} onPress={onScreenPress} currentPage={currentPage} setCurrentPage={setCurrentPage} bookLength={100} setWordToTranslate={setWordToTranslate} setPhraseToTranslate={setPhraseToTranslate} setPositionTranslationModals={setPositionTranslationModals}/>
+            <PageContent bookUrl={bookUrl} onPress={onScreenPress} onSelection={onSelection} currentPage={currentPage} setCurrentPage={setCurrentPage} bookLength={100} />
 
             {positionTranslationModals == "bottom" ? <TranslationsView wordToTranslate={wordToTranslate} phraseToTranslate={phraseToTranslate} positionTranslationModals={positionTranslationModals} /> : <View></View>}
 
