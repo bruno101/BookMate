@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
+import { useFocusEffect } from '@react-navigation/native';
 import { View, Dimensions } from "react-native"
 import TranslationsView from './TranslationsView'
 import StaticServer from 'react-native-static-server';
@@ -11,7 +12,8 @@ const device = Dimensions.get("window")
 const ReadBook = ({ navigation }) => {
 
     //Não exibimos a barra inferior
-    useEffect(() => {
+    useFocusEffect(
+    useCallback(() => {
         navigation.getParent()?.setOptions({
             tabBarStyle: {
                 display: "none"
@@ -20,7 +22,8 @@ const ReadBook = ({ navigation }) => {
         return () => navigation.getParent()?.setOptions({
             tabBarStyle: undefined
         });
-    }, []);
+    }, [])
+    );
 
     //Armazena a palavra a ser traduzida (ou "", se não houver)
     const [wordToTranslate, setWordToTranslate] = useState("")
