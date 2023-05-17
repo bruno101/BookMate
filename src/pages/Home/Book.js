@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { View, TouchableOpacity, Image, Text } from 'react-native'
 import CustomBottomModal from './CustomBottomModal'
+import BookDeletionModal from './BookDeletionModal'
 
 //Corresponde a cada livro da biblioteca do usuário
 const Book = (props) => {
 
-    const [showModal, setShowModal] = useState(false)
+    const [showBottomModal, setShowBottomModal] = useState(false)
+    const [showDeletionModal, setShowDeletionModal] = useState(false)
 
     //Essa função leva o usuário para a tela de leitura de livros
     const onPress = () => {
@@ -14,7 +16,7 @@ const Book = (props) => {
 
     const onLongPress = () => {
         //Abre a modal que oferece a opção de editar ou deletar o livro
-        setShowModal(true)
+        setShowBottomModal(true)
     }
 
     return (
@@ -34,7 +36,8 @@ const Book = (props) => {
 
             </View>
 
-            <CustomBottomModal showModal={showModal} setShowModal={setShowModal} bookKey={props.bookKey} title={props.title} author={props.author} srcBookCover={props.srcBookCover} />
+            <BookDeletionModal showModal={showDeletionModal} setShowModal={setShowDeletionModal} setShowBottomModal={setShowBottomModal} bookKey={props.bookKey} title={props.title} author={props.author} />
+            <CustomBottomModal showBottomModal={showBottomModal} setShowBottomModal={setShowBottomModal} setShowDeletionModal={setShowDeletionModal} bookKey={props.bookKey} title={props.title} author={props.author} srcBookCover={props.srcBookCover}/>
 
         </TouchableOpacity>
 

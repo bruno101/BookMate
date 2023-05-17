@@ -13,16 +13,16 @@ const ReadBook = ({ navigation }) => {
 
     //Não exibimos a barra inferior
     useFocusEffect(
-    useCallback(() => {
-        navigation.getParent()?.setOptions({
-            tabBarStyle: {
-                display: "none"
-            }
-        });
-        return () => navigation.getParent()?.setOptions({
-            tabBarStyle: undefined
-        });
-    }, [])
+        useCallback(() => {
+            navigation.getParent()?.setOptions({
+                tabBarStyle: {
+                    display: "none"
+                }
+            });
+            return () => navigation.getParent()?.setOptions({
+                tabBarStyle: undefined
+            });
+        }, [])
     );
 
     //Armazena a palavra a ser traduzida (ou "", se não houver)
