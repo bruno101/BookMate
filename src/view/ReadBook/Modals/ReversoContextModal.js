@@ -13,7 +13,7 @@ const ReversoContextModal = (props) => {
 
             <ScrollView style={{ width: "90%", marginLeft: "5%", marginTop: 5, marginBottom: 10, borderColor: "#E5E5E5", borderWidth: 1.5, borderRadius: 4 }} >
 
-                <Text style={{ color: "grey", fontSize: 14, marginLeft: 5, marginTop: 10 }}> Show context of the word {props.contentToTranslate} </Text>
+                <Text style={{ color: "grey", fontSize: 14, marginLeft: 5, marginTop: 10 }}> Context of the word {props.contentToTranslate} in {props.nativeLanguage.name} is {props.context} </Text>
 
             </ScrollView>
 

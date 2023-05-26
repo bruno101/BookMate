@@ -20,9 +20,9 @@ const TranslationsView = (props) => {
     //No caso em que se clicou em uma palavra, mostramos "TranslationModal", "DictionaryModal" e "ReversoContextModal"
 
     const modals = [
-        { modal: < TranslationModal contentToTranslate={props.wordToTranslate} /> },
-        { modal: < DictionaryModal contentToTranslate={props.wordToTranslate} /> },
-        { modal: < ReversoContextModal contentToTranslate={props.wordToTranslate} /> }
+        { modal: < TranslationModal contentToTranslate={props.wordToTranslate} translationLanguage={props.translationLanguage} setTranslationLanguage={props.setTranslationLanguage} supportedTranslationLanguages={props.supportedTranslationLanguages} translation={props.translation} /> },
+        { modal: < DictionaryModal contentToTranslate={props.wordToTranslate} dictionaryLanguage={props.dictionaryLanguage} setDictionaryLanguage={props.setDictionaryLanguage} supportedDictionaryLanguages={props.supportedDictionaryLanguages} /> },
+        { modal: < ReversoContextModal contentToTranslate={props.wordToTranslate} nativeLanguage={props.nativeLanguage} /> }
     ]
 
     const wordModals = (
@@ -57,7 +57,7 @@ const TranslationsView = (props) => {
         <View style={viewStyle}>
 
             <View elevation={10} style={modalsStyle} >
-                <TranslationModal contentToTranslate={props.phraseToTranslate} />
+                <TranslationModal contentToTranslate={props.phraseToTranslate} translationLanguage={props.translationLanguage} setTranslationLanguage={props.setTranslationLanguage} supportedTranslationLanguages={props.supportedTranslationLanguages} translation={props.translation} />
             </View>
 
         </View>

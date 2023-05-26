@@ -29,9 +29,13 @@ const ReadBookController = (props) => {
 
     }
 
+    //Definimos o idioma nativo a partir do valor no sistema de armazenamento
     const setNativeLanguage = async () => {
 
-        props.setNativeLanguage(await LocalStorage.getNativeLanguage())
+        const nativeLanguage = await LocalStorage.getNativeLanguage()
+
+        props.setNativeLanguage(nativeLanguage)
+        props.setDictionaryLanguage(nativeLanguage)
 
     }
 
@@ -137,7 +141,6 @@ const ReadBookController = (props) => {
 
         if (parsedData.type == 'metadata') {
 
-            console.log("im here", props.bookKey)
             saveMetadata(props.bookKey, parsedData)
 
         }
@@ -178,8 +181,42 @@ const ReadBookController = (props) => {
 
     }, [props.currentPage]);
 
+
+    //Observamos se há alguma palavra ou frase para ser traduzida; se sim, atualizamos "translation" no model); se for uma palavra, também atualizamos a definição e o contexto
+    useEffect(() => {
+
+        translate(props.wordToTranslate)
+        getDefinition(props.wordToTranslate)
+        getContext(props.wordToTranslate)
+
+    }, [props.wordToTranslate]);
+
+    useEffect(() => {
+
+        translate(props.phraseToTranslate)
+
+    }, [props.phraseToTranslate]);
+
+    translate = async (content) => {
+        translation = ""
+        //Código para traduzir um conteúdo
+        props.setTranslation(translation)
+    }
+
+    getDefinition = async (content) => {
+        definition = ""
+        //Código para obter a definição
+        props.setTranslation(definition)
+    }
+
+    getContext = async (content) => {
+        context = ""
+        //Código para obter o contexto
+        props.setContext(context)
+    }
+
     return (
-        <ReadBook navigation={props.navigation} onScreenPress={onScreenPress} handleWebviewMessage={handleWebviewMessage} onSwipeLeft={onSwipeLeft} onSwipeRight={onSwipeRight} wordToTranslate={props.wordToTranslate} phraseToTranslate={props.phraseToTranslate} positionTranslationModals={props.positionTranslationModals} currentPage={props.currentPage} setCurrentPage={props.setCurrentPage} showSlider={props.showSlider} sliderValue={props.sliderValue} setSliderValue={props.setSliderValue} bookLength={props.bookLength} bookUrl={props.bookUrl} saveMetadata={props.saveMetadata} nativeLanguage = { props.nativeLanguage } />
+        <ReadBook navigation={props.navigation} onScreenPress={onScreenPress} handleWebviewMessage={handleWebviewMessage} onSwipeLeft={onSwipeLeft} onSwipeRight={onSwipeRight} wordToTranslate={props.wordToTranslate} phraseToTranslate={props.phraseToTranslate} positionTranslationModals={props.positionTranslationModals} currentPage={props.currentPage} setCurrentPage={props.setCurrentPage} showSlider={props.showSlider} sliderValue={props.sliderValue} setSliderValue={props.setSliderValue} bookLength={props.bookLength} bookUrl={props.bookUrl} saveMetadata={props.saveMetadata} nativeLanguage={props.nativeLanguage} dictionaryLanguage={props.dictionaryLanguage} setDictionaryLanguage={props.setDictionaryLanguage} supportedDictionaryLanguages={props.supportedDictionaryLanguages} translationLanguage={props.translationLanguage} setTranslationLanguage={props.setTranslationLanguage} supportedTranslationLanguages={props.supportedTranslationLanguages} translation={props.translation} definition={props.definition} context={props.context}/>
         )
     
 }

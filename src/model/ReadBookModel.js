@@ -22,8 +22,49 @@ const ReadBookModel = ({ navigation, route }) => {
 
     const [nativeLanguage, setNativeLanguage] = useState({ name: "", code: "" })
 
+    const [dictionaryLanguage, setDictionaryLanguage] = useState({ name: "", code: "" })
+
+    const [definition, setDefinition] = useState()
+
+    const supportedDictionaryLanguages = [
+        { label: 'Arabic', value: 'ar' },
+        { label: 'Chinese', value: 'zh' },
+        { label: 'English', value: 'en' },
+        { label: 'French', value: 'fr' },
+        { label: 'German', value: 'de' },
+        { label: 'Italian', value: 'it' },
+        { label: 'Japanese', value: 'ja' },
+        { label: 'Korean', value: 'ko' },
+        { label: 'Portuguese', value: 'pt' },
+        { label: 'Russian', value: 'ru' },
+        { label: 'Spanish', value: 'es' },
+        { label: 'Turkish', value: 'tr' },
+    ];
+
+    const [translationLanguage, setTranslationLanguage] = useState({ name: "Detected Language", code: "" })
+
+    const [translation, setTranslation] = useState()
+
+    const supportedTranslationLanguages = [
+        { label: 'Arabic', value: 'ar' },
+        { label: 'Chinese', value: 'zh' },
+        { label: 'English', value: 'en' },
+        { label: 'French', value: 'fr' },
+        { label: 'German', value: 'de' },
+        { label: 'Italian', value: 'it' },
+        { label: 'Japanese', value: 'ja' },
+        { label: 'Korean', value: 'ko' },
+        { label: 'Portuguese', value: 'pt' },
+        { label: 'Russian', value: 'ru' },
+        { label: 'Spanish', value: 'es' },
+        { label: 'Turkish', value: 'tr' },
+    ];
+
+    const [context, setContext] = useState()
+
+
     return (
-        <ReadBookController navigation={navigation} wordToTranslate={wordToTranslate} setWordToTranslate={setWordToTranslate} phraseToTranslate={phraseToTranslate} setPhraseToTranslate={setPhraseToTranslate} positionTranslationModals={positionTranslationModals} setPositionTranslationModals={setPositionTranslationModals} currentPage={currentPage} setCurrentPage={setCurrentPage} showSlider={showSlider} setShowSlider={setShowSlider} sliderValue={sliderValue} setSliderValue={setSliderValue} bookLength={100} bookUrl={bookUrl} setBookUrl={setBookUrl} nativeLanguage={nativeLanguage} setNativeLanguage={setNativeLanguage} bookKey={route.params.bookKey} fileName={route.params.fileName} saveMetadata={route.params.saveMetadata} />
+        <ReadBookController navigation={navigation} wordToTranslate={wordToTranslate} setWordToTranslate={setWordToTranslate} phraseToTranslate={phraseToTranslate} setPhraseToTranslate={setPhraseToTranslate} positionTranslationModals={positionTranslationModals} setPositionTranslationModals={setPositionTranslationModals} currentPage={currentPage} setCurrentPage={setCurrentPage} showSlider={showSlider} setShowSlider={setShowSlider} sliderValue={sliderValue} setSliderValue={setSliderValue} bookLength={100} bookUrl={bookUrl} setBookUrl={setBookUrl} nativeLanguage={nativeLanguage} setNativeLanguage={setNativeLanguage} bookKey={route.params.bookKey} fileName={route.params.fileName} saveMetadata={route.params.saveMetadata} dictionaryLanguage={dictionaryLanguage} setDictionaryLanguage={setDictionaryLanguage} supportedDictionaryLanguages={supportedDictionaryLanguages} translationLanguage={translationLanguage} setTranslationLanguage={setTranslationLanguage} supportedTranslationLanguages={supportedTranslationLanguages} translation={translation} setTranslation={setTranslation} definition={definition} setDefinition={setDefinition} context={context} setContext={setContext} />
         )
 }
 

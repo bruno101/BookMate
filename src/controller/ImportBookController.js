@@ -16,7 +16,7 @@ const ImportBookController = ({ navigation }) => {
             //Importamos o livro e redirecionamos o usuário para a tela de leitura
             await LocalStorage.importBook(response[0].uri, response[0].name).then(
                 async (newBook) => {
-                    console.log("New book: ", newBook, newBook.bookKey, newBook.fileName)
+
                     navigation.navigate('Home', { screen: 'ReadBook', initial: false, params: { bookKey: newBook.bookKey, fileName: newBook.fileName, saveMetadata: true } })
                     
 
