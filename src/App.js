@@ -6,13 +6,12 @@ import { ModalPortal } from 'react-native-modals';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Home from './pages/Home/index';
-import ReadBook from './pages/ReadBook/index';
-import ChangeLanguage from './pages/ChangeLanguage/index';
-import WordReview from './pages/WordReview/index';
-import ImportBook from './pages/ImportBook/index';
-import Settings from './pages/Settings/index';
-import UserLanguageBar from './components/UserLanguageBar';
+import Home from "./model/HomeModel";
+import ReadBook from './model/ReadBookModel';
+import ChangeLanguage from './model/ChangeLanguageModel';
+import WordReview from './model/WordReviewModel';
+import ImportBook from './controller/ImportBookController';
+import Settings from './model/SettingsModel';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -21,25 +20,13 @@ const Tab = createBottomTabNavigator();
 //Abaixo estão definidas as telas que podem ser acessadas diretamente (sem usar a barra inferior) da tela inicial: "Home", "ChangeLanguage" e "ReadBook"
 const HomeScreenStack = () => {
 
-    //Essa componente define o que deve aparecer na parte superior da tela do aplicativo; ela usa a componente UserLanguageBar
-    const Options = ({ navigation }) => ({
-
-        headerTitle: () => (
-
-            <UserLanguageBar navigation={navigation} />
-
-        ),
-
-    })
-
     return (
-        <HomeStack.Navigator>
+        <HomeStack.Navigator initialRouteName="Home Screen">
 
             <HomeStack.Screen
                 name="Home Screen"
                 component={Home}
-                options={Options}
-                    />
+            />
             <HomeStack.Screen
                 name="ChangeLanguage"
                 component={ChangeLanguage}
@@ -47,7 +34,6 @@ const HomeScreenStack = () => {
             <HomeStack.Screen
                 name="ReadBook"
                 component={ReadBook}
-                options={Options}
             />
 
             </ HomeStack.Navigator>
@@ -71,7 +57,7 @@ const App = () => {
                         name="Home"
                         component={HomeScreenStack}
                         options={{
-                            unmountOnBlur: true,
+                            unmountOnBlur: false,
                             headerShown: false,
                             tabBarIcon: (tabInfo) => {
                                 return (
