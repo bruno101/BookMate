@@ -19,7 +19,7 @@ const UserLanguageBar = (props) => {
                     letterSpacing: 0.2,
                 }}> Translate to: </Text>
 
-                <TouchableOpacity style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: "white" }} onPress={() => props.navigation.navigate('ChangeLanguage', { nativeLanguage: nativeLanguage })} >
+                <TouchableOpacity style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: "white" }} onPress={() => props.navigation.navigate('ChangeLanguage', { nativeLanguage: props.nativeLanguage })} >
 
                     <Text style={{
                         fontSize: 14,
