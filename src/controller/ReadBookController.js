@@ -13,6 +13,7 @@ const ReadBookController = (props) => {
     useEffect(() => {
         createStaticServer()
         setNativeLanguage()
+        LocalStorage.setCurrentlyReading(props.bookKey)
     }, [])
 
     //Esse servidor permitirá acessarmos o arquivo localmente na "url" abaixo

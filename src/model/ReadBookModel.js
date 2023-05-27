@@ -12,20 +12,28 @@ const ReadBookModel = ({ navigation, route }) => {
     //Define em que posição das telas as modais com as traduções devem aparecer ("bottom" ou "top")
     const [positionTranslationModals, setPositionTranslationModals] = useState("bottom")
 
+    //Página atual do livro
     const [currentPage, setCurrentPage] = useState(1)
 
+    //Define se o Slider para mudança de página deve ser mostrado
     const [showSlider, setShowSlider] = useState(false)
 
+    //Valor a ser mostrado ao lado do Slider
     const [sliderValue, setSliderValue] = useState(1)
 
+    //url em que o livro pode ser acessado
     const [bookUrl, setBookUrl] = useState()
 
+    //Idioma escolhido como nativo pelo usuário
     const [nativeLanguage, setNativeLanguage] = useState({ name: "", code: "" })
 
+    //Idioma em que deve se mostrar a definição no dicionário
     const [dictionaryLanguage, setDictionaryLanguage] = useState({ name: "", code: "" })
 
+    //Definição de um termo
     const [definition, setDefinition] = useState()
 
+    //Idioma suportados pelo dicionário
     const supportedDictionaryLanguages = [
         { label: 'Arabic', value: 'ar' },
         { label: 'Chinese', value: 'zh' },
@@ -41,10 +49,13 @@ const ReadBookModel = ({ navigation, route }) => {
         { label: 'Turkish', value: 'tr' },
     ];
 
+    //Idioma do qual deve se traduzir
     const [translationLanguage, setTranslationLanguage] = useState({ name: "Detected Language", code: "" })
 
+    //Tradução do trecho selecionado
     const [translation, setTranslation] = useState()
 
+    //Idiomas suportados para a tradução
     const supportedTranslationLanguages = [
         { label: 'Arabic', value: 'ar' },
         { label: 'Chinese', value: 'zh' },
@@ -60,6 +71,7 @@ const ReadBookModel = ({ navigation, route }) => {
         { label: 'Turkish', value: 'tr' },
     ];
 
+    //O contexto da palavra selecionada
     const [context, setContext] = useState()
 
 

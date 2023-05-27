@@ -125,10 +125,32 @@ export const saveBookMetadata = async (bookKey, metadata) => {
 
 }
 
+export const setCurrentlyReading = async (bookKey) => {
+
+    try {
+
+        const jsonValue = JSON.stringify(bookKey)
+        await AsyncStorage.setItem('currentlyReading', jsonValue)
+
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+
 //Deve retornar o índice do último livro aberto pelo usuário, por enquanto retornamos um número aleatório
 export const getCurrentlyReading = async () => {
 
-    return 0
+    try {
+
+        const jsonValue = await AsyncStorage.getItem('currentlyReading')
+        return jsonValue != null ? JSON.parse(jsonValue) : -1;
+
+    } catch (e) {
+
+        return -1
+
+    }
 
 }
 
