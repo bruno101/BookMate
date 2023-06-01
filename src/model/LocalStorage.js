@@ -88,7 +88,7 @@ export const importBook = async (bookUri, name) => {
         const newItem = await RNFS.copyFile(bookUri, newUri).then(async (success) => {
 
             //Após salvarmos o arquivo, adicionamos ela ao nosso banco de dados (a princípio, sem os metadados)
-            var newItem = { bookKey: bookKey, title: name.split('.')[0], author: "", srcBookCover: "https://icon-library.com/images/white-book-icon/white-book-icon-15.jpg", fileName: fileName, locations: {}, lastLocationOpened: 1 }
+            var newItem = { bookKey: bookKey, title: name.split('.')[0], author: "", srcBookCover: "https://icon-library.com/images/white-book-icon/white-book-icon-15.jpg", fileName: fileName, locations: {}, lastLocationOpened: "1" }
 
             bookIndex.push(newItem)
             setBookIndex(bookIndex)
@@ -125,6 +125,8 @@ export const saveBookMetadata = async (bookKey, metadata) => {
 
 }
 
+
+//Salva o índice do último livro aberto
 export const setCurrentlyReading = async (bookKey) => {
 
     try {
@@ -138,7 +140,7 @@ export const setCurrentlyReading = async (bookKey) => {
 
 }
 
-//Deve retornar o índice do último livro aberto pelo usuário, por enquanto retornamos um número aleatório
+//Retorna o índice do último livro aberto
 export const getCurrentlyReading = async () => {
 
     try {
@@ -154,6 +156,18 @@ export const getCurrentlyReading = async () => {
 
 }
 
+//Salva a localizãção da última página lida
+export const setLastLocationOpened = async (bookKey, location) => {
+
+    const bookIndex = await getBookIndex()
+    const objWithBookKey = bookIndex.findIndex((obj) => obj.bookKey === bookKey);
+
+    bookIndex[objWithBookKey].lastLocationOpened = location
+
+    setBookIndex(bookIndex)
+
+}
+
 //Por enquanto supomos que o idioma nativo (para o qual se traduz) é o português
 export const getNativeLanguage = async () => {
 
@@ -162,11 +176,10 @@ export const getNativeLanguage = async () => {
 
 }
 
-//Retorna a listade palavras para revisão
+//Retorna a lista de palavras para revisão
 export const getWordList = async () => {
 
-    //Vamos supor que os dados de palavras a serem mostrados são os descritos abaixo
-    const wordListData = [
+    /*const wordListData = [
         { id: 1, word: 'залив', translation: 'bay', language: { name: 'Russian', code: 'ru' }, fullPhrase: 'Из другого открывается прекрасный вид на залив и небольшую частную пристань, принадлежащую поместью.' },
         { id: 2, word: 'toujours', translation: 'always', language: { name: 'French', code: 'fr' }, fullPhrase: "J'ai toujours l'impression de voir des gens marcher dans ces nombreux sentiers et tonnelles, mais John m'a averti de ne pas céder le moins du monde à la fantaisie." },
         { id: 3, word: '她', translation: 'she', language: { name: 'Chinese', code: 'zh' }, fullPhrase: "她紧张地凝视着边缘。" },
@@ -178,8 +191,71 @@ export const getWordList = async () => {
         { id: 9, word: '视', translation: 'to see', language: { name: 'Chinese', code: 'zh' }, fullPhrase: "她紧张地凝视着边缘。" },
         { id: 10, word: 'marcher', translation: 'walk', language: { name: 'French', code: 'fr' }, fullPhrase: "J'ai toujours l'impression de voir des gens marcher dans ces nombreux sentiers et tonnelles, mais John m'a averti de ne pas céder le moins du monde à la fantaisie." },
         { id: 11, word: 'إنهم', translation: 'that they', language: { name: 'Arabic', code: 'ar' }, fullPhrase: "إنهم يتجادلون. في حين أن الحجة تبدو مختلفة ، إلا أن الحقيقة هي نفسها دائمًا." }
-    ]
+    ]*/
 
-    return wordListData
+    try {
+
+        console.log("wordlist in as is", AsyncStorage.getItem('wordList'))
+        const jsonValue = await AsyncStorage.getItem('wordList')
+
+        console.log(jsonValue)
+        return jsonValue != null ? JSON.parse(jsonValue) : [];
+
+    } catch (e) {
+
+        return []
+
+    }
+
+}
+
+export const setWordList = async (wordList) => {
+
+    try {
+
+        const jsonValue = JSON.stringify(wordList)
+        await AsyncStorage.setItem('wordList', jsonValue)
+
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+
+export const addToWordList = async (newWord) => {
+
+    try {
+
+        const wordList = await getWordList()
+        //Escolhemos uma chave única para essa palavra (no caso, é a maior chave que há no momento somada a 1)
+        const wordId = wordList.length == 0 ? 0 : wordList[wordList.length - 1].id + 1
+
+        var newItem = { id: wordId, word: newWord, translation: '', language: { name: '', code: '' }, fullPhrase: '' }
+        wordList.push(newItem)
+
+        setWordList(wordList)
+
+    } catch (e) {
+
+        console.log(e)
+
+    }
+
+}
+
+//Remove a última palavra adicionada à lista de palavras
+export const popFromWordList = async () => {
+
+    try {
+
+        const wordList = await getWordList()
+        if (wordList.length > 0) { wordList.pop()}
+        setWordList(wordList)
+
+    } catch (e) {
+
+        console.log(e)
+
+    }
 
 }

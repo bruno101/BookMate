@@ -43,7 +43,7 @@ const webviewHtmlContent = (bookUrl, initialLocation, saveMetadata) => {
     window.rendition = window.book.renderTo(document.getElementById('reader'), {
 
         width: '100%',
-        height: '100%'
+        height: '100%',
 
     });
 
@@ -53,6 +53,8 @@ const webviewHtmlContent = (bookUrl, initialLocation, saveMetadata) => {
 
             const title = window.book.package.metadata.title
             const author = window.book.package.metadata.creator
+
+            window.book.ready.then(()=>{window.rendition.display(4)})
 
             //Salvando a imagem da capa em formato "base64", e então enviando os metadados
             window.book.archive.createUrl(window.book.cover).then((url) => {
@@ -71,6 +73,7 @@ const webviewHtmlContent = (bookUrl, initialLocation, saveMetadata) => {
                                         author: author
                                     })
                                 );
+              console.log("${initialLocation}")
                                window.rendition.display("${initialLocation}");
 
                             })
@@ -87,6 +90,7 @@ const webviewHtmlContent = (bookUrl, initialLocation, saveMetadata) => {
                         author: author
                     })
                 );
+                window.rendition.display("${initialLocation}");
             })
 
         } else {

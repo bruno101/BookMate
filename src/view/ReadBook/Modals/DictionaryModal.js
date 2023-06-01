@@ -1,7 +1,24 @@
-import { View, ScrollView, Text, Image } from 'react-native'
+import { View, Text, Image, Dimensions } from 'react-native'
+import { WebView } from 'react-native-webview';
 import LanguagePicker from '../LanguagePicker'
 
+const device = Dimensions.get("window")
+
 const DictionaryModal = (props) => {
+
+    //Código em javascript para remover elementos da página que não queremos mostrar e alterar o estilo
+    const INJECTEDJAVASCRIPT = `arr = document.querySelectorAll('.header-container');
+for (i = 0; i < arr.length; i++) {arr[i].style.display = 'none'}
+arr = document.querySelectorAll('.pre-content');
+for (i = 0; i < arr.length; i++) {arr[i].style.display = 'none'}
+arr = document.querySelectorAll('.floatright');
+for (i = 0; i < arr.length; i++) {arr[i].style.display = 'none'}
+arr = document.querySelectorAll('.noprint');
+for (i = 0; i < arr.length; i++) {arr[i].style.display = 'none'}
+const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=0.85, maximum-scale=0.85, user-scalable=1');
+meta.setAttribute('name', 'viewport');
+document.getElementsByTagName('head')[0].appendChild(meta); `
+
 
     //Mostramos o significado da palavra e um "DropDownPicker" em que o usuário pode alterar o idioma do dicionário
     return (
@@ -13,11 +30,15 @@ const DictionaryModal = (props) => {
                 <Text style={{ color: "black", fontSize: 18, marginLeft: 5, marginTop: 8 }} > Dictionary </Text>
             </View>
 
-            <ScrollView style={{ width: "90%", marginLeft: "5%", marginTop: 5, borderColor: "#E5E5E5", borderWidth: 1.5, borderRadius: 4 }} >
+            <View style={{ width: "90%", marginLeft: "5%", height: device.height*0.35-110, marginTop: 5, borderColor: "#E5E5E5", borderWidth: 1.5, borderRadius: 4 }}>
+                <WebView
 
-                <Text style={{ color: "grey", fontSize: 14, marginLeft: 5, marginTop: 10 }}> Definition in {props.dictionaryLanguage.name} of the word {props.contentToTranslate} is {props.definition} </Text>
-
-            </ScrollView>
+                    originWhitelist={['*']}
+                    injectedJavaScript={INJECTEDJAVASCRIPT}
+                    style={{ marginLeft: 7, marginTop: 5 }}
+                    source={{ uri: "https://" + props.dictionaryLanguage+".wiktionary.org/wiki/"+props.contentToTranslate.toLowerCase() }}
+                />
+            </View>
 
             <View style={{ height: 40, flexDirection: "row" }}>
 
@@ -30,8 +51,6 @@ const DictionaryModal = (props) => {
                 <LanguagePicker selectedLanguage={props.dictionaryLanguage} languages={props.supportedDictionaryLanguages} setLanguage={props.setDictionaryLanguage} />
 
             </View>
-
-
 
         </View>
 

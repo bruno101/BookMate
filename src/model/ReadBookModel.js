@@ -12,8 +12,11 @@ const ReadBookModel = ({ navigation, route }) => {
     //Define em que posição das telas as modais com as traduções devem aparecer ("bottom" ou "top")
     const [positionTranslationModals, setPositionTranslationModals] = useState("bottom")
 
+    //Página a partir do qual o livro deve começar a ser mostrado
+    const [initialPage, setInitialPage] = useState(route.params.initialPage)
+
     //Página atual do livro
-    const [currentPage, setCurrentPage] = useState(1)
+    const [currentPage, setCurrentPage] = useState(route.params.initialPage)
 
     //Define se o Slider para mudança de página deve ser mostrado
     const [showSlider, setShowSlider] = useState(false)
@@ -25,10 +28,10 @@ const ReadBookModel = ({ navigation, route }) => {
     const [bookUrl, setBookUrl] = useState()
 
     //Idioma escolhido como nativo pelo usuário
-    const [nativeLanguage, setNativeLanguage] = useState({ name: "", code: "" })
+    const [nativeLanguage, setNativeLanguage] = useState("")
 
     //Idioma em que deve se mostrar a definição no dicionário
-    const [dictionaryLanguage, setDictionaryLanguage] = useState({ name: "", code: "" })
+    const [dictionaryLanguage, setDictionaryLanguage] = useState("")
 
     //Definição de um termo
     const [definition, setDefinition] = useState()
@@ -50,7 +53,7 @@ const ReadBookModel = ({ navigation, route }) => {
     ];
 
     //Idioma do qual deve se traduzir
-    const [translationLanguage, setTranslationLanguage] = useState({ name: "Detected Language", code: "" })
+    const [translationLanguage, setTranslationLanguage] = useState("")
 
     //Tradução do trecho selecionado
     const [translation, setTranslation] = useState()
@@ -76,7 +79,7 @@ const ReadBookModel = ({ navigation, route }) => {
 
 
     return (
-        <ReadBookController navigation={navigation} wordToTranslate={wordToTranslate} setWordToTranslate={setWordToTranslate} phraseToTranslate={phraseToTranslate} setPhraseToTranslate={setPhraseToTranslate} positionTranslationModals={positionTranslationModals} setPositionTranslationModals={setPositionTranslationModals} currentPage={currentPage} setCurrentPage={setCurrentPage} showSlider={showSlider} setShowSlider={setShowSlider} sliderValue={sliderValue} setSliderValue={setSliderValue} bookLength={100} bookUrl={bookUrl} setBookUrl={setBookUrl} nativeLanguage={nativeLanguage} setNativeLanguage={setNativeLanguage} bookKey={route.params.bookKey} fileName={route.params.fileName} saveMetadata={route.params.saveMetadata} dictionaryLanguage={dictionaryLanguage} setDictionaryLanguage={setDictionaryLanguage} supportedDictionaryLanguages={supportedDictionaryLanguages} translationLanguage={translationLanguage} setTranslationLanguage={setTranslationLanguage} supportedTranslationLanguages={supportedTranslationLanguages} translation={translation} setTranslation={setTranslation} definition={definition} setDefinition={setDefinition} context={context} setContext={setContext} />
+        <ReadBookController navigation={navigation} wordToTranslate={wordToTranslate} setWordToTranslate={setWordToTranslate} phraseToTranslate={phraseToTranslate} setPhraseToTranslate={setPhraseToTranslate} positionTranslationModals={positionTranslationModals} setPositionTranslationModals={setPositionTranslationModals} currentPage={currentPage} setCurrentPage={setCurrentPage} showSlider={showSlider} setShowSlider={setShowSlider} sliderValue={sliderValue} setSliderValue={setSliderValue} bookLength={100} bookUrl={bookUrl} setBookUrl={setBookUrl} nativeLanguage={nativeLanguage} setNativeLanguage={setNativeLanguage} bookKey={route.params.bookKey} initialPage={initialPage} setInitialPage={setInitialPage} fileName={route.params.fileName} saveMetadata={route.params.saveMetadata} dictionaryLanguage={dictionaryLanguage} setDictionaryLanguage={setDictionaryLanguage} supportedDictionaryLanguages={supportedDictionaryLanguages} translationLanguage={translationLanguage} setTranslationLanguage={setTranslationLanguage} supportedTranslationLanguages={supportedTranslationLanguages} translation={translation} setTranslation={setTranslation} definition={definition} setDefinition={setDefinition} context={context} setContext={setContext} />
         )
 }
 

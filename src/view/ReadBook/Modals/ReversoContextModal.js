@@ -1,4 +1,14 @@
-import { View, ScrollView, Text, Image } from 'react-native'
+import { View, ScrollView, Text, Image, Dimensions } from 'react-native'
+import { WebView } from 'react-native-webview';
+
+const device = Dimensions.get("window")
+
+//Código em javascript para remover elementos da página que não queremos mostrar e alterar o estilo
+const INJECTEDJAVASCRIPT = `
+const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=0.85, maximum-scale=0.85, user-scalable=1');
+meta.setAttribute('name', 'viewport');
+document.getElementsByTagName('head')[0].appendChild(meta); `
+
 
 const ReversoContextModal = (props) => {
 
@@ -10,12 +20,6 @@ const ReversoContextModal = (props) => {
                 <Image source={require("../../../assets/context.png")} style={{ marginLeft: 14, width: 30, aspectRatio: 1, marginTop: 8, marginBottom: 5 }} />
                 <Text style={{ color: "black", fontSize: 18, marginLeft: 5, marginTop: 8 }} > Reverso Context </Text>
             </View>
-
-            <ScrollView style={{ width: "90%", marginLeft: "5%", marginTop: 5, marginBottom: 10, borderColor: "#E5E5E5", borderWidth: 1.5, borderRadius: 4 }} >
-
-                <Text style={{ color: "grey", fontSize: 14, marginLeft: 5, marginTop: 10 }}> Context of the word {props.contentToTranslate} in {props.nativeLanguage.name} is {props.context} </Text>
-
-            </ScrollView>
 
         </View>
 

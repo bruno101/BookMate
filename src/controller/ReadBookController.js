@@ -1,9 +1,10 @@
-import ReadBook from '../view/ReadBook/index'
+ï»¿import ReadBook from '../view/ReadBook/index'
 import StaticServer from 'react-native-static-server';
 import RNFS from 'react-native-fs';
 import { useRef, useEffect } from 'react'
 import { Dimensions } from 'react-native'
 import * as LocalStorage from '../model/LocalStorage'
+import axios from 'axios';
 
 const device = Dimensions.get("window")
 
@@ -16,7 +17,7 @@ const ReadBookController = (props) => {
         LocalStorage.setCurrentlyReading(props.bookKey)
     }, [])
 
-    //Esse servidor permitirá acessarmos o arquivo localmente na "url" abaixo
+    //Esse servidor permitirÃ¡ acessarmos o arquivo localmente na "url" abaixo
     const createStaticServer = () => {
 
         let server = new StaticServer(8080, RNFS.DocumentDirectoryPath, { keepAlive: true });
@@ -36,19 +37,19 @@ const ReadBookController = (props) => {
         const nativeLanguage = await LocalStorage.getNativeLanguage()
 
         props.setNativeLanguage(nativeLanguage)
-        props.setDictionaryLanguage(nativeLanguage)
+        props.setDictionaryLanguage(nativeLanguage.code)
 
     }
 
-    //Se o usuário dá um clique duplo, alternamos as versões da tela com ou sem o slider para mudança de página
+    //Se o usuÃ¡rio dÃ¡ um clique duplo, alternamos as versÃµes da tela com ou sem o slider para mudanÃ§a de pÃ¡gina
     const onDoublePress = () => {
         props.setShowSlider(!props.showSlider);
     }
 
     const onSinglePress = () => {
 
-        //Sempre que há um clique na tela, verificamos se há uma palavra ou parágrafo cujas traduções estão sendo mostrados no momento
-        //Se houver, "ressetamos" essas variáveis para que as suas modais deixem de ser mostradas (nessa situação, o clique deve fechar as modais)
+        //Sempre que hÃ¡ um clique na tela, verificamos se hÃ¡ uma palavra ou parÃ¡grafo cujas traduÃ§Ãµes estÃ£o sendo mostrados no momento
+        //Se houver, "ressetamos" essas variÃ¡veis para que as suas modais deixem de ser mostradas (nessa situaÃ§Ã£o, o clique deve fechar as modais)
         if (props.wordToTranslate != "" || props.phraseToTranslate != "") {
 
             props.setWordToTranslate("")
@@ -58,7 +59,7 @@ const ReadBookController = (props) => {
 
     }
 
-    //Essa variável e a função abaixo são usadas para determinar quando o usuário dá um clique duplo na tela
+    //Essa variÃ¡vel e a funÃ§Ã£o abaixo sÃ£o usadas para determinar quando o usuÃ¡rio dÃ¡ um clique duplo na tela
     let lastPress = useRef(0);
     let lastSelection = useRef(0);
 
@@ -74,7 +75,7 @@ const ReadBookController = (props) => {
             onDoublePress()
         } else {
 
-            //Se o usuário acabou de selecionar texto, desconsideramos esse clique; caso contrário, chamamos onSinglePress()
+            //Se o usuÃ¡rio acabou de selecionar texto, desconsideramos esse clique; caso contrÃ¡rio, chamamos onSinglePress()
             if (time - lastSelection.current > 400) {
                 onSinglePress()
             }
@@ -85,17 +86,17 @@ const ReadBookController = (props) => {
 
     };
 
-    //Chamada quando o usuário seleciona texto
+    //Chamada quando o usuÃ¡rio seleciona texto
     const onSelection = (data) => {
 
-        //Atualizamos o tempo da última seleção
+        //Atualizamos o tempo da Ãºltima seleÃ§Ã£o
         const time = new Date().getTime();
         lastSelection.current = time;
 
-        //De acordo com a posição do texto selecionado, devemos decidir onde posicionar a modal de modo a não atrapalhar a leitura
+        //De acordo com a posiÃ§Ã£o do texto selecionado, devemos decidir onde posicionar a modal de modo a nÃ£o atrapalhar a leitura
         let bottomPosition = data.coordinates["0"].bottom
 
-        if ((bottomPosition + 0.3 * device.height) > (device.height - 80)) {
+        if ((bottomPosition + 0.37 * device.height) > (device.height - 80)) {
             props.setPositionTranslationModals("top");
         } else {
             props.setPositionTranslationModals("bottom");
@@ -106,13 +107,13 @@ const ReadBookController = (props) => {
 
         if (reWhiteSpace.test(content)) {
 
-            //Se o conteúdo selecionado tem mais que uma palavra:
+            //Se o conteÃºdo selecionado tem mais que uma palavra:
             props.setPhraseToTranslate(content)
             props.setWordToTranslate("")
 
         } else {
 
-            //Se o conteúdo selecionado tem apenas uma palavra
+            //Se o conteÃºdo selecionado tem apenas uma palavra
             props.setWordToTranslate(content)
             props.setPhraseToTranslate("")
 
@@ -125,7 +126,7 @@ const ReadBookController = (props) => {
         LocalStorage.saveBookMetadata(bookKey, parsedData)
     }
 
-    //Lida com as mensagens em formato JSON do código executado na Webview
+    //Lida com as mensagens em formato JSON do cÃ³digo executado na Webview
     function handleWebviewMessage(e) {
 
         let parsedData = JSON.parse(e.nativeEvent.data);
@@ -137,7 +138,7 @@ const ReadBookController = (props) => {
         }
 
         if (parsedData.type == 'locations') {
-            //Nesse caso "parsedData.locations" conterá as Locations do arquivo, útil para determinarmos a posição de cada página (ainda não implementado)
+            //Nesse caso "parsedData.locations" conterÃ¡ as Locations do arquivo, Ãºtil para determinarmos a posiÃ§Ã£o de cada pÃ¡gina (ainda nÃ£o implementado)
         }
 
         if (parsedData.type == 'metadata') {
@@ -146,78 +147,84 @@ const ReadBookController = (props) => {
 
         }
 
+        if (parsedData.type == 'newPage') {
+
+            //Se o usuÃ¡rio mudou de pÃ¡gina, salvamos a localizaÃ§Ã£o dessa pÃ¡gina
+
+            LocalStorage.setLastLocationOpened(props.bookKey, parsedData.location)
+            props.setCurrentPage(parsedData.location)
+
+        }
+
         return;
 
     }
 
-    //Se o usuário deslizou para a direita, voltamos uma página
+    //Se o usuÃ¡rio deslizou para a direita, voltamos uma pÃ¡gina
     const onSwipeRight = (webview) => {
 
-        if (props.currentPage > 0) {
-
-            webview.current.injectJavaScript(`window.rendition.prev()`)
-            props.setCurrentPage(props.currentPage - 1)
-
-        }
+        webview.current.injectJavaScript(`
+                             window.rendition.prev().then(()=>{
+                             window.ReactNativeWebView.postMessage(
+                                    JSON.stringify({
+                                        type: 'newPage',
+                                        location: window.rendition.currentLocation().start.cfi
+                                    })
+                                )});`)
 
     }
 
-    //Se o usuário deslizou para a esquerda, vamos para a próxima página
+    //Se o usuÃ¡rio deslizou para a esquerda, vamos para a prÃ³xima pÃ¡gina
     const onSwipeLeft = (webview) => {
 
-        if (props.currentPage < props.bookLength) {
+            webview.current.injectJavaScript(`
+                             window.rendition.next().then(()=>{
+                             window.ReactNativeWebView.postMessage(
+                                    JSON.stringify({
+                                        type: 'newPage',
+                                        location: window.rendition.currentLocation().start.cfi
+                                    })
+                                )});`)
 
-            webview.current.injectJavaScript(`window.rendition.next()`)
-            props.setCurrentPage(props.currentPage + 1)
-
-        }
 
     }
 
-    //Quando o número da página muda, atualizamos também o valor mostrado ao lado do slider
-    //Por isso observamos mudanças na variável "props.currentPage" abaixo
+
+    //Observamos se hÃ¡ alguma palavra ou frase para ser traduzida; se sim, atualizamos "translation" no model); se for uma palavra, tambÃ©m atualizamos a definiÃ§Ã£o e o contexto
     useEffect(() => {
 
-        props.setSliderValue(props.currentPage);
-
-    }, [props.currentPage]);
-
-
-    //Observamos se há alguma palavra ou frase para ser traduzida; se sim, atualizamos "translation" no model); se for uma palavra, também atualizamos a definição e o contexto
-    useEffect(() => {
-
-        translate(props.wordToTranslate)
-        getDefinition(props.wordToTranslate)
-        getContext(props.wordToTranslate)
+        if (props.wordToTranslate) {
+            detectLanguage(props.wordToTranslate)
+            LocalStorage.addToWordList(props.wordToTranslate)
+        }
 
     }, [props.wordToTranslate]);
 
     useEffect(() => {
 
-        translate(props.phraseToTranslate)
+        if (props.phraseToTranslate) {
+            detectLanguage(props.phraseToTranslate)
+            console.log("the word is", props.wordToTranslate)
+        }
 
     }, [props.phraseToTranslate]);
 
-    translate = async (content) => {
-        translation = ""
-        //Código para traduzir um conteúdo
-        props.setTranslation(translation)
-    }
+    const detectLanguage = async (content) => {
 
-    getDefinition = async (content) => {
-        definition = ""
-        //Código para obter a definição
-        props.setTranslation(definition)
-    }
-
-    getContext = async (content) => {
-        context = ""
-        //Código para obter o contexto
-        props.setContext(context)
+            console.log(content)
+            axios.post(`https://libretranslate.de/detect`, {
+                q: content,
+                format: "text",
+                api_key: ""
+            })
+                .then((response) => {
+                    console.log(response.data[0].language)
+                }).catch (e => console.log(e) )
+    
     }
 
     return (
-        <ReadBook navigation={props.navigation} onScreenPress={onScreenPress} handleWebviewMessage={handleWebviewMessage} onSwipeLeft={onSwipeLeft} onSwipeRight={onSwipeRight} wordToTranslate={props.wordToTranslate} phraseToTranslate={props.phraseToTranslate} positionTranslationModals={props.positionTranslationModals} currentPage={props.currentPage} setCurrentPage={props.setCurrentPage} showSlider={props.showSlider} sliderValue={props.sliderValue} setSliderValue={props.setSliderValue} bookLength={props.bookLength} bookUrl={props.bookUrl} saveMetadata={props.saveMetadata} nativeLanguage={props.nativeLanguage} dictionaryLanguage={props.dictionaryLanguage} setDictionaryLanguage={props.setDictionaryLanguage} supportedDictionaryLanguages={props.supportedDictionaryLanguages} translationLanguage={props.translationLanguage} setTranslationLanguage={props.setTranslationLanguage} supportedTranslationLanguages={props.supportedTranslationLanguages} translation={props.translation} definition={props.definition} context={props.context}/>
+        <ReadBook navigation={props.navigation} onScreenPress={onScreenPress} handleWebviewMessage={handleWebviewMessage} onSwipeLeft={onSwipeLeft} onSwipeRight={onSwipeRight} wordToTranslate={props.wordToTranslate} phraseToTranslate={props.phraseToTranslate} positionTranslationModals={props.positionTranslationModals} initialPage={props.initialPage} currentPage = { props.currentPage } setCurrentPage={props.setCurrentPage} showSlider={props.showSlider} sliderValue={props.sliderValue} setSliderValue={props.setSliderValue} bookLength={props.bookLength} bookUrl={props.bookUrl} saveMetadata={props.saveMetadata} nativeLanguage={props.nativeLanguage} dictionaryLanguage={props.dictionaryLanguage} setDictionaryLanguage={props.setDictionaryLanguage} supportedDictionaryLanguages={props.supportedDictionaryLanguages} translationLanguage={props.translationLanguage} setTranslationLanguage={props.setTranslationLanguage} supportedTranslationLanguages={props.supportedTranslationLanguages} translation={props.translation} context={props.context} />
         )
     
 }
