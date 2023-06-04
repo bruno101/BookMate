@@ -20,9 +20,9 @@ const TranslationsView = (props) => {
     //No caso em que se clicou em uma palavra, mostramos "TranslationModal", "DictionaryModal" e "ReversoContextModal"
 
     const modals = [
-        { modal: < TranslationModal contentToTranslate={props.wordToTranslate} translationLanguage={props.translationLanguage} setTranslationLanguage={props.setTranslationLanguage} supportedTranslationLanguages={props.supportedTranslationLanguages} translation={props.translation} nativeLanguage={props.nativeLanguage} /> },
-        { modal: < DictionaryModal contentToTranslate={props.wordToTranslate} dictionaryLanguage={props.dictionaryLanguage} setDictionaryLanguage={props.setDictionaryLanguage} supportedDictionaryLanguages={props.supportedDictionaryLanguages} nativeLanguage={props.nativeLanguage}/> },
-        { modal: < ReversoContextModal contentToTranslate={props.wordToTranslate} nativeLanguage={props.nativeLanguage} context={props.context} /> }
+        { modal: < TranslationModal contentToTranslate={props.wordToTranslate} translationSourceLanguage={props.translationSourceLanguage} setTranslationSourceLanguage={props.setTranslationSourceLanguage} supportedTranslationSourceLanguages={props.supportedTranslationSourceLanguages} translationTargetLanguage={props.translationTargetLanguage} setTranslationTargetLanguage={props.setTranslationTargetLanguage} supportedTranslationTargetLanguages={props.supportedTranslationTargetLanguages} translation={props.translation} /> },
+        { modal: < DictionaryModal contentToTranslate={props.wordToTranslate} dictionaryLanguage={props.dictionaryLanguage} setDictionaryLanguage={props.setDictionaryLanguage} supportedDictionaryLanguages={props.supportedDictionaryLanguages} nativeLanguage={props.nativeLanguage} /> },
+        { modal: < ReversoContextModal contentToTranslate={props.wordToTranslate} context={props.context} nativeLanguage={props.nativeLanguage} /> }
     ]
 
     const wordModals = (
@@ -60,7 +60,7 @@ const TranslationsView = (props) => {
         <View style={viewStyle}>
 
             <View elevation={10} style={modalsStyle} >
-                <TranslationModal contentToTranslate={props.phraseToTranslate} translationLanguage={props.translationLanguage} setTranslationLanguage={props.setTranslationLanguage} supportedTranslationLanguages={props.supportedTranslationLanguages} translation={props.translation} nativeLanguage={props.nativeLanguage}/>
+                < TranslationModal contentToTranslate={props.phraseToTranslate} translationSourceLanguage={props.translationSourceLanguage} setTranslationSourceLanguage={props.setTranslationSourceLanguage} supportedTranslationSourceLanguages={props.supportedTranslationSourceLanguages} translationTargetLanguage={props.translationTargetLanguage} setTranslationTargetLanguage={props.setTranslationTargetLanguage} supportedTranslationTargetLanguages={props.supportedTranslationTargetLanguages} translation={props.translation} />
             </View>
 
         </View>

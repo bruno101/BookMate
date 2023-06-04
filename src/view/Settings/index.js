@@ -1,5 +1,4 @@
 import { View, Text, Switch, Dimensions, Image } from 'react-native'
-import { useState } from 'react'
 import DropDownPicker from 'react-native-dropdown-picker';
 import { TouchableOpacity } from 'react-native';
 import Header from './Header';

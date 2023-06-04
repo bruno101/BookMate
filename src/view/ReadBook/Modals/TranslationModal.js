@@ -1,19 +1,7 @@
-import { View, Dimensions, Text, Image } from 'react-native'
-import { WebView } from 'react-native-webview';
+import { View, Dimensions, Text, Image, ScrollView } from 'react-native'
 import LanguagePicker from '../LanguagePicker'
 
 const device = Dimensions.get("window")
-
-//Código em javascript para alterar o estilo da página mostrada na webview
-const INJECTEDJAVASCRIPT = `arr = document.getElementsByClassName('nav-tabs');
-for (i = 0; i < arr.length; i++) {arr[i].style.display = 'none'}
-arr = document.getElementsByClassName('textbox textbox_name_source');
-for (i = 0; i < arr.length; i++) {arr[i].style.display = 'none'}
-arr = document.getElementsByClassName('translation');
-for (i = 0; i < arr.length; i++) {arr[i].style.maxHeight = "500px"}
-const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=0.85, maximum-scale=0.85, user-scalable=1');
-meta.setAttribute('name', 'viewport');
-document.getElementsByTagName('head')[0].appendChild(meta); `
 
 const TranslationModal = (props) => {
 
@@ -27,16 +15,44 @@ const TranslationModal = (props) => {
                 <Text style={{ color: "black", fontSize: 18, marginLeft: 5, marginTop: 8 }} > Translation </Text>
             </View>
 
-            <View style={{ width: "90%", marginLeft: "5%", height: device.height * 0.35 - 75, marginTop: 5, borderColor: "#E5E5E5", borderWidth: 1.5, borderRadius: 4 }}>
-                <WebView
+            <View style={{ backgroundColor: "#F4F7FE", width: "90%", marginLeft: "5%", height: device.height * 0.35 - 75, marginTop: 5, borderColor: "#E5E5E5", borderWidth: 1.5, borderRadius: 4 }}>
 
-                    originWhitelist={['*']}
-                    injectedJavaScript={INJECTEDJAVASCRIPT}
-                    style={{ marginLeft: -7, marginRight: -7, marginTop: -48 }}
-                    source={{
-                        uri: "https://translate.yandex.com/en/?source_lang=" + (props.translationLanguage ? "auto" : "en") + "&target_lang=" + props.nativeLanguage.code + "&text=" + props.contentToTranslate
-                    }}
-                />
+                <View style={{ height: 40, flexDirection: "row", backgroundColor: "white" }}>
+                    <View style={{ width: "45%", justifyContent: "center" }}><LanguagePicker selectedLanguage={props.translationSourceLanguage} languages={props.supportedTranslationSourceLanguages} setLanguage={props.setTranslationSourceLanguage} showArrow={false} /></View>
+                    <View style={{ width: "10%", justifyContent: "center" }}>
+                        <Image source={require("../../../assets/exchange.png")} style={{ height: 15, aspectRatio: 1 }} />
+                    </View>
+                    <View style={{ width: "45%", justifyContent: "center" }}><LanguagePicker selectedLanguage={props.translationTargetLanguage} languages={props.supportedTranslationTargetLanguages} setLanguage={props.setTranslationTargetLanguage} showArrow={false} /></View>
+                </View>
+
+                {
+
+                    props.translation.length < 200 ?
+
+                        <View style={{ backgroundColor: "#F4F7FE", height: device.height * 0.35 - 155 }}>
+                            <Text style={{ fontSize: 20, paddingLeft: 15, paddingRight: 15, marginTop: 5, color: "black" }} adjustsFontSizeToFit>
+                                {props.translation}
+                            </Text>
+                            <Text style={{ fontSize: 11, marginLeft: 15, marginTop: 10 }} adjustsFontSizeToFit>
+                                Translated by Google Translate. Visit translate.google.com.
+                            </Text>
+                        </View>
+
+                   :
+
+                        <ScrollView style={{ backgroundColor: "#F4F7FE", height: device.height * 0.35 - 118 }}>
+                            <Text style={{ fontSize: 15, paddingLeft: 15, paddingRight: 15, marginTop: 5, color: "black" }}>
+                                {props.translation}
+                            </Text>
+                            <Text style={{ fontSize: 12, marginLeft: 15, marginTop: 10 }}>
+                                Translated by Google Translate.
+                            </Text>
+                        </ScrollView>
+
+
+                }
+                
+
             </View>
 
         </View>
@@ -52,7 +68,7 @@ const TranslationModal = (props) => {
                     injectedJavaScript={INJECTEDJAVASCRIPT}
                     style={{ marginLeft: -7, marginRight: -7, marginTop: -48 }}
                     source={{
-                        uri: "https://translate.yandex.com/en/?source_lang=" + (props.translationLanguage ? "auto" : "en")  + "&target_lang=" + props.nativeLanguage.code + "&text=" + props.contentToTranslate
+                        uri: "https://translate.yandex.com/en/?source_lang=" + (props.translationLanguage ? "auto" : "en") + "&target_lang=" + props.nativeLanguage.code + "&text=" + props.contentToTranslate
                     }}
                 />
             </View>*/

@@ -29,7 +29,7 @@ const UserLanguageBar = (props) => {
                         letterSpacing: 0.2,
                     }}>  {props.nativeLanguage.name}</Text>
 
-                    <Image source={require('../assets/change.png')}
+                    <Image source={require('../../assets/change.png')}
                         style={{ width: 21, marginLeft: "2%", height: 21 }}
                         resizeMode="stretch" />
 

@@ -3,6 +3,9 @@ import {useState} from 'react'
 
 const ReadBookModel = ({ navigation, route }) => {
 
+    //Título do livro a ser mostrado
+    const [bookTitle, setBookTitle] = useState(route.params.bookTitle)
+
     //Armazena a palavra a ser traduzida (ou "", se não houver)
     const [wordToTranslate, setWordToTranslate] = useState("")
 
@@ -53,13 +56,32 @@ const ReadBookModel = ({ navigation, route }) => {
     ];
 
     //Idioma do qual deve se traduzir
-    const [translationLanguage, setTranslationLanguage] = useState("")
+    const [translationSourceLanguage, setTranslationSourceLanguage] = useState("")
+
+    //Idioma para o qual deve se traduzir
+    const [translationTargetLanguage, setTranslationTargetLanguage] = useState("")
 
     //Tradução do trecho selecionado
-    const [translation, setTranslation] = useState()
+    const [translation, setTranslation] = useState("")
 
     //Idiomas suportados para a tradução
-    const supportedTranslationLanguages = [
+    const supportedTranslationSourceLanguages = [
+        { label: 'Arabic', value: 'ar' },
+        { label: 'Chinese', value: 'zh' },
+        { label: 'English', value: 'en' },
+        { label: 'French', value: 'fr' },
+        { label: 'German', value: 'de' },
+        { label: 'Italian', value: 'it' },
+        { label: 'Japanese', value: 'ja' },
+        { label: 'Korean', value: 'ko' },
+        { label: 'Portuguese', value: 'pt' },
+        { label: 'Russian', value: 'ru' },
+        { label: 'Spanish', value: 'es' },
+        { label: 'Turkish', value: 'tr' },
+    ];
+
+    //Idiomas suportados para a tradução
+    const supportedTranslationTargetLanguages = [
         { label: 'Arabic', value: 'ar' },
         { label: 'Chinese', value: 'zh' },
         { label: 'English', value: 'en' },
@@ -79,7 +101,7 @@ const ReadBookModel = ({ navigation, route }) => {
 
 
     return (
-        <ReadBookController navigation={navigation} wordToTranslate={wordToTranslate} setWordToTranslate={setWordToTranslate} phraseToTranslate={phraseToTranslate} setPhraseToTranslate={setPhraseToTranslate} positionTranslationModals={positionTranslationModals} setPositionTranslationModals={setPositionTranslationModals} currentPage={currentPage} setCurrentPage={setCurrentPage} showSlider={showSlider} setShowSlider={setShowSlider} sliderValue={sliderValue} setSliderValue={setSliderValue} bookLength={100} bookUrl={bookUrl} setBookUrl={setBookUrl} nativeLanguage={nativeLanguage} setNativeLanguage={setNativeLanguage} bookKey={route.params.bookKey} initialPage={initialPage} setInitialPage={setInitialPage} fileName={route.params.fileName} saveMetadata={route.params.saveMetadata} dictionaryLanguage={dictionaryLanguage} setDictionaryLanguage={setDictionaryLanguage} supportedDictionaryLanguages={supportedDictionaryLanguages} translationLanguage={translationLanguage} setTranslationLanguage={setTranslationLanguage} supportedTranslationLanguages={supportedTranslationLanguages} translation={translation} setTranslation={setTranslation} definition={definition} setDefinition={setDefinition} context={context} setContext={setContext} />
+        <ReadBookController navigation={navigation} bookTitle={bookTitle} setBookTitle={setBookTitle} wordToTranslate = { wordToTranslate } setWordToTranslate={setWordToTranslate} phraseToTranslate={phraseToTranslate} setPhraseToTranslate={setPhraseToTranslate} positionTranslationModals={positionTranslationModals} setPositionTranslationModals={setPositionTranslationModals} currentPage={currentPage} setCurrentPage={setCurrentPage} showSlider={showSlider} setShowSlider={setShowSlider} sliderValue={sliderValue} setSliderValue={setSliderValue} bookLength={100} bookUrl={bookUrl} setBookUrl={setBookUrl} nativeLanguage={nativeLanguage} setNativeLanguage={setNativeLanguage} bookKey={route.params.bookKey} initialPage={initialPage} setInitialPage={setInitialPage} fileName={route.params.fileName} saveMetadata={route.params.saveMetadata} dictionaryLanguage={dictionaryLanguage} setDictionaryLanguage={setDictionaryLanguage} supportedDictionaryLanguages={supportedDictionaryLanguages} translationSourceLanguage={translationSourceLanguage} setTranslationSourceLanguage={setTranslationSourceLanguage} supportedTranslationSourceLanguages={supportedTranslationSourceLanguages} translationTargetLanguage={translationTargetLanguage} setTranslationTargetLanguage={setTranslationTargetLanguage} supportedTranslationTargetLanguages={supportedTranslationTargetLanguages} translation={translation} setTranslation={setTranslation} definition={definition} setDefinition={setDefinition} context={context} setContext={setContext} />
         )
 }
 

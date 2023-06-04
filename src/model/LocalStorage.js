@@ -179,26 +179,10 @@ export const getNativeLanguage = async () => {
 //Retorna a lista de palavras para revisão
 export const getWordList = async () => {
 
-    /*const wordListData = [
-        { id: 1, word: 'залив', translation: 'bay', language: { name: 'Russian', code: 'ru' }, fullPhrase: 'Из другого открывается прекрасный вид на залив и небольшую частную пристань, принадлежащую поместью.' },
-        { id: 2, word: 'toujours', translation: 'always', language: { name: 'French', code: 'fr' }, fullPhrase: "J'ai toujours l'impression de voir des gens marcher dans ces nombreux sentiers et tonnelles, mais John m'a averti de ne pas céder le moins du monde à la fantaisie." },
-        { id: 3, word: '她', translation: 'she', language: { name: 'Chinese', code: 'zh' }, fullPhrase: "她紧张地凝视着边缘。" },
-        { id: 4, word: 'Из', translation: 'from', language: { name: 'Russian', code: 'ru' }, fullPhrase: 'Из другого открывается прекрасный вид на залив и небольшую частную пристань, принадлежащую поместью.' },
-        { id: 5, word: 'gens', translation: 'people', language: { name: 'French', code: 'fr' }, fullPhrase: "J'ai toujours l'impression de voir des gens marcher dans ces nombreux sentiers et tonnelles, mais John m'a averti de ne pas céder le moins du monde à la fantaisie." },
-        { id: 6, word: '缘', translation: 'edge', language: { name: 'Chinese', code: 'zh' }, fullPhrase: "她紧张地凝视着边缘。" },
-        { id: 7, word: 'пристань', translation: 'wharf', language: { name: 'Russian', code: 'ru' }, fullPhrase: 'Из другого открывается прекрасный вид на залив и небольшую частную пристань, принадлежащую поместью.' },
-        { id: 8, word: 'voir', translation: 'to see', language: { name: 'French', code: 'fr' }, fullPhrase: "J'ai toujours l'impression de voir des gens marcher dans ces nombreux sentiers et tonnelles, mais John m'a averti de ne pas céder le moins du monde à la fantaisie." },
-        { id: 9, word: '视', translation: 'to see', language: { name: 'Chinese', code: 'zh' }, fullPhrase: "她紧张地凝视着边缘。" },
-        { id: 10, word: 'marcher', translation: 'walk', language: { name: 'French', code: 'fr' }, fullPhrase: "J'ai toujours l'impression de voir des gens marcher dans ces nombreux sentiers et tonnelles, mais John m'a averti de ne pas céder le moins du monde à la fantaisie." },
-        { id: 11, word: 'إنهم', translation: 'that they', language: { name: 'Arabic', code: 'ar' }, fullPhrase: "إنهم يتجادلون. في حين أن الحجة تبدو مختلفة ، إلا أن الحقيقة هي نفسها دائمًا." }
-    ]*/
-
     try {
 
-        console.log("wordlist in as is", AsyncStorage.getItem('wordList'))
         const jsonValue = await AsyncStorage.getItem('wordList')
 
-        console.log(jsonValue)
         return jsonValue != null ? JSON.parse(jsonValue) : [];
 
     } catch (e) {
@@ -227,13 +211,20 @@ export const addToWordList = async (newWord) => {
     try {
 
         const wordList = await getWordList()
-        //Escolhemos uma chave única para essa palavra (no caso, é a maior chave que há no momento somada a 1)
-        const wordId = wordList.length == 0 ? 0 : wordList[wordList.length - 1].id + 1
 
-        var newItem = { id: wordId, word: newWord, translation: '', language: { name: '', code: '' }, fullPhrase: '' }
-        wordList.push(newItem)
+        //Checamos se a palavra já existe
+        if (!wordList.find(e => e.word === newWord)) {
 
-        setWordList(wordList)
+            //Escolhemos uma chave única para essa palavra (no caso, é a maior chave que há no momento somada a 1)
+            const wordId = wordList.length == 0 ? 0 : wordList[wordList.length - 1].id + 1
+
+            var newItem = { id: wordId, word: newWord, translation: '', language: { name: '', code: '' }, fullPhrase: '' }
+            wordList.push(newItem)
+
+            setWordList(wordList)
+
+        }
+
 
     } catch (e) {
 

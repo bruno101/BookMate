@@ -1,7 +1,7 @@
 import React from 'react';
 import Bookshelf from './Bookshelf';
 import CurrentlyReading from './CurrentlyReading';
-import UserLanguageBar from '../UserLanguageBar'
+import UserLanguageBar from './UserLanguageBar'
 import { useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
 import {

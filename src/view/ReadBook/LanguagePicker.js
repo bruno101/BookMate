@@ -15,26 +15,27 @@ const LanguagePicker = (props) => {
             listMode="MODAL"
             placeholder="Detect"
             modalTitle="SELECT A LANGUAGE"
+            showArrowIcon={props.showArrow}
             modalTitleStyle={{
                 fontSize: 14,
                 fontFamily: 'WorkSans-Bold',
                 fontWeight: "bold",
-                color: "#666666"
+                color: "#050A30",
             }}
             modalContentContainerStyle={{
                 backgroundColor: "white"
             }}
             style={{
-                marginTop: 5,
                 minHeight: 30,
-                width: device.width * 0.7 - 160,
-                marginLeft: 15,
-                backgroundColor: "#E1E1E1",
+                backgroundColor: "white",
                 borderWidth: 0,
                 borderRadius: 0
             }}
             textStyle={{
-                fontSize: 13
+                fontSize: 12,
+                textAlign: "center",
+                textTransform: 'uppercase',
+                color: "#050A30"
             }}
             open={open}
             items={props.languages}

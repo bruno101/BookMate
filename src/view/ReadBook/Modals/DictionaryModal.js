@@ -40,15 +40,17 @@ document.getElementsByTagName('head')[0].appendChild(meta); `
                 />
             </View>
 
-            <View style={{ height: 40, flexDirection: "row" }}>
+            <View style={{ height: 40, flexDirection: "row", marginLeft: 18, width: "90%" }}>
 
-                <View style={{ justifyContent: "center", width: 120 }} >
+                <View style={{ width: "40%", justifyContent: "center" }} >
 
-                    <Text style={{ color: "black", marginLeft: 20, fontSize: 13 }}>Language: </Text>
+                    <Text style={{ color: "#050A30", fontSize: 12 }}>LANGUAGE: </Text>
 
                 </View>
 
-                <LanguagePicker selectedLanguage={props.dictionaryLanguage} languages={props.supportedDictionaryLanguages} setLanguage={props.setDictionaryLanguage} />
+                <View style={{ width: "60%", justifyContent: "center" }}>
+                    <LanguagePicker selectedLanguage={props.dictionaryLanguage} languages={props.supportedDictionaryLanguages} setLanguage={props.setDictionaryLanguage} showArrow={true} />
+                </View>
 
             </View>
 

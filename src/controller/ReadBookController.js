@@ -4,7 +4,7 @@ import RNFS from 'react-native-fs';
 import { useRef, useEffect } from 'react'
 import { Dimensions } from 'react-native'
 import * as LocalStorage from '../model/LocalStorage'
-import axios from 'axios';
+import translate from 'google-translate-api-x';
 
 const device = Dimensions.get("window")
 
@@ -37,6 +37,7 @@ const ReadBookController = (props) => {
         const nativeLanguage = await LocalStorage.getNativeLanguage()
 
         props.setNativeLanguage(nativeLanguage)
+        props.setTranslationTargetLanguage(nativeLanguage.code)
         props.setDictionaryLanguage(nativeLanguage.code)
 
     }
@@ -143,6 +144,7 @@ const ReadBookController = (props) => {
 
         if (parsedData.type == 'metadata') {
 
+            props.setBookTitle(parsedData.title)
             saveMetadata(props.bookKey, parsedData)
 
         }
@@ -193,38 +195,27 @@ const ReadBookController = (props) => {
     //Observamos se há alguma palavra ou frase para ser traduzida; se sim, atualizamos "translation" no model); se for uma palavra, também atualizamos a definição e o contexto
     useEffect(() => {
 
-        if (props.wordToTranslate) {
-            detectLanguage(props.wordToTranslate)
-            LocalStorage.addToWordList(props.wordToTranslate)
-        }
-
-    }, [props.wordToTranslate]);
-
-    useEffect(() => {
-
         if (props.phraseToTranslate) {
-            detectLanguage(props.phraseToTranslate)
-            console.log("the word is", props.wordToTranslate)
+            translateContent(props.phraseToTranslate, props.translationSourceLanguage, props.translationTargetLanguage)
+        }
+        else if (props.wordToTranslate) {
+            translateContent(props.wordToTranslate, props.translationSourceLanguage, props.translationTargetLanguage)
         }
 
-    }, [props.phraseToTranslate]);
 
-    const detectLanguage = async (content) => {
+    }, [props.wordToTranslate, props.phraseToTranslate, props.translationSourceLanguage, props.translationTargetLanguage]);
 
-            console.log(content)
-            axios.post(`https://libretranslate.de/detect`, {
-                q: content,
-                format: "text",
-                api_key: ""
-            })
-                .then((response) => {
-                    console.log(response.data[0].language)
-                }).catch (e => console.log(e) )
+    const translateContent = async (content, srcLanguage, targetLanguage) => {
+
+        const res = await translate(content, { from: srcLanguage.length == 0 ? "auto" : srcLanguage, to: targetLanguage })
+        props.setTranslation(res.text)
+
+        console.log(res.from.language.iso)
     
     }
 
     return (
-        <ReadBook navigation={props.navigation} onScreenPress={onScreenPress} handleWebviewMessage={handleWebviewMessage} onSwipeLeft={onSwipeLeft} onSwipeRight={onSwipeRight} wordToTranslate={props.wordToTranslate} phraseToTranslate={props.phraseToTranslate} positionTranslationModals={props.positionTranslationModals} initialPage={props.initialPage} currentPage = { props.currentPage } setCurrentPage={props.setCurrentPage} showSlider={props.showSlider} sliderValue={props.sliderValue} setSliderValue={props.setSliderValue} bookLength={props.bookLength} bookUrl={props.bookUrl} saveMetadata={props.saveMetadata} nativeLanguage={props.nativeLanguage} dictionaryLanguage={props.dictionaryLanguage} setDictionaryLanguage={props.setDictionaryLanguage} supportedDictionaryLanguages={props.supportedDictionaryLanguages} translationLanguage={props.translationLanguage} setTranslationLanguage={props.setTranslationLanguage} supportedTranslationLanguages={props.supportedTranslationLanguages} translation={props.translation} context={props.context} />
+        <ReadBook navigation={props.navigation} bookTitle={props.bookTitle} onScreenPress={onScreenPress} handleWebviewMessage={handleWebviewMessage} onSwipeLeft={onSwipeLeft} onSwipeRight={onSwipeRight} wordToTranslate={props.wordToTranslate} phraseToTranslate={props.phraseToTranslate} positionTranslationModals={props.positionTranslationModals} initialPage={props.initialPage} currentPage={props.currentPage} setCurrentPage={props.setCurrentPage} showSlider={props.showSlider} sliderValue={props.sliderValue} setSliderValue={props.setSliderValue} bookLength={props.bookLength} bookUrl={props.bookUrl} saveMetadata={props.saveMetadata} nativeLanguage={props.nativeLanguage} dictionaryLanguage={props.dictionaryLanguage} setDictionaryLanguage={props.setDictionaryLanguage} supportedDictionaryLanguages={props.supportedDictionaryLanguages} translationSourceLanguage={props.translationSourceLanguage} setTranslationSourceLanguage={props.setTranslationSourceLanguage} supportedTranslationSourceLanguages={props.supportedTranslationSourceLanguages} translationTargetLanguage={props.translationTargetLanguage} setTranslationTargetLanguage={props.setTranslationTargetLanguage} supportedTranslationTargetLanguages={props.supportedTranslationTargetLanguages} translation={props.translation} context={props.context} />
         )
     
 }
