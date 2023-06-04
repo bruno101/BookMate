@@ -54,7 +54,7 @@ const webviewHtmlContent = (bookUrl, initialLocation, saveMetadata) => {
             const title = window.book.package.metadata.title
             const author = window.book.package.metadata.creator
 
-            window.book.ready.then(()=>{window.rendition.display(4)})
+        try {
 
             //Salvando a imagem da capa em formato "base64", e então enviando os metadados
             window.book.archive.createUrl(window.book.cover).then((url) => {
@@ -73,25 +73,31 @@ const webviewHtmlContent = (bookUrl, initialLocation, saveMetadata) => {
                                         author: author
                                     })
                                 );
-              console.log("${initialLocation}")
                                window.rendition.display("${initialLocation}");
 
                             })
                         })
                     )
 
-            }).catch((e) => {
+            })
+
+
+        } catch (e) {
+
                 console.log(e)
+
                 window.ReactNativeWebView.postMessage(
                     JSON.stringify({
                         type: 'metadata',
-                        srcBookCover: srcBookCover,
                         title: title,
                         author: author
                     })
                 );
+
                 window.rendition.display("${initialLocation}");
-            })
+
+            }
+           
 
         } else {
             window.rendition.display("${initialLocation}");

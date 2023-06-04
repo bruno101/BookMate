@@ -118,8 +118,13 @@ export const saveBookMetadata = async (bookKey, metadata) => {
 
     bookIndex[objWithBookKey].title = metadata.title
     bookIndex[objWithBookKey].author = metadata.author
-    //Note que salvamos a capa do livro no formato "base64"
-    bookIndex[objWithBookKey].srcBookCover = 'data:image/png;base64,' + metadata.srcBookCover
+
+    if (metadata.hasOwnProperty('srcBookCover')) {
+
+        //Note que salvamos a capa do livro no formato "base64"
+        bookIndex[objWithBookKey].srcBookCover = 'data:image/png;base64,' + metadata.srcBookCover
+
+    }
 
     setBookIndex(bookIndex)
 
@@ -241,6 +246,28 @@ export const popFromWordList = async () => {
 
         const wordList = await getWordList()
         if (wordList.length > 0) { wordList.pop()}
+        setWordList(wordList)
+
+    } catch (e) {
+
+        console.log(e)
+
+    }
+
+}
+
+//Salva uma tradução para uma palavra na lista de palavras salvas
+export const updateWordTranslation = async (word, translation, translationLanguage) => {
+
+    try {
+
+        const wordList = await getWordList()
+
+        objIndex = wordList.findIndex((obj => obj.word == word));
+        console.log(wordList)
+        wordList[objIndex].translation = translation
+        wordList[objIndex].language = translationLanguage
+
         setWordList(wordList)
 
     } catch (e) {

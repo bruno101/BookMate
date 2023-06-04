@@ -199,6 +199,7 @@ const ReadBookController = (props) => {
             translateContent(props.phraseToTranslate, props.translationSourceLanguage, props.translationTargetLanguage)
         }
         else if (props.wordToTranslate) {
+            LocalStorage.addToWordList(props.wordToTranslate)
             translateContent(props.wordToTranslate, props.translationSourceLanguage, props.translationTargetLanguage)
         }
 
@@ -210,7 +211,18 @@ const ReadBookController = (props) => {
         const res = await translate(content, { from: srcLanguage.length == 0 ? "auto" : srcLanguage, to: targetLanguage })
         props.setTranslation(res.text)
 
-        console.log(res.from.language.iso)
+        if (props.wordToTranslate) {
+
+            //Salvamos a tradução e o idioma original da palavra. Observe que queremos salvar não apenas o código, mas também o nome do idioma
+            languageCode = res.from.language.iso
+            languageIndex = props.supportedTranslationSourceLanguages.findIndex((obj => obj.value == languageCode));
+            language = { name: props.supportedTranslationSourceLanguages[languageIndex].label, code: props.supportedTranslationSourceLanguages[languageIndex].value }
+
+            LocalStorage.updateWordTranslation(content, res.text, language)
+
+            console.log(res.from.language.iso)
+
+        }
     
     }
 
