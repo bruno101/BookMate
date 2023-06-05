@@ -117,6 +117,7 @@ const ReadBookController = (props) => {
             //Se o conteúdo selecionado tem apenas uma palavra
             props.setWordToTranslate(content)
             props.setPhraseToTranslate("")
+            LocalStorage.addToWordList(content, data.fullPhrase)
 
         };
 
@@ -199,7 +200,6 @@ const ReadBookController = (props) => {
             translateContent(props.phraseToTranslate, props.translationSourceLanguage, props.translationTargetLanguage)
         }
         else if (props.wordToTranslate) {
-            LocalStorage.addToWordList(props.wordToTranslate)
             translateContent(props.wordToTranslate, props.translationSourceLanguage, props.translationTargetLanguage)
         }
 
