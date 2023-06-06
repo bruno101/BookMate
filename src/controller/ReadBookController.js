@@ -2,9 +2,10 @@
 import StaticServer from 'react-native-static-server';
 import RNFS from 'react-native-fs';
 import { useRef, useEffect } from 'react'
-import { Dimensions } from 'react-native'
+import { Dimensions, Alert } from 'react-native'
 import * as LocalStorage from '../model/LocalStorage'
 import translate from 'google-translate-api-x';
+import axios from 'axios';
 
 const device = Dimensions.get("window")
 
@@ -164,9 +165,9 @@ const ReadBookController = (props) => {
     }
 
     //Se o usuário deslizou para a direita, voltamos uma página
-    const onSwipeRight = (webview) => {
+    const onSwipeRight = () => {
 
-        webview.current.injectJavaScript(`
+        props.webview.current.injectJavaScript(`
                              window.rendition.prev().then(()=>{
                              window.ReactNativeWebView.postMessage(
                                     JSON.stringify({
@@ -178,9 +179,9 @@ const ReadBookController = (props) => {
     }
 
     //Se o usuário deslizou para a esquerda, vamos para a próxima página
-    const onSwipeLeft = (webview) => {
+    const onSwipeLeft = () => {
 
-            webview.current.injectJavaScript(`
+            props.webview.current.injectJavaScript(`
                              window.rendition.next().then(()=>{
                              window.ReactNativeWebView.postMessage(
                                     JSON.stringify({
@@ -208,26 +209,56 @@ const ReadBookController = (props) => {
 
     const translateContent = async (content, srcLanguage, targetLanguage) => {
 
-        const res = await translate(content, { from: srcLanguage.length == 0 ? "auto" : srcLanguage, to: targetLanguage })
-        props.setTranslation(res.text)
+        try {
 
-        if (props.wordToTranslate) {
+            const res = await translate(content, { from: srcLanguage.length == 0 ? "auto" : srcLanguage, to: targetLanguage })
+            props.setTranslation(res.text)
 
-            //Salvamos a tradução e o idioma original da palavra. Observe que queremos salvar não apenas o código, mas também o nome do idioma
-            languageCode = res.from.language.iso
-            languageIndex = props.supportedTranslationSourceLanguages.findIndex((obj => obj.value == languageCode));
-            language = { name: props.supportedTranslationSourceLanguages[languageIndex].label, code: props.supportedTranslationSourceLanguages[languageIndex].value }
+            if (props.wordToTranslate) {
 
-            LocalStorage.updateWordTranslation(content, res.text, language)
+                //Salvamos a tradução e o idioma original da palavra. Observe que queremos salvar não apenas o código, mas também o nome do idioma
+                languageCode = res.from.language.iso
+                languageIndex = props.supportedTranslationSourceLanguages.findIndex((obj => obj.value == languageCode));
+                language = { name: props.supportedTranslationSourceLanguages[languageIndex].label, code: props.supportedTranslationSourceLanguages[languageIndex].value }
 
-            console.log(res.from.language.iso)
+                LocalStorage.updateWordTranslation(content, res.text, language)
+
+                getContext(props.wordToTranslate, res.from.language.iso, props.translationTargetLanguage)
+
+            }
+
+        } catch (e) {
+
+            console.log(e)
+
+            Alert.alert('Translation Rejected', 'The translation was rejected by the server. The selected text might have been too long. In that case, please try selecting a shorter portion of text and attempt the translation again.')
 
         }
     
     }
 
+    const getContext = async (content, srcLanguage, targetLanguage) => {
+
+        const wordContext = await axios.post('https://context.reverso.net/bst-query-service', {
+            source_lang: srcLanguage,
+            target_lang: targetLanguage,
+            source_text: content,
+            target_text: ""
+        }, {
+            headers: {
+                "User-Agent": "Mozilla/5.0",
+                "Content-Type": "application/json; charset=UTF-8"
+            }
+        })
+
+        console.log(wordContext.data, srcLanguage, targetLanguage, content)
+        console.log(wordContext.data.list.slice(0,10))
+        props.setContext(wordContext.data.list.slice(0,10))
+
+    }
+
     return (
-        <ReadBook navigation={props.navigation} bookTitle={props.bookTitle} onScreenPress={onScreenPress} handleWebviewMessage={handleWebviewMessage} onSwipeLeft={onSwipeLeft} onSwipeRight={onSwipeRight} wordToTranslate={props.wordToTranslate} phraseToTranslate={props.phraseToTranslate} positionTranslationModals={props.positionTranslationModals} initialPage={props.initialPage} currentPage={props.currentPage} setCurrentPage={props.setCurrentPage} showSlider={props.showSlider} sliderValue={props.sliderValue} setSliderValue={props.setSliderValue} bookLength={props.bookLength} bookUrl={props.bookUrl} saveMetadata={props.saveMetadata} nativeLanguage={props.nativeLanguage} dictionaryLanguage={props.dictionaryLanguage} setDictionaryLanguage={props.setDictionaryLanguage} supportedDictionaryLanguages={props.supportedDictionaryLanguages} translationSourceLanguage={props.translationSourceLanguage} setTranslationSourceLanguage={props.setTranslationSourceLanguage} supportedTranslationSourceLanguages={props.supportedTranslationSourceLanguages} translationTargetLanguage={props.translationTargetLanguage} setTranslationTargetLanguage={props.setTranslationTargetLanguage} supportedTranslationTargetLanguages={props.supportedTranslationTargetLanguages} translation={props.translation} context={props.context} />
+        <ReadBook navigation={props.navigation} bookTitle={props.bookTitle} onScreenPress={onScreenPress} handleWebviewMessage={handleWebviewMessage} onSwipeLeft={onSwipeLeft} onSwipeRight={onSwipeRight} wordToTranslate={props.wordToTranslate} phraseToTranslate={props.phraseToTranslate} positionTranslationModals={props.positionTranslationModals} initialPage={props.initialPage} currentPage={props.currentPage} setCurrentPage={props.setCurrentPage} showSlider={props.showSlider} sliderValue={props.sliderValue} setSliderValue={props.setSliderValue} bookLength={props.bookLength} bookUrl={props.bookUrl} saveMetadata={props.saveMetadata} nativeLanguage={props.nativeLanguage} dictionaryLanguage={props.dictionaryLanguage} setDictionaryLanguage={props.setDictionaryLanguage} supportedDictionaryLanguages={props.supportedDictionaryLanguages} translationSourceLanguage={props.translationSourceLanguage} setTranslationSourceLanguage={props.setTranslationSourceLanguage} supportedTranslationSourceLanguages={props.supportedTranslationSourceLanguages} translationTargetLanguage={props.translationTargetLanguage} setTranslationTargetLanguage={props.setTranslationTargetLanguage} supportedTranslationTargetLanguages={props.supportedTranslationTargetLanguages} translation={props.translation} context={props.context} webview={props.webview} />
         )
     
 }

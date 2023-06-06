@@ -14,22 +14,20 @@ const PageContent = (props) => {
         directionalOffsetThreshold: 80
     };
 
-    const webview = useRef();
-
     //Essa variável guarda, em formato de texto, o conteúdo html a ser executado na Webview
     //Ela recebe a url em que o livro está sendo servido, o EpubCfi indicando a localização da página a ser mostrada (nesse caso, mostramos a página inicial) e um booleano indicando se os metadados do livro devem ser salvos
     const htmlContent = webviewHtmlContent(props.bookUrl, props.initialPage, props.saveMetadata)
 
     return (
 
-        <GestureRecognizer onSwipeLeft={() => props.onSwipeLeft(webview)} onSwipeRight={() => props.onSwipeRight(webview)} config={swipeConfig}>
+        <GestureRecognizer onSwipeLeft={props.onSwipeLeft} onSwipeRight={props.onSwipeRight} config={swipeConfig}>
 
             <View style={{ height: device.height - 80, width: 800 }}>
 
                 <TouchableWithoutFeedback onPress={props.onPress}>
 
                     <WebView
-                        ref={webview}
+                        ref={props.webview}
                         originWhitelist={['*']}
                         source={{
                             html: htmlContent

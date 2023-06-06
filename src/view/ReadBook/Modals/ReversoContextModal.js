@@ -1,16 +1,53 @@
-import { View, Text, Image, Dimensions } from 'react-native'
-import { WebView } from 'react-native-webview';
+import { View, ScrollView, Text, Image, Dimensions } from 'react-native'
 
 const device = Dimensions.get("window")
 
-//Código em javascript para alterar o estilo
-const INJECTEDJAVASCRIPT = `
-const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=0.85, maximum-scale=0.85, user-scalable=1');
-meta.setAttribute('name', 'viewport');
-document.getElementsByTagName('head')[0].appendChild(meta); `
 
+//Cada um dos exemplos a serem mostrados
+const Example = (props) => {
+
+    return (
+
+        <View style={{ paddingBottom: 5, paddingTop: 5, marginLeft: "2%", width: "96%", borderBottomColor: "#e3e6e8", borderBottomWidth: 1 }}>
+
+            <View>
+
+                <Text style={{ color: "#327dad"}}>
+                    {props.sourceText.split("<em>")[0]}
+                    <Text style={{ fontWeight: "bold" }}>
+                        {props.sourceText.split("<em>")[1].split("</em>")[0]}
+                    </Text>
+                    {props.sourceText.split("<em>")[1].split("</em>")[1]}
+                </Text>
+
+            </View>
+
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+
+                <Image source={require("../../../assets/turn-down.png")} style={{ width: 15, aspectRatio: 1, marginTop: 2 }} />
+
+                <Text style={{ marginLeft: 3, width: device.width * 0.7 * 0.9 * 0.96 - 22, color: "#404040" }}>
+                    {props.targetText.split("<em>")[0]}
+                    <Text style={{ fontWeight: "bold" }}>
+                        {props.targetText.split("<em>")[1].split("</em>")[0]}
+                    </Text>
+                    {props.targetText.split("<em>")[1].split("</em>")[1]}
+                </Text>
+
+            </View>
+
+        </View>
+
+        )
+
+}
 
 const ReversoContextModal = (props) => {
+
+    //Geramos, a partir do índice de palavras, componentes "Example" para a exibição
+    let exampleList = props.context.map((example, index) => {
+        return <Example key={index} sourceText={example.s_text} targetText={example.t_text} />
+    })
 
     return (
 
@@ -21,15 +58,10 @@ const ReversoContextModal = (props) => {
                 <Text style={{ color: "black", fontSize: 18, marginLeft: 5, marginTop: 8 }} > Reverso Context </Text>
             </View>
 
-            <View style={{ width: "90%", marginLeft: "5%", height: device.height * 0.35 - 72, marginTop: 5, borderColor: "#E5E5E5", borderWidth: 1.5, borderRadius: 4 }}>
-                <WebView
-
-                    originWhitelist={['*']}
-                    injectedJavaScript={INJECTEDJAVASCRIPT}
-                    style={{ marginLeft: 7, marginTop: -190 }}
-                    source={{
-                        uri: "https://www.google.com/search?q="+props.contentToTranslate+"&tbm=isch" }}
-                />
+            <View style={{ width: "90%", marginLeft: "5%", height: device.height * 0.35 - 75, marginTop: 5, backgroundColor: "#F4F9FE", borderColor: "#E5E5E5", borderWidth: 1.5, borderRadius: 4 }}>
+                <ScrollView>
+                    {exampleList}
+                </ScrollView>
             </View>
 
             

@@ -264,7 +264,6 @@ export const updateWordTranslation = async (word, translation, translationLangua
         const wordList = await getWordList()
 
         objIndex = wordList.findIndex((obj => obj.word == word));
-        console.log(wordList)
         wordList[objIndex].translation = translation
         wordList[objIndex].language = translationLanguage
 
