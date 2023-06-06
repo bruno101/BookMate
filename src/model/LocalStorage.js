@@ -88,7 +88,7 @@ export const importBook = async (bookUri, name) => {
         const newItem = await RNFS.copyFile(bookUri, newUri).then(async (success) => {
 
             //Após salvarmos o arquivo, adicionamos ela ao nosso banco de dados (a princípio, sem os metadados)
-            var newItem = { bookKey: bookKey, title: name.split('.')[0], author: "", srcBookCover: "https://icon-library.com/images/white-book-icon/white-book-icon-15.jpg", fileName: fileName, locations: {}, lastLocationOpened: "1" }
+            var newItem = { bookKey: bookKey, title: name.split('.')[0], author: "", srcBookCover: "https://icon-library.com/images/white-book-icon/white-book-icon-15.jpg", fileName: fileName, locations: [], lastLocationOpened: "1" }
 
             bookIndex.push(newItem)
             setBookIndex(bookIndex)
@@ -125,6 +125,18 @@ export const saveBookMetadata = async (bookKey, metadata) => {
         bookIndex[objWithBookKey].srcBookCover = 'data:image/png;base64,' + metadata.srcBookCover
 
     }
+
+    setBookIndex(bookIndex)
+
+}
+
+//Salva as Locations de um livro
+export const saveBookLocations = async (bookKey, locations) => {
+
+    const bookIndex = await getBookIndex()
+    const objWithBookKey = bookIndex.findIndex((obj) => obj.bookKey === bookKey);
+
+    bookIndex[objWithBookKey].locations = locations
 
     setBookIndex(bookIndex)
 

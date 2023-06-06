@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import { TouchableWithoutFeedback, Dimensions, View } from "react-native"
 import { WebView } from 'react-native-webview'
 import GestureRecognizer from 'react-native-swipe-gestures'
@@ -16,7 +15,7 @@ const PageContent = (props) => {
 
     //Essa variável guarda, em formato de texto, o conteúdo html a ser executado na Webview
     //Ela recebe a url em que o livro está sendo servido, o EpubCfi indicando a localização da página a ser mostrada (nesse caso, mostramos a página inicial) e um booleano indicando se os metadados do livro devem ser salvos
-    const htmlContent = webviewHtmlContent(props.bookUrl, props.initialPage, props.saveMetadata)
+    const htmlContent = webviewHtmlContent(props.bookUrl, props.locations, props.initialPage, props.saveMetadata)
 
     return (
 

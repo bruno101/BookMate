@@ -12,7 +12,7 @@ const Book = (props) => {
     return (
 
         //O livro é clicável; o clique chama a função "readBook"; um clique longo abre a modal "CustomBottomModal"
-        <TouchableOpacity onLongPress={() => setShowBottomModal(true)} onPress={() => props.goToBook(props.bookKey, props.title, props.lastLocationOpened, props.fileName)} style={{ width: "44%", marginRight: "5%", marginBottom: "4%" }}>
+        <TouchableOpacity onLongPress={() => setShowBottomModal(true)} onPress={() => props.goToBook(props.bookKey, props.title, props.locations, props.lastLocationOpened, props.fileName)} style={{ width: "44%", marginRight: "5%", marginBottom: "4%" }}>
 
             <View>
 

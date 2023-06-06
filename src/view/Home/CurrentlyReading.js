@@ -36,7 +36,7 @@ const CurrentlyReading = (props) => {
                     marginBottom: 20
                 }}> Continue Reading </Text>
 
-                <TouchableOpacity style={{ width: device.width * 0.9, height: 160, marginTop: 40, marginBottom: 40 }} onPress={() => props.goToBook(bookMetadata.bookKey, bookMetadata.title, bookMetadata.lastLocationOpened, bookMetadata.fileName)}>
+                <TouchableOpacity style={{ width: device.width * 0.9, height: 160, marginTop: 40, marginBottom: 40 }} onPress={() => props.goToBook(bookMetadata.bookKey, bookMetadata.title, bookMetadata.locations, bookMetadata.lastLocationOpened, bookMetadata.fileName)}>
 
                     <ImageBackground source={require('../../assets/backgroundImage.jpg') }
                         style={{ width: "100%", height: "100%", flexDirection: 'row', flexWrap: 'wrap' }}

@@ -6,7 +6,7 @@ const Bookshelf = (props) => {
 
     //Geramos, a partir do índice de livros, componentes "Book" para a exibição
     let bookList = props.bookIndex.map((book, index) => {
-        return <Book key={book.bookKey} bookKey={book.bookKey} title={book.title} author={book.author} lastLocationOpened={book.lastLocationOpened} fileName = { book.fileName } srcBookCover={book.srcBookCover} navigation={props.navigation} goToBook={props.goToBook} shareBook={props.shareBook} deleteBook={props.deleteBook} />
+        return <Book key={book.bookKey} bookKey={book.bookKey} title={book.title} author={book.author} lastLocationOpened={book.lastLocationOpened} locations={book.locations} fileName = { book.fileName } srcBookCover={book.srcBookCover} navigation={props.navigation} goToBook={props.goToBook} shareBook={props.shareBook} deleteBook={props.deleteBook} />
     })
 
     return (

@@ -1,4 +1,4 @@
-﻿const webviewHtmlContent = (bookUrl, initialLocation, saveMetadata) => {
+﻿const webviewHtmlContent = (bookUrl, locations, initialLocation, saveMetadata) => {
 
     //Essa função gera o conteúdo em html que deve ser mostrado na Webview
     //Usamos a biblioteca "epub.js", para JavaScript
@@ -47,6 +47,27 @@
 
     });
 
+    window.book.ready.then((book) => {
+
+        if (${JSON.stringify(locations)}.length == 0) {
+
+            //Gerando e salvando Locations
+            window.book.locations.generate().then(locations => {
+
+                window.ReactNativeWebView.postMessage(
+                    JSON.stringify({
+                        type: 'locations',
+                        locations: locations
+                    })
+
+                );
+
+            });
+
+        }
+
+    })
+
     window.rendition.on('started', () => {
 
         if (${saveMetadata}) {
@@ -64,7 +85,13 @@
 
                             blob.arrayBuffer().then((buffer) => {
                                 const array = new Uint8Array(buffer);
-                                var srcBookCover = btoa(String.fromCharCode.apply(null, array));
+                                var binary = '';
+                                var len = array.byteLength;
+                                for (var i = 0; i < len; i++) {
+                                    binary += String.fromCharCode( array[ i ] );
+                                }
+
+                                var srcBookCover = btoa(binary);
                                 window.ReactNativeWebView.postMessage(
                                     JSON.stringify({
                                         type: 'metadata',
