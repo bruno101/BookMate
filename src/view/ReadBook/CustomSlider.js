@@ -15,13 +15,13 @@ const CustomSlider = (props) => {
             <Slider
                 style={{ height: 40, width: device.width - 120, marginLeft: 20 }}
                 minimumValue={1}
-                maximumValue={props.bookLength}
+                maximumValue={props.locations.length == 0 ? 1 : props.locations.length}
                 minimumTrackTintColor="#53a3cb"
                 maximumTrackTintColor="#ADD8E6"
                 step={1}
                 value={props.sliderValue}
                 onValueChange={(value) => { props.setSliderValue(value) }}
-                onSlidingComplete={(value) => { /*props.setCurrentPage(parseInt(value))*/ }}
+                onSlidingComplete={(value) => { props.goToPage(parseInt(value)) }}
                 trackStyle={{ height: 2.5 }}
                 thumbStyle={{ height: 13, width: 13, backgroundColor: '#088F8F' }}
             />
@@ -30,7 +30,7 @@ const CustomSlider = (props) => {
 
                 <Text style={{ color: "grey" }}>
 
-                    {props.sliderValue} / {props.bookLength}
+                    { props.locations.length == 0 ? 0 : Math.round (props.sliderValue * 10000 / props.locations.length ) /100 } %
 
                 </Text>
 

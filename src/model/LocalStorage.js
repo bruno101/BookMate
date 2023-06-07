@@ -185,11 +185,26 @@ export const setLastLocationOpened = async (bookKey, location) => {
 
 }
 
-//Por enquanto supomos que o idioma nativo (para o qual se traduz) é o português
+//Retorna o idioma nativo do usuário; por padrão, português
 export const getNativeLanguage = async () => {
 
-    const nativeLanguage = { name: "Portuguese", code: "pt" }
-    return nativeLanguage
+    const jsonValue = await AsyncStorage.getItem('nativeLanguage')
+
+    return jsonValue != null ? JSON.parse(jsonValue) : { name: "Portuguese", code: "pt" };
+
+}
+
+export const setNativeLanguage = async (language) => {
+
+    try {
+
+        const jsonValue = JSON.stringify(language)
+        console.log(language)
+        await AsyncStorage.setItem('nativeLanguage', jsonValue)
+
+    } catch (e) {
+        console.log(e)
+    }
 
 }
 
@@ -275,6 +290,7 @@ export const updateWordTranslation = async (word, translation, translationLangua
 
         const wordList = await getWordList()
 
+        console.log(word, translation, translationLanguage)
         objIndex = wordList.findIndex((obj => obj.word == word));
         wordList[objIndex].translation = translation
         wordList[objIndex].language = translationLanguage

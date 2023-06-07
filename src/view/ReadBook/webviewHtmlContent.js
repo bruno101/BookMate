@@ -49,7 +49,7 @@
 
     window.book.ready.then((book) => {
 
-        if (${JSON.stringify(locations)}.length == 0) {
+        if (${locations.length} == 0) {
 
             //Gerando e salvando Locations
             window.book.locations.generate().then(locations => {
@@ -64,7 +64,11 @@
 
             });
 
-        }
+        } else {
+
+            window.book.locations.load(${JSON.stringify(locations)})
+
+        }        
 
     })
 
@@ -193,7 +197,7 @@
                 JSON.stringify({
                     type: 'selected',
                     coordinates: window.rendition.manager.getContents()[0].window.getSelection().getRangeAt(0).getClientRects(),
-                    fullPhrase: phraseText.replace(/\\n/g, " "),
+                    fullPhrase: phraseText.replace(/\\n/g, " ").replace(/ +(?= )/g,''),
                     selected
                 })
 

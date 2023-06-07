@@ -20,14 +20,14 @@ const ChangeLanguage = (props) => {
     //Mostramos a componentente "Confirmation" no topo da tela; ela que mostra o botão de "SAVE CHANGES"
     useEffect(() => {
         props.navigation.setOptions({
-            headerTitle: (props) => (
-                <Confirmation onConfirm={ props.onConfirm }/>
+            headerTitle: () => (
+                <Confirmation onConfirm={props.onConfirm} />
             )
         });
     }, []);
 
     //A página mostra a lista de idiomas disponíveis
-    return (<ListOfLanguages nativeLanguage={props.route.params.nativeLanguage} updateLanguage={props.updateLanguage} listOfLanguages={props.listOfLanguages} />)
+    return (<ListOfLanguages nativeLanguage={props.nativeLanguage} updateLanguage={props.updateLanguage} listOfLanguages={props.listOfLanguages} />)
 
 }
 

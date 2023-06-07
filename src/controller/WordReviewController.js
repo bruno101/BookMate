@@ -11,7 +11,7 @@ const WordReviewController = (props) => {
     //Sempre que essa tela é aberta, obtemos a lista de palavras do banco
     const setWordList = async () => {
         const savedWords = await LocalStorage.getWordList()
-        props.setWordListData(savedWords)
+        props.setWordListData(savedWords.reverse())
         props.setFilteredData(savedWords)
     }
 
@@ -39,7 +39,7 @@ const WordReviewController = (props) => {
     useEffect(() => {
 
         if (props.language == "All") {
-            props.setFilteredData(props.wordListData.filter((item) => { return (item.word.toLowerCase().startsWith(props.searchedTerm)) }))
+            props.setFilteredData(props.wordListData.filter((item) => { return (item.word.toLowerCase().startsWith(props.searchedTerm))}))
         } else {
             props.setFilteredData(props.wordListData.filter((item) => { return (item.language.name == props.language) && (item.word.toLowerCase().startsWith(props.searchedTerm))  }))
         }

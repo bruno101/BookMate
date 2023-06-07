@@ -12,6 +12,7 @@ const WordList = (props) => {
                 data={props.filteredData}
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
+                initialNumToRender={50}
                 renderItem={({ item }) => {
 
                     return <WordItem word={item.word} translation={item.translation} language={item.language} fullPhrase={item.fullPhrase} />

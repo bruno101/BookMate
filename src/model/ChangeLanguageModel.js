@@ -1,4 +1,5 @@
 import ChangeLanguageController from '../controller/ChangeLanguageController'
+import {useRef, useState} from 'react'
 
 const ChangeLanguageModel = ({ navigation, route }) => {
 
@@ -9,6 +10,7 @@ const ChangeLanguageModel = ({ navigation, route }) => {
         { id: '3', title: 'English', value: 'en', imagePath: require('../assets/en-flag.png') },
         { id: '4', title: 'French', value: 'fr', imagePath: require('../assets/fr-flag.png') },
         { id: '5', title: 'German', value: 'de', imagePath: require('../assets/de-flag.png') },
+        { id: '13', title: 'Hindi', value: 'hi', imagePath: require('../assets/hi-flag.png') },
         { id: '6', title: 'Italian', value: 'it', imagePath: require('../assets/it-flag.png') },
         { id: '7', title: 'Japanese', value: 'ja', imagePath: require('../assets/ja-flag.png') },
         { id: '8', title: 'Korean', value: 'ko', imagePath: require('../assets/ko-flag.png') },
@@ -18,8 +20,15 @@ const ChangeLanguageModel = ({ navigation, route }) => {
         { id: '12', title: 'Turkish', value: 'tr', imagePath: require('../assets/tr-flag.png') },
     ];
 
+    //Referência para o idioma selecionado como nativo; precisamos dessa referência para salvarmos o idioma correto em 'onConfirm'
+    const nativeLanguageRef = useRef({ name: 'English', code: 'en' })
+
+    //Idioma selecionado como nativo, o mesmo que o "current" em "nativeLangueRef"
+    const [nativeLanguage, setNativeLanguage] = useState(nativeLanguageRef.current)
+
+
     return (
-        <ChangeLanguageController navigation={navigation} route={route} listOfLanguages={listOfLanguages} />
+        <ChangeLanguageController navigation={navigation} route={route} listOfLanguages={listOfLanguages} nativeLanguageRef={nativeLanguageRef} nativeLanguage={nativeLanguage} setNativeLanguage={setNativeLanguage} />
     )
 }
 

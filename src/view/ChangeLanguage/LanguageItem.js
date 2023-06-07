@@ -38,7 +38,7 @@ const LanguageItem = (props) => {
 
             <TouchableOpacity
                 style={{ height: 60, width: "100%", backgroundColor: "white", marginBottom: 10, flexDirection: 'row', flexWrap: 'wrap', borderColor: "#E5E5E5", borderWidth: 1.5, marginLeft: "5%", width: "90%", borderRadius: 10 }}
-                onPress={props.updateLanguage}
+                onPress={() => props.updateLanguage({code: props.value, name: props.title})}
             >
 
                 <Image

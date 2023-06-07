@@ -1,17 +1,37 @@
 import ChangeLanguage from '../view/ChangeLanguage/index'
+import * as LocalStorage from '../model/LocalStorage'
+import { useEffect } from 'react'
 
 const ChangeLanguageController = (props) => {
 
-    const onConfirm = () => {
-        //Salvar alteração de idioma do usuário após ele clicar em "SAVE CHANGES"
+    useEffect(() => {
+
+        console.log("here")
+        //Acessamos o idioma que estava definido como nativo ao se entrar na tela
+        initialNativeLanguage()
+
+    }, [])
+
+    const initialNativeLanguage = async () => {
+
+        props.nativeLanguageRef.current = await LocalStorage.getNativeLanguage()
+
     }
 
-    const updateLanguage = () => {
-        //Essa função deve atualizar o idioma para o qual deve se traduzir
+    const onConfirm = () => {
+        console.log("confirm", props.nativeLanguageRef.current)
+        LocalStorage.setNativeLanguage(props.nativeLanguageRef.current)
+        props.navigation.goBack()
+    }
+
+    const updateLanguage = (language) => {
+        props.nativeLanguageRef.current = language
+        props.setNativeLanguage(props.nativeLanguageRef.current)
+        console.log("native", props.nativeLanguageRef.current)
     }
 
     return (
-        <ChangeLanguage navigation={props.navigation} route={props.route} onConfirm={onConfirm} updateLanguage={updateLanguage} listOfLanguages={props.listOfLanguages} />
+        <ChangeLanguage navigation={props.navigation} nativeLanguage={props.nativeLanguage} onConfirm={onConfirm} updateLanguage={updateLanguage} listOfLanguages={props.listOfLanguages} />
     )
 
 }

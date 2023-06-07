@@ -12,12 +12,31 @@ const Example = (props) => {
 
             <View>
 
-                <Text style={{ color: "#327dad"}}>
-                    {props.sourceText.split("<em>")[0]}
-                    <Text style={{ fontWeight: "bold" }}>
-                        {props.sourceText.split("<em>")[1].split("</em>")[0]}
-                    </Text>
-                    {props.sourceText.split("<em>")[1].split("</em>")[1]}
+                <Text style={{ color: "#327dad" }}>
+
+                    {
+
+                        props.sourceText.split("<em>").length == 1 ?
+
+                        props.sourceText :
+
+                            <Text>
+
+                                {props.sourceText.split("<em>")[0]}
+
+                                <Text style={{ fontWeight: "bold" }}>
+                        
+                                    {props.sourceText.split("<em>")[1].split("</em>")[0]}
+
+                                </Text>
+
+                                {props.sourceText.split("<em>")[1].split("</em>")[1]}
+
+                            </Text>
+
+
+                    }
+                    
                 </Text>
 
             </View>
@@ -27,11 +46,30 @@ const Example = (props) => {
                 <Image source={require("../../../assets/turn-down.png")} style={{ width: 15, aspectRatio: 1, marginTop: 2 }} />
 
                 <Text style={{ marginLeft: 3, width: device.width * 0.7 * 0.9 * 0.96 - 22, color: "#404040" }}>
-                    {props.targetText.split("<em>")[0]}
-                    <Text style={{ fontWeight: "bold" }}>
-                        {props.targetText.split("<em>")[1].split("</em>")[0]}
-                    </Text>
-                    {props.targetText.split("<em>")[1].split("</em>")[1]}
+
+                    {
+
+                        props.targetText.split("<em>").length == 1 ?
+
+                            props.targetText :
+
+                            (<Text>
+
+                                {props.targetText.split(/<em>(.*)/s)[0]}
+
+                                <Text style={{ fontWeight: "bold" }}>
+
+                                    {props.targetText.split(/<em>(.*)/s)[1].split(/<\/em>(.*)/s)[0].replace("<em>", "").replace("</em>", "")}
+
+                                </Text>
+
+                                {props.targetText.split(/<em>(.*)/s)[1].split(/<\/em>(.*)/s)[1].replace("<em>", "").replace("</em>", "")}
+
+                            </Text>)
+
+
+                    }
+
                 </Text>
 
             </View>
@@ -51,7 +89,7 @@ const ReversoContextModal = (props) => {
 
     return (
 
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>         
 
             <View style={{ flexDirection: "row" }}>
                 <Image source={require("../../../assets/context.png")} style={{ marginLeft: 14, width: 30, aspectRatio: 1, marginTop: 8, marginBottom: 5 }} />
@@ -59,6 +97,7 @@ const ReversoContextModal = (props) => {
             </View>
 
             <View style={{ width: "90%", marginLeft: "5%", height: device.height * 0.35 - 75, marginTop: 5, backgroundColor: "#F4F9FE", borderColor: "#E5E5E5", borderWidth: 1.5, borderRadius: 4 }}>
+
                 <ScrollView>
                     {exampleList}
                 </ScrollView>
