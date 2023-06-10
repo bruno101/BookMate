@@ -29,7 +29,7 @@ const WordItem = (props) => {
                     <View style={{ flexDirection: "row", flexWrap: "wrap", marginLeft: 20, marginBottom: 5 }}>
 
                         <HighlightText
-                            highlightStyle={{ backgroundColor: 'yellow' }}
+                            highlightStyle={{ backgroundColor: props.nightMode ? "#de5d0d" : 'yellow' }}
                             searchWords={[regex]}
                             textToHighlight={props.fullPhrase}
                             style={{ fontSize: 15, marginRight: 20, color: props.nightMode? "white" : "#757575"}}

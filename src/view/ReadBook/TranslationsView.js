@@ -20,7 +20,7 @@ const TranslationsView = (props) => {
     //No caso em que se clicou em uma palavra, mostramos "TranslationModal", "DictionaryModal" e "ReversoContextModal"
 
     const modals = [
-        { modal: < TranslationModal contentToTranslate={props.wordToTranslate} translationSourceLanguage={props.translationSourceLanguage} setTranslationSourceLanguage={props.setTranslationSourceLanguage} supportedTranslationSourceLanguages={props.supportedTranslationSourceLanguages} translationTargetLanguage={props.translationTargetLanguage} setTranslationTargetLanguage={props.setTranslationTargetLanguage} supportedTranslationTargetLanguages={props.supportedTranslationTargetLanguages} translation={props.translation} nightMode={props.nightMode} /> },
+        { modal: < TranslationModal contentToTranslate={props.wordToTranslate} translationSourceLanguage={props.translationSourceLanguage} setTranslationSourceLanguage={props.setTranslationSourceLanguage} supportedTranslationSourceLanguages={props.supportedTranslationSourceLanguages} translationTargetLanguage={props.translationTargetLanguage} setTranslationTargetLanguage={props.setTranslationTargetLanguage} supportedTranslationTargetLanguages={props.supportedTranslationTargetLanguages} translation={props.translation} detectedLanguage={props.detectedLanguage} nightMode = { props.nightMode } /> },
         { modal: < DictionaryModal contentToTranslate={props.wordToTranslate} dictionaryLanguage={props.dictionaryLanguage} setDictionaryLanguage={props.setDictionaryLanguage} supportedDictionaryLanguages={props.supportedDictionaryLanguages} nativeLanguage={props.nativeLanguage} nightMode={props.nightMode}/> },
         { modal: < ReversoContextModal contentToTranslate={props.wordToTranslate} context={props.context} nativeLanguage={props.nativeLanguage} nightMode={props.nightMode}/> }
     ]
@@ -60,7 +60,7 @@ const TranslationsView = (props) => {
         <View style={viewStyle}>
 
             <View elevation={10} style={modalsStyle} >
-                < TranslationModal contentToTranslate={props.phraseToTranslate} translationSourceLanguage={props.translationSourceLanguage} setTranslationSourceLanguage={props.setTranslationSourceLanguage} supportedTranslationSourceLanguages={props.supportedTranslationSourceLanguages} translationTargetLanguage={props.translationTargetLanguage} setTranslationTargetLanguage={props.setTranslationTargetLanguage} supportedTranslationTargetLanguages={props.supportedTranslationTargetLanguages} translation={props.translation} nightMode={props.nightMode}/>
+                < TranslationModal contentToTranslate={props.phraseToTranslate} translationSourceLanguage={props.translationSourceLanguage} setTranslationSourceLanguage={props.setTranslationSourceLanguage} supportedTranslationSourceLanguages={props.supportedTranslationSourceLanguages} translationTargetLanguage={props.translationTargetLanguage} setTranslationTargetLanguage={props.setTranslationTargetLanguage} supportedTranslationTargetLanguages={props.supportedTranslationTargetLanguages} detectedLanguage={props.detectedLanguage} translation={props.translation} nightMode={props.nightMode} />
             </View>
 
         </View>

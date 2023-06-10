@@ -34,7 +34,7 @@ const TranslationModal = (props) => {
                                 {props.translation}
                             </Text>
                             <Text style={{ fontSize: 11, marginLeft: 15, marginTop: 10, color: props.nightMode ? "white" : "#808080" }} adjustsFontSizeToFit>
-                                Translated by Google Translate. Visit translate.google.com.
+                                Translated from {props.detectedLanguage} by Google Translate. Visit translate.google.com.
                             </Text>
                         </View>
 
@@ -45,7 +45,7 @@ const TranslationModal = (props) => {
                                 {props.translation}
                             </Text>
                             <Text style={{ fontSize: 12, marginLeft: 15, marginTop: 10, color: props.nightMode ? "white" : "808080" }}>
-                                Translated by Google Translate.
+                                Translated from ${props.detectedLanguage} by Google Translate. Visit translate.google.com.
                             </Text>
                         </ScrollView>
 
