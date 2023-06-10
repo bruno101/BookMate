@@ -26,7 +26,6 @@ const ChangeLanguageController = (props) => {
     }
 
     const onConfirm = () => {
-        console.log("confirm", props.nativeLanguageRef.current)
         LocalStorage.setNativeLanguage(props.nativeLanguageRef.current)
         props.navigation.goBack()
     }

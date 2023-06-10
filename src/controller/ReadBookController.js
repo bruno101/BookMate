@@ -73,6 +73,7 @@ const ReadBookController = (props) => {
 
     }
 
+    //Define a localização em que o livro deve ser aberto
     const setInitialLocation = async () => {
 
         let books = await LocalStorage.getBookIndex()
@@ -288,26 +289,29 @@ const ReadBookController = (props) => {
             const res = await translate(content, { from: srcLanguage.length == 0 ? "auto" : srcLanguage, to: targetLanguage })
             props.setTranslation(res.text)
 
+            //Obtemos o nome e o código do idioma a partir do qual a palavra foi traduzida
+            let languageCode = ""
+
+            if (srcLanguage != "") {
+                languageCode = srcLanguage
+            } else {
+                languageCode = res.from.language.iso
+            }
+
+            language = { name: languageCode, code: languageCode }
+            languageIndex = props.supportedTranslationSourceLanguages.findIndex((obj => { return obj.value === languageCode }));
+            if (languageIndex != -1) {
+                language = { name: props.supportedTranslationSourceLanguages[languageIndex].label, code: languageCode }
+            }
+
+            props.setDetectedLanguage(language.name)
+
             if (props.wordToTranslate) {
 
-                //Salvamos a tradução e o idioma original da palavra. Observe que queremos salvar não apenas o código, mas também o nome do idioma
-                let languageCode = ""
-
-                if (srcLanguage != "") {
-                    languageCode = srcLanguage
-                } else {
-                    languageCode = res.from.language.iso
-                }
-
-                language = { name: languageCode, code: languageCode }
-                languageIndex = props.supportedTranslationSourceLanguages.findIndex((obj => { return obj.value === languageCode }));
-                if (languageIndex != -1) {
-                    language = { name: props.supportedTranslationSourceLanguages[languageIndex].label, code: languageCode }
-                }
+                //Mostramos o contexto e salvamos a tradução e o idioma original da palavra. 
 
                 getContext(props.wordToTranslate, languageCode, props.translationTargetLanguage)
-
-                props.setDetectedLanguage(language.name)
+                
                 LocalStorage.updateWordTranslation(content, res.text, language)
 
             }
@@ -336,7 +340,6 @@ const ReadBookController = (props) => {
             }
         })
 
-        console.log(wordContext)
         props.setContext(wordContext.data.list.slice(0,20))
 
     }
