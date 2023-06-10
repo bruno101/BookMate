@@ -13,16 +13,16 @@ const Bookshelf = (props) => {
             <View>
 
                 <Image
-                    style={{ height: device.width * 0.8, aspectRatio: 1, marginLeft: device.width*0.1 }}
-                    source={require('../../assets/peopleReadingBooks.png')}
+                    style={{ height: device.width * 0.8, aspectRatio: 1, marginLeft: device.width * 0.1 }}
+                    source={props.nightMode ? require('../../assets/peopleReadingBooksNight.png') : require('../../assets/peopleReadingBooks.png')}
                     resizeMode="contain"
                 />
 
-                <Text style={{ color: "black", textAlign: "center", fontWeight: "bold", fontSize: 20, marginTop: 20 }}>Welcome to BookMate!</Text>
+                <Text style={{ color: props.nightMode? "white" : "black", textAlign: "center", fontWeight: "bold", fontSize: 20, marginTop: 20 }}>Welcome to BookMate!</Text>
 
 
                 <View style={{ marginLeft: "10%", width: "80%" }}>
-                    <Text style={{ color: "#888888", textAlign: "center", fontSize: 14, marginTop: 20, lineHeight: 20 }}>
+                    <Text style={{ color: props.nightMode? "white" : "#888888", textAlign: "center", fontSize: 14, marginTop: 20, lineHeight: 20 }}>
                         Start your reading adventure by importing your first book! You can easily import EPUB files by navigating to the "Import" tab. Explore captivating stories and unlock the power of simultaneous translation, allowing you to enjoy books in different languages!
                     </Text>
                 </View>

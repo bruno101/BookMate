@@ -26,8 +26,8 @@ const Book = (props) => {
 
             </View>
 
-            <BookDeletionModal showModal={showDeletionModal} setShowModal={setShowDeletionModal} setShowBottomModal={setShowBottomModal} bookKey={props.bookKey} title={props.title} author={props.author} fileName={props.fileName} deleteBook={props.deleteBook} />
-            <CustomBottomModal showBottomModal={showBottomModal} setShowBottomModal={setShowBottomModal} setShowDeletionModal={setShowDeletionModal} bookKey={props.bookKey} title={props.title} author={props.author} srcBookCover={props.srcBookCover} shareBook={props.shareBook}/>
+            <BookDeletionModal showModal={showDeletionModal} setShowModal={setShowDeletionModal} setShowBottomModal={setShowBottomModal} bookKey={props.bookKey} title={props.title} author={props.author} fileName={props.fileName} deleteBook={props.deleteBook} nightMode={props.nightMode} />
+            <CustomBottomModal showBottomModal={showBottomModal} setShowBottomModal={setShowBottomModal} setShowDeletionModal={setShowDeletionModal} bookKey={props.bookKey} title={props.title} author={props.author} srcBookCover={props.srcBookCover} shareBook={props.shareBook} nightMode={props.nightMode} />
 
         </TouchableOpacity>
 

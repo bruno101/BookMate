@@ -17,22 +17,22 @@ const CustomBottomModal = (props) => {
             }}
         >
 
-            <ModalContent>
+            <ModalContent style={{ backgroundColor: props.nightMode ? "#151d4a" : "white"}}>
 
                 <View>
 
-                    <View style={{ flexDirection: "row", height: 80, borderBottomColor: "#EEEEEE", borderBottomWidth: 1.5, marginLeft: -20, width: device.width + 40 }}>
+                    <View style={{ flexDirection: "row", height: 80, borderBottomColor: props.nightMode? "black" : "#EEEEEE", borderBottomWidth: 1.5, marginLeft: -20, width: device.width + 40 }}>
 
                         <Image source={{ uri: props.srcBookCover }} style={{ width: 50, marginLeft: 13, height: 70, marginLeft: 30, marginTop: -5 }} resizeMode="stretch" />
 
                         <View>
 
-                            <Text style={{ color: "black", fontSize: 17, fontWeight: "bold", marginLeft: 27 }}>
+                            <Text style={{ color: props.nightMode? "white" : "black", fontSize: 17, fontWeight: "bold", marginLeft: 27 }}>
 
                                 {props.title}
                             </Text>
 
-                            <Text style={{ color: "#888888", fontSize: 12, marginLeft: 27 }}>
+                            <Text style={{ color: props.nightMode ? "white" : "#888888", fontSize: 12, marginLeft: 27 }}>
 
                                 {props.author != "" ? "by " + props.author : ""}
 
@@ -46,7 +46,7 @@ const CustomBottomModal = (props) => {
 
                         <Image source={require('../../assets/share.png')} style={{ width: 30, aspectRatio: 1 }} resizeMode="stretch" />
 
-                        <Text style={{ color: "#444444", fontSize: 14, fontWeight: "bold", marginLeft: 20, letterSpacing: 0.3 }}>
+                        <Text style={{ color: props.nightMode ? "white" : "#444444", fontSize: 14, fontWeight: "bold", marginLeft: 20, letterSpacing: 0.3 }}>
                             Recommend this book
                         </Text>
 
@@ -56,7 +56,7 @@ const CustomBottomModal = (props) => {
 
                         <Image source={require('../../assets/deleteBook.png')} style={{ width: 45, aspectRatio: 1, marginLeft: -10 }} resizeMode="stretch" />
 
-                        <Text style={{ color: "#444444", fontSize: 14, fontWeight: "bold", marginLeft: 15, letterSpacing: 0.3 }}>
+                        <Text style={{ color: props.nightMode ? "white" : "#444444", fontSize: 14, fontWeight: "bold", marginLeft: 15, letterSpacing: 0.3 }}>
                             Remove from bookshelf
                         </Text>
 
