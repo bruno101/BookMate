@@ -20,16 +20,16 @@ const WordReview = (props) => {
 
         <View style={{
             flex: 1,
-            backgroundColor: 'white'
+            backgroundColor: props.nightMode ? "#151d4a" : "white"
         }}>
 
-            <Header />
+            <Header nightMode={props.nightMode} />
 
-            <SearchBar setSearchedTerm={props.setSearchedTerm} query={props.query} onChangeText={props.onChangeText} onSearch={props.onSearch} />
+            <SearchBar setSearchedTerm={props.setSearchedTerm} query={props.query} onChangeText={props.onChangeText} onSearch={props.onSearch} nightMode={props.nightMode}/>
 
-            <SearchFilter language={props.language} setLanguage={props.setLanguage} data={props.wordListData} getLanguageSet={props.getLanguageSet} />
+            <SearchFilter language={props.language} setLanguage={props.setLanguage} data={props.wordListData} getLanguageSet={props.getLanguageSet} nightMode={props.nightMode}/>
 
-            <WordList filteredData={props.filteredData} />
+            <WordList filteredData={props.filteredData} nightMode={props.nightMode} />
             
         </View>
 

@@ -181,7 +181,9 @@ export const setLastLocationOpened = async (bookKey, location) => {
 
     bookIndex[objWithBookKey].lastLocationOpened = location
 
-    setBookIndex(bookIndex)
+    await setBookIndex(bookIndex)
+
+    
 
 }
 
@@ -199,7 +201,6 @@ export const setNativeLanguage = async (language) => {
     try {
 
         const jsonValue = JSON.stringify(language)
-        console.log(language)
         await AsyncStorage.setItem('nativeLanguage', jsonValue)
 
     } catch (e) {
@@ -290,7 +291,6 @@ export const updateWordTranslation = async (word, translation, translationLangua
 
         const wordList = await getWordList()
 
-        console.log(word, translation, translationLanguage)
         objIndex = wordList.findIndex((obj => obj.word == word));
         wordList[objIndex].translation = translation
         wordList[objIndex].language = translationLanguage
@@ -302,5 +302,76 @@ export const updateWordTranslation = async (word, translation, translationLangua
         console.log(e)
 
     }
+
+}
+
+//Retorna "true" se o modo noturno está selecionado
+export const getNightMode = async () => {
+
+    try {
+
+        const jsonValue = await AsyncStorage.getItem('nightMode')
+
+        return jsonValue != null ? JSON.parse(jsonValue) : false;
+
+    } catch (e) {
+
+        return false
+
+    }
+
+}
+
+export const setNightMode = async (nightMode) => {
+
+    try {
+
+        const jsonValue = JSON.stringify(nightMode)
+        await AsyncStorage.setItem('nightMode', jsonValue)
+
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+
+export const getFont = async () => {
+
+    try {
+
+        const jsonValue = await AsyncStorage.getItem('font')
+
+        return jsonValue != null ? JSON.parse(jsonValue) : { fontSize: "14", fontFamily: "" };
+
+    } catch (e) {
+
+        return { fontSize: "14", fontFamily: "" }
+
+    }
+
+}
+
+export const setFont = async (font) => {
+
+    try {
+
+        const jsonValue = JSON.stringify(font)
+        await AsyncStorage.setItem('font', jsonValue)
+
+    } catch (e) {
+        console.log(e)
+    }
+
+}
+
+export const setFontSize = async (fontSize) => {
+
+    setFont({ fontSize: fontSize, fontFamily: (await getFont()).fontFamily })
+
+}
+
+export const setFontFamily = async (fontFamily) => {
+
+    setFont({ fontSize: (await getFont()).fontSize, fontFamily: fontFamily })
 
 }

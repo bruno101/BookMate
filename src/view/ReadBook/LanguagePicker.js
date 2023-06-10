@@ -23,11 +23,11 @@ const LanguagePicker = (props) => {
                 color: "#050A30",
             }}
             modalContentContainerStyle={{
-                backgroundColor: "white"
+                backgroundColor: props.nightMode ? "#151d4a" : "white",
             }}
             style={{
                 minHeight: 30,
-                backgroundColor: "white",
+                backgroundColor: props.nightMode ? "#151d4a" : "white",
                 borderWidth: 0,
                 borderRadius: 0
             }}
@@ -35,7 +35,7 @@ const LanguagePicker = (props) => {
                 fontSize: 12,
                 textAlign: "center",
                 textTransform: 'uppercase',
-                color: "#050A30"
+                color: props.nightMode ? "white" : "#050A30"
             }}
             open={open}
             items={props.languages}

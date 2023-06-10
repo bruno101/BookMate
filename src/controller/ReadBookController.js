@@ -15,8 +15,38 @@ const ReadBookController = (props) => {
     useEffect(() => {
         createStaticServer()
         setNativeLanguage()
+        setInitialLocation()
+        setTheme()
         LocalStorage.setCurrentlyReading(props.bookKey)
     }, [])
+
+    const INTERVAL = 10000;
+
+    //Executado a cada dez secundos (salvamos a localização da última página lida)
+    useEffect(() => {
+        const interval = setInterval(() => {
+            LocalStorage.setLastLocationOpened(props.bookKey, props.currentPageRef.current)
+        }, INTERVAL);
+
+        return () => clearInterval(interval);
+    }, [])
+
+    //Executado quando o usuário sai da tela (salvamos a localização da última página lida)
+    useEffect(() => {
+
+        props.navigation.addListener('beforeRemove', (e) => {
+            LocalStorage.setLastLocationOpened(props.bookKey, props.currentPageRef.current)
+        })
+
+    }, [])
+
+    //Definimos o tema
+    const setTheme = async () => {
+
+        props.setNightMode(await LocalStorage.getNightMode())
+        props.setFont(await LocalStorage.getFont())
+
+    }
 
     //Esse servidor permitirá acessarmos o arquivo localmente na "url" abaixo
     const createStaticServer = () => {
@@ -40,6 +70,14 @@ const ReadBookController = (props) => {
         props.setNativeLanguage(nativeLanguage)
         props.setTranslationTargetLanguage(nativeLanguage.code)
         props.setDictionaryLanguage(nativeLanguage.code)
+
+    }
+
+    const setInitialLocation = async () => {
+
+        let books = await LocalStorage.getBookIndex()
+
+        props.setInitialPage(await books[props.bookKey].lastLocationOpened)
 
     }
 
@@ -151,11 +189,15 @@ const ReadBookController = (props) => {
 
             //Se o usuário mudou de página, salvamos a localização dessa página
 
-            if (props.currentPage != parsedData.location) {
+            //Só precisamos executar isso se realmente a nova Location é diferente da Location da página atual, ou se o usuário acabou de abrir o livro
 
-                LocalStorage.setLastLocationOpened(props.bookKey, parsedData.location)
-                props.setCurrentPage(parsedData.location)
+            if ((props.currentPage != parsedData.location) || (props.sliderValue == 1)) {
+
+                //LocalStorage.setLastLocationOpened(props.bookKey, parsedData.location)
+                props.currentPageRef.current = parsedData.location
                 props.setSliderValue(parsedData.newLocationIndex)
+
+                //LocalStorage.setLastLocationOpened(props.bookKey, parsedData.location)
 
             }
 
@@ -169,7 +211,8 @@ const ReadBookController = (props) => {
             LocalStorage.saveBookLocations(props.bookKey, parsedData.locations)
 
             //O livro será recarregado, então definimos a nova página inicial com o valor salvo como "currentPage", para que ele continue sendo mostrado na mesma página
-            props.setInitialPage(props.currentPage)
+            props.setInitialPage(parsedData.currentLocation)
+            props.setSliderValue(parsedData.newLocationIndex)
 
         }
 
@@ -249,7 +292,7 @@ const ReadBookController = (props) => {
 
                 //Salvamos a tradução e o idioma original da palavra. Observe que queremos salvar não apenas o código, mas também o nome do idioma
                 languageCode = res.from.language.iso
-                language = { name: "Unknown", code: languageCode }
+                language = { name: languageCode, code: languageCode }
                 languageIndex = props.supportedTranslationSourceLanguages.findIndex((obj => { return obj.value === languageCode }));
                 if (languageIndex != -1) {
                    language = { name: props.supportedTranslationSourceLanguages[languageIndex].label, code: languageCode }
@@ -285,14 +328,12 @@ const ReadBookController = (props) => {
             }
         })
 
-        console.log(wordContext)
-
         props.setContext(wordContext.data.list.slice(0,20))
 
     }
 
     return (
-        <ReadBook navigation={props.navigation} bookTitle={props.bookTitle} onScreenPress={onScreenPress} handleWebviewMessage={handleWebviewMessage} onSwipeLeft={onSwipeLeft} onSwipeRight={onSwipeRight} wordToTranslate={props.wordToTranslate} phraseToTranslate={props.phraseToTranslate} positionTranslationModals={props.positionTranslationModals} initialPage={props.initialPage} currentPage={props.currentPage} goToPage={goToPage} setCurrentPage={props.setCurrentPage} showSlider={props.showSlider} sliderValue={props.sliderValue} setSliderValue={props.setSliderValue} locations={props.locations} bookUrl={props.bookUrl} saveMetadata={props.saveMetadata} nativeLanguage={props.nativeLanguage} dictionaryLanguage={props.dictionaryLanguage} setDictionaryLanguage={props.setDictionaryLanguage} supportedDictionaryLanguages={props.supportedDictionaryLanguages} translationSourceLanguage={props.translationSourceLanguage} setTranslationSourceLanguage={props.setTranslationSourceLanguage} supportedTranslationSourceLanguages={props.supportedTranslationSourceLanguages} translationTargetLanguage={props.translationTargetLanguage} setTranslationTargetLanguage={props.setTranslationTargetLanguage} supportedTranslationTargetLanguages={props.supportedTranslationTargetLanguages} translation={props.translation} context={props.context} webview={props.webview} />
+        <ReadBook navigation={props.navigation} bookTitle={props.bookTitle} onScreenPress={onScreenPress} handleWebviewMessage={handleWebviewMessage} onSwipeLeft={onSwipeLeft} onSwipeRight={onSwipeRight} wordToTranslate={props.wordToTranslate} phraseToTranslate={props.phraseToTranslate} positionTranslationModals={props.positionTranslationModals} initialPage={props.initialPage} currentPage={props.currentPage} goToPage={goToPage} setCurrentPage={props.setCurrentPage} showSlider={props.showSlider} sliderValue={props.sliderValue} setSliderValue={props.setSliderValue} locations={props.locations} bookUrl={props.bookUrl} saveMetadata={props.saveMetadata} nativeLanguage={props.nativeLanguage} dictionaryLanguage={props.dictionaryLanguage} setDictionaryLanguage={props.setDictionaryLanguage} supportedDictionaryLanguages={props.supportedDictionaryLanguages} translationSourceLanguage={props.translationSourceLanguage} setTranslationSourceLanguage={props.setTranslationSourceLanguage} supportedTranslationSourceLanguages={props.supportedTranslationSourceLanguages} translationTargetLanguage={props.translationTargetLanguage} setTranslationTargetLanguage={props.setTranslationTargetLanguage} supportedTranslationTargetLanguages={props.supportedTranslationTargetLanguages} translation={props.translation} context={props.context} webview={props.webview} nightMode={props.nightMode} font={props.font} />
         )
     
 }

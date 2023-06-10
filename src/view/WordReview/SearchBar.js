@@ -12,7 +12,7 @@ const SearchBar = (props) => {
 
             <View
                 style={{
-                    backgroundColor: '#f8f8f8',
+                    backgroundColor: props.nightMode ? "#1d1f2b" : '#f8f8f8',
                     padding: 10,
                     marginTop: 30,
                     marginBottom: 10,
@@ -28,8 +28,8 @@ const SearchBar = (props) => {
                     value={props.query}
                     onChangeText={props.onChangeText}
                     placeholder="Search"
-                    placeholderTextColor="black"
-                    style={{ paddingHorizontal: 20, height: 40, color: "black" }}
+                    placeholderTextColor={props.nightMode ? "white" : "black"}
+                    style={{ paddingHorizontal: 20, height: 40, color: props.nightMode? "white" : "black" }}
                 />
 
             </View>

@@ -15,7 +15,7 @@ const PageContent = (props) => {
 
     //Essa variável guarda, em formato de texto, o conteúdo html a ser executado na Webview
     //Ela recebe a url em que o livro está sendo servido, o EpubCfi indicando a localização da página a ser mostrada (nesse caso, mostramos a página inicial) e um booleano indicando se os metadados do livro devem ser salvos
-    const htmlContent = webviewHtmlContent(props.bookUrl, props.locations, props.initialPage, props.saveMetadata)
+    const htmlContent = webviewHtmlContent(props.bookUrl, props.locations, props.initialPage, props.saveMetadata, props.nightMode, props.font)
 
     return (
 
@@ -31,6 +31,7 @@ const PageContent = (props) => {
                         source={{
                             html: htmlContent
                         }}
+                        style={{ backgroundColor: props.nightMode? "#1d1f2b" : "white"}}
                         javaScriptEnabled={true}
                         javaScriptEnabledAndroid={true}
                         domStorageEnabled

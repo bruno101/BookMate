@@ -7,7 +7,7 @@ const WordList = (props) => {
 
     return (
 
-        <View style={{ borderTopColor: "#eaeaea", borderTopWidth: 1, flex: 1, marginBottom: 10, zIndex: -1 }}>
+        <View style={{ borderTopColor: props.nightMode? "black" : "#eaeaea", borderTopWidth: 1, flex: 1, marginBottom: 10, zIndex: -1 }}>
             <FlatList
                 data={props.filteredData}
                 keyExtractor={item => item.id}
@@ -15,7 +15,7 @@ const WordList = (props) => {
                 initialNumToRender={50}
                 renderItem={({ item }) => {
 
-                    return <WordItem word={item.word} translation={item.translation} language={item.language} fullPhrase={item.fullPhrase} />
+                    return <WordItem word={item.word} translation={item.translation} language={item.language} fullPhrase={item.fullPhrase} nightMode={props.nightMode} />
 
                 }}
             />

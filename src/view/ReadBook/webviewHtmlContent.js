@@ -1,4 +1,4 @@
-﻿const webviewHtmlContent = (bookUrl, locations, initialLocation, saveMetadata) => {
+﻿const webviewHtmlContent = (bookUrl, locations, initialLocation, saveMetadata, nightMode, font) => {
 
     //Essa função gera o conteúdo em html que deve ser mostrado na Webview
     //Usamos a biblioteca "epub.js", para JavaScript
@@ -47,28 +47,47 @@
 
     });
 
+    window.rendition.themes.register("selected-theme", { "body": { ${nightMode ? '"background": "#1d1f2b", "color": "white",' : "" } "font-size": "${font.fontSize}pt !important", "font-family": "${font.fontFamily} !important", }});
+    window.rendition.themes.select("selected-theme");
+
     window.book.ready.then((book) => {
 
         if (${locations.length} == 0) {
 
             //Gerando e salvando Locations
-            window.book.locations.generate().then(locations => {
+            window.book.locations.generate(1200).then(locations => {
 
                 window.ReactNativeWebView.postMessage(
                     JSON.stringify({
                         type: 'locations',
-                        locations: locations
+                        locations: locations,
+                        currentLocation: window.rendition.currentLocation().start.cfi,
+                        newLocationIndex: window.book.locations.locationFromCfi(window.rendition.currentLocation().start.cfi)
                     })
 
                 );
 
             });
 
-        } else {
+        } 
+        
+    })
+
+    window.rendition.on('rendered', () => {
+
+        if (${locations.length} != 0) {
 
             window.book.locations.load(${JSON.stringify(locations)})
 
-        }        
+            window.ReactNativeWebView.postMessage(
+                                    JSON.stringify({
+                                        type: 'newPage',
+                                        location: window.rendition.currentLocation().start.cfi,
+                                        newLocationIndex: window.book.locations.locationFromCfi(window.rendition.currentLocation().start.cfi)
+                                    })
+                                );
+
+        }
 
     })
 

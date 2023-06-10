@@ -42,11 +42,12 @@ const HomeScreenStack = () => {
 
 }
 
+
 //Abaixo estão definidas as telas do app que são acessadas a partir da barra inferior: "Home" (e conforme definido acima, a partir dela são acessadas outras telas), "ImportBook", "WordReview" e "Settings"
 const App = () => {
 
-    return (
 
+    return (
         <GestureHandlerRootView style={{ flex: 1 }}>
 
             <NavigationContainer>
@@ -55,7 +56,7 @@ const App = () => {
 
                     <Tab.Screen
                         name="Home"
-                        component={HomeScreenStack}
+                            component={HomeScreenStack}
                         options={{
                             unmountOnBlur: false,
                             headerShown: false,
@@ -91,7 +92,7 @@ const App = () => {
                         name="Review"
                         component={WordReview}
                         options={{
-                            unmountOnBlur: true,
+                            unmountOnBlur: false,
                             headerShown: false,
                             tabBarIcon: (tabInfo) => {
                                 return (
@@ -108,7 +109,7 @@ const App = () => {
                         name="Settings"
                         component={Settings}
                         options={{
-                            unmountOnBlur: true,
+                            unmountOnBlur: false,
                             headerShown: false,
                             tabBarIcon: (tabInfo) => {
                                 return (

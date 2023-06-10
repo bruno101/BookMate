@@ -7,13 +7,13 @@ const ListOfLanguages = (props) => {
 
         //Geramos uma FlatList a partir da lista de linguagens
         //Cada item dessa lista é um "LanguageItem"
-        <View style={{ backgroundColor: "#fbfbfb", marginBottom: 60 }}>
+        <View style={{ backgroundColor: props.nightMode ? "#1d1f2b" : "#fbfbfb", marginBottom: 60 }}>
 
             <Text style={{
                 fontSize: 14,
                 fontFamily: 'WorkSans-Bold',
                 fontWeight: "bold",
-                color: "#666666",
+                color: props.nightMode? "white" : "#666666",
                 letterSpacing: 0.2,
                 marginLeft: 20,
                 marginTop: 20,
@@ -31,6 +31,7 @@ const ListOfLanguages = (props) => {
                         imagePath={item.imagePath}
                         nativeLanguage={props.nativeLanguage}
                         updateLanguage={props.updateLanguage}
+                        nightMode={props.nightMode}
                     />
 
                 )}

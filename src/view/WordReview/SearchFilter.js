@@ -9,7 +9,7 @@ const SearchFilter = (props) => {
 
     return (
 
-        <View style={{ borderTopColor: "#eaeaea", borderTopWidth: 1, height: 45 }}>
+        <View style={{ borderTopColor: props.nightMode? "black" : "#eaeaea", borderTopWidth: 1, height: 45 }}>
 
             <DropDownPicker
                 style={{
@@ -17,18 +17,22 @@ const SearchFilter = (props) => {
                     minHeight: 35,
                     width: 130,
                     marginLeft: 15,
-                    backgroundColor: "white",
+                    backgroundColor: props.nightMode ? "#1d1f2b" : "white",
                     borderColor: "black",
                     borderWidth: 1,
                     borderRadius: 10
                 }}
                 textStyle={{
+                    color: props.nightMode ? "white" : "black",
                     fontSize: 13
                 }}
+                dropDownContainerStyle={{ backgroundColor: props.nightMode ? "#1d1f2b" : "white",}}
+                maxHeight={2000}
                 open={open}
                 items={props.getLanguageSet()}
                 setOpen={setOpen}
                 value={props.language}
+                dropDownDirection='BOTTOM'
                 setValue={props.setLanguage}
             />
 

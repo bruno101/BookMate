@@ -8,24 +8,24 @@ const UserLanguageBar = (props) => {
     //O nome do idioma é clicável e clicar nele deve redirecionar para a tela de mudança de idioma
     return (
 
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: "white", flex: 1, marginTop: 0 }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1, marginTop: 0 }}>
 
             <View style={{ width: device.width - 60, flexDirection: 'row', flexWrap: 'wrap' }}>
 
                 <Text style={{
                     fontSize: 14,
                     fontFamily: 'WorkSans-Bold',
-                    color: "black",
+                    color: props.nightMode ? "white" : "black",
                     letterSpacing: 0.2,
                 }}> Translate to: </Text>
 
-                <TouchableOpacity style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: "white" }} onPress={() => props.navigation.navigate('ChangeLanguage', { nativeLanguage: props.nativeLanguage })} >
+                <TouchableOpacity style={{ flexDirection: 'row', flexWrap: 'wrap' }} onPress={() => props.navigation.navigate('ChangeLanguage', { nativeLanguage: props.nativeLanguage })} >
 
                     <Text style={{
                         fontSize: 14,
                         fontFamily: 'WorkSans-Bold',
                         fontWeight: 'bold',
-                        color: "black",
+                        color: props.nightMode? "white" : "black",
                         letterSpacing: 0.2,
                     }}>  {props.nativeLanguage.name}</Text>
 

@@ -24,7 +24,7 @@ const WordItem = (props) => {
             return (
 
                 <View>
-                    <Text style={{ marginLeft: 20, color: "#505050", fontSize: 15, marginBottom: 5, marginRight: 20 }}>{props.language.name}</Text>
+                    <Text style={{ marginLeft: 20, color: props.nightMode? "white" : "#505050", fontSize: 15, marginBottom: 5, marginRight: 20 }}>{props.language.name}</Text>
 
                     <View style={{ flexDirection: "row", flexWrap: "wrap", marginLeft: 20, marginBottom: 5 }}>
 
@@ -32,7 +32,7 @@ const WordItem = (props) => {
                             highlightStyle={{ backgroundColor: 'yellow' }}
                             searchWords={[regex]}
                             textToHighlight={props.fullPhrase}
-                            style={{ fontSize: 15, marginRight: 20, color: "#757575"}}
+                            style={{ fontSize: 15, marginRight: 20, color: props.nightMode? "white" : "#757575"}}
                         />
 
                     </View>
@@ -51,13 +51,13 @@ const WordItem = (props) => {
     return (
 
         <View style={{
-            borderBottomColor: "#eaeaea", borderBottomWidth: 1
+            borderBottomColor: props.nightMode? "black" : "#eaeaea", borderBottomWidth: 1
         }}>
 
             <TouchableOpacity onPress={onPress}>
 
-                <Text style={{ marginLeft: 20, color: "black", fontSize: 18, marginTop: 3, marginRight: 20 }}>{props.word}</Text>
-                <Text style={{ marginLeft: 20, color: "black", fontSize: 15, marginBottom: 5, marginRight: 20 }}>{props.translation}</Text>
+                <Text style={{ marginLeft: 20, color: props.nightMode? "white" : "black", fontSize: 18, marginTop: 3, marginRight: 20 }}>{props.word}</Text>
+                <Text style={{ marginLeft: 20, color: props.nightMode ? "white" : "black", fontSize: 15, marginBottom: 5, marginRight: 20 }}>{props.translation}</Text>
                 {wordDetails()}
 
             </TouchableOpacity>

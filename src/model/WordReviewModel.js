@@ -15,8 +15,10 @@ const WordReviewModel = ({ navigation }) => {
     const [searchedTerm, setSearchedTerm] = useState("")
     const [language, setLanguage] = useState("All")
 
+    const [nightMode, setNightMode] = useState(false)
+
     return (
-        <WordReviewController wordListData={wordListData} setWordListData={setWordListData} query={query} setQuery={setQuery} filteredData={filteredData} setFilteredData={setFilteredData} searchedTerm={searchedTerm} setSearchedTerm={setSearchedTerm} language={language} setLanguage={setLanguage} navigation={navigation} />
+        <WordReviewController wordListData={wordListData} setWordListData={setWordListData} query={query} setQuery={setQuery} filteredData={filteredData} setFilteredData={setFilteredData} searchedTerm={searchedTerm} setSearchedTerm={setSearchedTerm} language={language} setLanguage={setLanguage} navigation={navigation} nightMode={nightMode} setNightMode={setNightMode} />
     )
 }
 

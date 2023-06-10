@@ -9,9 +9,11 @@ const HomeModel = ({navigation}) => {
 
     const [nativeLanguage, setNativeLanguage] = useState({ name: "", code: "" })
 
+    const [nightMode, setNightMode] = useState(false)
+
 
     return (
-        <HomeController bookIndex={bookIndex} setBookIndex={setBookIndex} currentlyReading={currentlyReading} setCurrentlyReading={setCurrentlyReading} nativeLanguage={nativeLanguage} setNativeLanguage={setNativeLanguage} navigation={navigation} />
+        <HomeController bookIndex={bookIndex} setBookIndex={setBookIndex} currentlyReading={currentlyReading} setCurrentlyReading={setCurrentlyReading} nativeLanguage={nativeLanguage} setNativeLanguage={setNativeLanguage} navigation={navigation} nightMode={nightMode} setNightMode={setNightMode} />
         )
 
 }

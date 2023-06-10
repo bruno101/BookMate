@@ -29,7 +29,7 @@ const CurrentlyReading = (props) => {
                     fontSize: 22,
                     fontFamily: 'WorkSans-Bold',
                     fontWeight: "bold",
-                    color: "black",
+                    color: props.nightMode ? "white" : "black",
                     letterSpacing: 0.2,
                     marginLeft: 20,
                     marginTop: 20,

@@ -3,7 +3,7 @@ import { View, Text } from 'react-native'
 const SectionHeader = (props) => {
 
     return (
-        <View style={{ flexDirection: "row", height: 50, marginTop: 15 }}>
+        <View style={{ flexDirection: "row", height: 50, marginTop: 15, zIndex: -2 }}>
 
             <Text style={{
                 fontSize: 16,

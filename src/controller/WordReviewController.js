@@ -1,18 +1,38 @@
 import WordReview from '../view/WordReview/index'
 import * as LocalStorage from '../model/LocalStorage'
-import {useEffect} from 'react'
+import { useEffect, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native';
 
 const WordReviewController = (props) => {
 
-    useEffect(() => {
-        setWordList()
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+
+            setWordList()
+            setTheme()
+
+        }, [props.nightMode])
+    );
+
 
     //Sempre que essa tela é aberta, obtemos a lista de palavras do banco
     const setWordList = async () => {
         const savedWords = await LocalStorage.getWordList()
         props.setWordListData(savedWords.reverse())
         props.setFilteredData(savedWords)
+    }
+
+    //Atualiza o tema de acordo com o que está definido no armazenamento local
+    const setTheme = async () => {
+        props.setNightMode(await LocalStorage.getNightMode())
+        props.navigation.setOptions({
+            tabBarStyle: {
+                backgroundColor: props.nightMode ? "#151d4a" : "white",
+                borderTopWidth: props.nightMode ? 0 : 0.5,
+                tabBarInactiveTintColor: props.nightMode ? "white" : "#A0A0A0",
+            },
+            tabBarInactiveTintColor: props.nightMode ? "white" : "#A0A0A0",
+        });
     }
 
     //Caso o termo sendo pesquisado mude, alteramos o estado de "query"
@@ -47,7 +67,7 @@ const WordReviewController = (props) => {
     }, [props.language, props.searchedTerm]);
 
     return (
-        <WordReview navigation={props.navigation} language={props.language} setLanguage={props.setLanguage} wordListData={props.wordListData} onChangeText={onChangeText} getLanguageSet={getLanguageSet} filteredData={props.filteredData} setSearchedTerm={props.setSearchedTerm} query={props.query} onSearch={onSearch}/>
+        <WordReview navigation={props.navigation} language={props.language} setLanguage={props.setLanguage} wordListData={props.wordListData} onChangeText={onChangeText} getLanguageSet={getLanguageSet} filteredData={props.filteredData} setSearchedTerm={props.setSearchedTerm} query={props.query} onSearch={onSearch} nightMode={props.nightMode}/>
     )
 
 }

@@ -10,12 +10,19 @@ const ChangeLanguageController = (props) => {
         //Acessamos o idioma que estava definido como nativo ao se entrar na tela
         initialNativeLanguage()
 
+        setTheme()
+
     }, [])
 
     const initialNativeLanguage = async () => {
 
         props.nativeLanguageRef.current = await LocalStorage.getNativeLanguage()
 
+    }
+
+    //Atualiza o tema de acordo com o que está definido no armazenamento local
+    const setTheme = async () => {
+        props.setNightMode(await LocalStorage.getNightMode())
     }
 
     const onConfirm = () => {
@@ -31,7 +38,7 @@ const ChangeLanguageController = (props) => {
     }
 
     return (
-        <ChangeLanguage navigation={props.navigation} nativeLanguage={props.nativeLanguage} onConfirm={onConfirm} updateLanguage={updateLanguage} listOfLanguages={props.listOfLanguages} />
+        <ChangeLanguage navigation={props.navigation} nativeLanguage={props.nativeLanguage} onConfirm={onConfirm} updateLanguage={updateLanguage} listOfLanguages={props.listOfLanguages} nightMode={props.nightMode} />
     )
 
 }

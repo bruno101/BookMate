@@ -21,8 +21,8 @@ const Book = (props) => {
                     resizeMode="stretch"
                 />
 
-                <Text style={{ textAlign: 'center', color: 'black', fontWeight: 'bold', fontSize: 15, paddingLeft: "7%", paddingRight: "7%" }}> {props.title} </Text>
-                <Text style={{ textAlign: 'center', color: 'black', color: '#2f354b', fontSize: 13 }}> {props.author != "" ? "by " + props.author : ""} </Text>
+                <Text style={{ textAlign: 'center', color: props.nightMode ? "white" : "black", fontWeight: 'bold', fontSize: 15, paddingLeft: "7%", paddingRight: "7%" }}> {props.title} </Text>
+                <Text style={{ textAlign: 'center', color: props.nightMode? "white" : "black", fontSize: 13 }}> {props.author != "" ? "by " + props.author : ""} </Text>
 
             </View>
 

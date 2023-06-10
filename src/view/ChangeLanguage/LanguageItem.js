@@ -37,7 +37,7 @@ const LanguageItem = (props) => {
         return (
 
             <TouchableOpacity
-                style={{ height: 60, width: "100%", backgroundColor: "white", marginBottom: 10, flexDirection: 'row', flexWrap: 'wrap', borderColor: "#E5E5E5", borderWidth: 1.5, marginLeft: "5%", width: "90%", borderRadius: 10 }}
+                style={{ height: 60, width: "100%", backgroundColor: props.nightMode ? "#151d4a" : "white", marginBottom: 10, flexDirection: 'row', flexWrap: 'wrap', borderColor: props.nightMode? "black" : "#E5E5E5", borderWidth: 1.5, marginLeft: "5%", width: "90%", borderRadius: 10 }}
                 onPress={() => props.updateLanguage({code: props.value, name: props.title})}
             >
 
@@ -49,7 +49,7 @@ const LanguageItem = (props) => {
 
                 <Text style={{
                     fontWeight: "bold",
-                    color: "black",
+                    color: props.nightMode? "white" : "black",
                     fontSize: 16,
                     textAlignVertical: "center",
                     marginTop: 7,

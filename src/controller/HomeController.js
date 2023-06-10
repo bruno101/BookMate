@@ -3,6 +3,7 @@ import Home from '../view/Home/index'
 import { useCallback } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
 import { Share, Alert } from 'react-native'
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 const HomeController = (props) => {
 
@@ -19,6 +20,7 @@ const HomeController = (props) => {
 
             getBookData()
             setNativeLanguage()
+            setTheme()
 
         }, [])
     );
@@ -26,6 +28,12 @@ const HomeController = (props) => {
     const setNativeLanguage = async () => {
 
         props.setNativeLanguage(await LocalStorage.getNativeLanguage())
+
+    }
+
+    const setTheme = async () => {
+
+        if ((await LocalStorage.getNightMode()) == true) { props.setNightMode(true); changeNavigationBarColor('#1d1f2b', true); } else { props.setNightMode(false); changeNavigationBarColor('#F0F0F0', true); }
 
     }
 
@@ -58,7 +66,7 @@ const HomeController = (props) => {
     }
 
     return (
-        <Home bookIndex={props.bookIndex} currentlyReading={props.currentlyReading} goToBook={goToBook} navigation={props.navigation} shareBook={shareBook} deleteBook={deleteBook} nativeLanguage={props.nativeLanguage}/>
+        <Home bookIndex={props.bookIndex} currentlyReading={props.currentlyReading} goToBook={goToBook} navigation={props.navigation} shareBook={shareBook} deleteBook={deleteBook} nativeLanguage={props.nativeLanguage} nightMode={props.nightMode} />
         )
 
 }
