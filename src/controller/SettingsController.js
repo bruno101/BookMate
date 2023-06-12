@@ -6,12 +6,14 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 const SettingsController = (props) => {
 
+    //Observamos se alguma alteração ocorreu com as variáveis "nightMode", "fontSize" e "fontFamily" e chamamos os métodos correspondentes
+
     useFocusEffect(
         useCallback(() => {
 
             setTheme()
 
-        }, [props.nightMode])
+        }, [])
     );
 
     useEffect(() => {
@@ -52,20 +54,27 @@ const SettingsController = (props) => {
 
     //Atualiza o tema de acordo com o que está definido no armazenamento local
     const setTheme = async () => {
-        props.setNightMode(await LocalStorage.getNightMode())
+
+        nightModeChosen = await LocalStorage.getNightMode()
+
+        props.setNightMode(nightModeChosen)
         props.navigation.setOptions({
             tabBarStyle: {
-                backgroundColor: props.nightMode ? "#151d4a" : "white",
-                borderTopWidth: props.nightMode ? 0 : 0.5,
+                backgroundColor: nightModeChosen ? "#151d4a" : "white",
+                borderTopWidth: nightModeChosen? 0 : 0.5,
                 tabBarInactiveTintColor: props.nightMode ? "white" : "#A0A0A0",
             }
         });
+
     }
 
     //Salva a escolha do usuário em relação ao modo noturno
     const setNightMode = async () => {
+
         LocalStorage.setNightMode(!props.nightMode)
         if (!props.nightMode == true) { changeNavigationBarColor('#1d1f2b', true); } else { changeNavigationBarColor('#F0F0F0', true); }
+
+        props.setNightMode(!props.nightMode)
         props.navigation.setOptions({
             tabBarStyle: {
                 backgroundColor: !props.nightMode ? "#151d4a" : "white",
@@ -73,7 +82,7 @@ const SettingsController = (props) => {
             },
             tabBarInactiveTintColor: !props.nightMode ? "white" : "#A0A0A0",
         });
-        props.setNightMode(!props.nightMode)
+
     }
 
     const setReadingNotifications = () => {

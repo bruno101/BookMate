@@ -22,32 +22,6 @@ const ReadBookController = (props) => {
 
     const INTERVAL = 10000;
 
-    //Executado a cada dez secundos (salvamos a localização da última página lida)
-    useEffect(() => {
-        const interval = setInterval(() => {
-            LocalStorage.setLastLocationOpened(props.bookKey, props.currentPageRef.current)
-        }, INTERVAL);
-
-        return () => clearInterval(interval);
-    }, [])
-
-    //Executado quando o usuário sai da tela (salvamos a localização da última página lida)
-    useEffect(() => {
-
-        props.navigation.addListener('beforeRemove', (e) => {
-            LocalStorage.setLastLocationOpened(props.bookKey, props.currentPageRef.current)
-        })
-
-    }, [])
-
-    //Definimos o tema
-    const setTheme = async () => {
-
-        props.setNightMode(await LocalStorage.getNightMode())
-        props.setFont(await LocalStorage.getFont())
-
-    }
-
     //Esse servidor permitirá acessarmos o arquivo localmente na "url" abaixo
     const createStaticServer = () => {
 
@@ -81,6 +55,33 @@ const ReadBookController = (props) => {
         props.setInitialPage(await books[props.bookKey].lastLocationOpened)
 
     }
+
+
+    //Definimos o tema
+    const setTheme = async () => {
+
+        props.setNightMode(await LocalStorage.getNightMode())
+        props.setFont(await LocalStorage.getFont())
+
+    }
+
+    //Executado a cada dez secundos (salvamos a localização da última página lida)
+    useEffect(() => {
+        const interval = setInterval(() => {
+            LocalStorage.setLastLocationOpened(props.bookKey, props.currentPageRef.current)
+        }, INTERVAL);
+
+        return () => clearInterval(interval);
+    }, [])
+
+    //Executado quando o usuário sai da tela (salvamos a localização da última página lida)
+    useEffect(() => {
+
+        props.navigation.addListener('beforeRemove', (e) => {
+            LocalStorage.setLastLocationOpened(props.bookKey, props.currentPageRef.current)
+        })
+
+    }, [])
 
     //Se o usuário dá um clique duplo, alternamos as versões da tela com ou sem o slider para mudança de página
     const onDoublePress = () => {
@@ -292,12 +293,14 @@ const ReadBookController = (props) => {
             //Obtemos o nome e o código do idioma a partir do qual a palavra foi traduzida
             let languageCode = ""
 
+            //Primeiro obtemos o código
             if (srcLanguage != "") {
                 languageCode = srcLanguage
             } else {
                 languageCode = res.from.language.iso
             }
 
+            //A partir do código, tentamos obter o nome do idioma
             language = { name: languageCode, code: languageCode }
             languageIndex = props.supportedTranslationSourceLanguages.findIndex((obj => { return obj.value === languageCode }));
             if (languageIndex != -1) {

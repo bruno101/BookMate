@@ -94,11 +94,10 @@ const FontFamily = (props) => {
 
     const fontFamily = [
         { label: 'Default', value: " " },
-        { label: 'Arial', value: "'Arial', sans-serif" },
-        { label: 'Georgia', value: "'Georgia', serif" },
-        { label: 'Verdana', value: "'Verdana', sans-serif" },
-        { label: 'Tahoma', value: "'Tahoma', sans-serif" },
-        { label: 'Times New Roman', value: "'Times New Roman', serif" },
+        { label: 'Sans Serif', value: "sans-serif" },
+        { label: 'Serif', value: "serif" },
+        { label: 'Monospace', value: "monospace" },
+        { label: 'Cursive', value: "cursive" },
     ]
 
     return (
