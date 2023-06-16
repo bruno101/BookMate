@@ -6,7 +6,7 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 const SettingsController = (props) => {
 
-    //Observamos se alguma alteração ocorreu com as variáveis "nightMode", "fontSize" e "fontFamily" e chamamos os métodos correspondentes
+    //Observamos se alguma alteração ocorreu com as variáveis "fontSize" e "fontFamily" e chamamos os métodos correspondentes
 
     useFocusEffect(
         useCallback(() => {
@@ -85,10 +85,12 @@ const SettingsController = (props) => {
 
     }
 
+    //Não implementado
     const setReadingNotifications = () => {
         props.setReadingNotifications(!props.readingNotifications)
     }
 
+    //Não implementado
     const setReviewNotifications = () => {
         props.setReviewNotifications(!props.reviewNotifications)
     }

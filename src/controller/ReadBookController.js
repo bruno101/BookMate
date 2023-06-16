@@ -11,16 +11,15 @@ const device = Dimensions.get("window")
 
 const ReadBookController = (props) => {
 
-    //Ao abrirmos a tela, chamamos "createStaticServer()" para que o livro possa ser acessado por meio da url "bookUrl" pela biblioteca "epub.js"
+    //Ao abrirmos a tela, chamamos "createStaticServer()" para que o livro possa ser acessado por meio da url "bookUrl" pela biblioteca "epub.js", e mais algumas funções para obtermos alguns parâmetros do armazenamento local
     useEffect(() => {
         createStaticServer()
         setNativeLanguage()
         setInitialLocation()
         setTheme()
+        //Salvamos o índice desse livro para sabermos que ele é o livro sendo lido
         LocalStorage.setCurrentlyReading(props.bookKey)
     }, [])
-
-    const INTERVAL = 10000;
 
     //Esse servidor permitirá acessarmos o arquivo localmente na "url" abaixo
     const createStaticServer = () => {
@@ -35,7 +34,7 @@ const ReadBookController = (props) => {
         });
 
     }
-
+    
     //Definimos o idioma nativo a partir do valor no sistema de armazenamento
     const setNativeLanguage = async () => {
 
@@ -51,8 +50,10 @@ const ReadBookController = (props) => {
     const setInitialLocation = async () => {
 
         let books = await LocalStorage.getBookIndex()
+        const initialPage = await books[props.bookKey].lastLocationOpened
 
-        props.setInitialPage(await books[props.bookKey].lastLocationOpened)
+        props.setInitialPage(initialPage)
+        goToPage(initialPage)
 
     }
 
@@ -65,6 +66,7 @@ const ReadBookController = (props) => {
 
     }
 
+    const INTERVAL = 10000;
     //Executado a cada dez secundos (salvamos a localização da última página lida)
     useEffect(() => {
         const interval = setInterval(() => {
@@ -101,7 +103,7 @@ const ReadBookController = (props) => {
 
     }
 
-    //Essa variável e a função abaixo são usadas para determinar quando o usuário dá um clique duplo na tela
+    //Essa variável e a função abaixo são usadas para determinar quando o usuário dá um clique duplo na tela versus um clique único
     let lastPress = useRef(0);
     let lastSelection = useRef(0);
 
@@ -182,6 +184,7 @@ const ReadBookController = (props) => {
 
         if (parsedData.type == 'metadata') {
 
+            //Salvamos os metadados do livro
             props.setBookTitle(parsedData.title)
             saveMetadata(props.bookKey, parsedData)
 
@@ -193,13 +196,10 @@ const ReadBookController = (props) => {
 
             //Só precisamos executar isso se realmente a nova Location é diferente da Location da página atual, ou se o usuário acabou de abrir o livro
 
-            if ((props.currentPage != parsedData.location) || (props.sliderValue == 1)) {
+            if ((props.currentPage != parsedData.location) || (props.sliderValue == -1)) {
 
-                //LocalStorage.setLastLocationOpened(props.bookKey, parsedData.location)
                 props.currentPageRef.current = parsedData.location
                 props.setSliderValue(parsedData.newLocationIndex)
-
-                //LocalStorage.setLastLocationOpened(props.bookKey, parsedData.location)
 
             }
 
@@ -207,7 +207,7 @@ const ReadBookController = (props) => {
 
         if (parsedData.type == 'locations') {
 
-            //Salvamos as 'locations' do livro
+            //Salvamos as 'locations' do livro; necessárias para navegarmos para algum lugar específico do livro
 
             props.setLocations(parsedData.locations)
             LocalStorage.saveBookLocations(props.bookKey, parsedData.locations)
@@ -253,10 +253,11 @@ const ReadBookController = (props) => {
 
     }
 
-    const goToPage = (pageNumber) => {
+    //Vai para alguma página qualquer a partir da Location correspondente a essa página (uma das Locations geradas na importação do livro - na verdade não são páginas no sentido tradicional)
+    const goToPage = (locationNumber) => {
 
         props.webview.current.injectJavaScript(`
-                             window.rendition.display(${JSON.stringify(props.locations[pageNumber])}).then(()=>{
+                             window.rendition.display(${JSON.stringify(props.locations[locationNumber])}).then(()=>{
                              window.ReactNativeWebView.postMessage(
                                     JSON.stringify({
                                         type: 'newPage',
@@ -287,8 +288,10 @@ const ReadBookController = (props) => {
 
         try {
 
+            //Obtemos o resultado da tradução (usamos uma biblioteca para traduções em React Native baseada no Google Tradutor)
             const res = await translate(content, { from: srcLanguage.length == 0 ? "auto" : srcLanguage, to: targetLanguage })
             props.setTranslation(res.text)
+            console.log(res.text)
 
             //Obtemos o nome e o código do idioma a partir do qual a palavra foi traduzida
             let languageCode = ""
@@ -323,12 +326,13 @@ const ReadBookController = (props) => {
 
             console.log(e)
 
-            Alert.alert('Translation Rejected', 'The translation was rejected by the server. The selected text might have been too long. In that case, please try selecting a shorter portion of text and attempt the translation again.')
+            Alert.alert('Translation Rejected', 'The translation was rejected by the server. The selected text may have exceeded the allowable length or it is possible that your device is currently not connected to the internet.')
 
         }
     
     }
 
+    //Função usada para obter o contexto (isto é, exemplos de uso) de uma palavra; usa a API do site "Reverso Context"
     const getContext = async (content, srcLanguage, targetLanguage) => {
 
         const wordContext = await axios.post('https://context.reverso.net/bst-query-service', {

@@ -21,7 +21,7 @@ const PageContent = (props) => {
 
         <GestureRecognizer onSwipeLeft={props.onSwipeLeft} onSwipeRight={props.onSwipeRight} config={swipeConfig}>
 
-            <View style={{ height: device.height - 80, width: 800 }}>
+            <View style={{ height: device.height - 80, width: device.width }}>
 
                 <TouchableWithoutFeedback onPress={props.onPress}>
 

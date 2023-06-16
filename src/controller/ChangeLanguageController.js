@@ -6,14 +6,13 @@ const ChangeLanguageController = (props) => {
 
     useEffect(() => {
 
-        console.log("here")
-        //Acessamos o idioma que estava definido como nativo ao se entrar na tela
         initialNativeLanguage()
 
         setTheme()
 
     }, [])
 
+    //Acessamos o idioma que estava definido como nativo ao se entrar na tela
     const initialNativeLanguage = async () => {
 
         props.nativeLanguageRef.current = await LocalStorage.getNativeLanguage()
@@ -25,15 +24,16 @@ const ChangeLanguageController = (props) => {
         props.setNightMode(await LocalStorage.getNightMode())
     }
 
+    //Salva o novo idioma quando o usuário confirma
     const onConfirm = () => {
         LocalStorage.setNativeLanguage(props.nativeLanguageRef.current)
         props.navigation.goBack()
     }
 
+    //Atualiza os atributos quando o usuário clica em um idioma
     const updateLanguage = (language) => {
         props.nativeLanguageRef.current = language
         props.setNativeLanguage(props.nativeLanguageRef.current)
-        console.log("native", props.nativeLanguageRef.current)
     }
 
     return (

@@ -34,8 +34,8 @@ const TranslationsView = (props) => {
                 panGestureHandlerProps={{
                     activeOffsetX: [-70, 70],
                 }}
-                width={300}
-                height={300}
+                width={device.width*0.7}
+                height={device.height * 0.33}
                 loop={false}
                 style={{ width: "100%", height: device.height * 0.35 }}
                 autoPlay={false}
@@ -60,7 +60,7 @@ const TranslationsView = (props) => {
         <View style={viewStyle}>
 
             <View elevation={10} style={modalsStyle} >
-                < TranslationModal contentToTranslate={props.phraseToTranslate} translationSourceLanguage={props.translationSourceLanguage} setTranslationSourceLanguage={props.setTranslationSourceLanguage} supportedTranslationSourceLanguages={props.supportedTranslationSourceLanguages} translationTargetLanguage={props.translationTargetLanguage} setTranslationTargetLanguage={props.setTranslationTargetLanguage} supportedTranslationTargetLanguages={props.supportedTranslationTargetLanguages} detectedLanguage={props.detectedLanguage} translation={props.translation} nightMode={props.nightMode} />
+                < TranslationModal contentToTranslate={props.phraseToTranslate} translationSourceLanguage={props.translationSourceLanguage} setTranslationSourceLanguage={props.setTranslationSourceLanguage} supportedTranslationSourceLanguages={props.supportedTranslationSourceLanguages} translationTargetLanguage={props.translationTargetLanguage} setTranslationTargetLanguage={props.setTranslationTargetLanguage} supportedTranslationTargetLanguages={props.supportedTranslationTargetLanguages} translation={props.translation} detectedLanguage={props.detectedLanguage} nightMode={props.nightMode} />
             </View>
 
         </View>
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
         marginTop: device.height * 0.01,
         marginLeft: device.width * 0.15,
         height: device.height * 0.33,
-        width: device.width * 0.7,
+        width: device.width*0.67,
         backgroundColor: "white",
         shadowColor: "#000000",
         shadowOffset: {
@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         marginTop: device.height * 0.01,
         marginLeft: device.width * 0.15,
+        width: device.width * 0.67,
         height: device.height * 0.33,
-        width: device.width * 0.7,
         backgroundColor: "white",
         shadowColor: "#000000",
         shadowOffset: {

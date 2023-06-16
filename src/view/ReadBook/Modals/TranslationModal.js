@@ -5,6 +5,9 @@ const device = Dimensions.get("window")
 
 const TranslationModal = (props) => {
 
+    console.log(props.translation.length)
+
+
     //Mostramos a tradução da palavra/trecho e um "DropDownPicker" em que o usuário pode alterar o idioma do qual se traduz
     return (
 
@@ -44,8 +47,8 @@ const TranslationModal = (props) => {
                             <Text style={{ fontSize: 15, paddingLeft: 15, paddingRight: 15, marginTop: 5, color: props.nightMode ? "white" : "black" }}>
                                 {props.translation}
                             </Text>
-                            <Text style={{ fontSize: 12, marginLeft: 15, marginTop: 10, color: props.nightMode ? "white" : "808080" }}>
-                                Translated from ${props.detectedLanguage} by Google Translate. Visit translate.google.com.
+                            <Text style={{ fontSize: 12, marginLeft: 15, marginTop: 10, color: props.nightMode ? "white" : "#808080" }}>
+                                Translated from {props.detectedLanguage} by Google Translate. Visit translate.google.com.
                             </Text>
                         </ScrollView>
 

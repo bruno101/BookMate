@@ -20,7 +20,7 @@
 
         #reader {
             height: 100vh;
-            width: 50vw;
+            width: 100vw;
             overflow: hidden !important;
             display: flex;
             justify-content: center;
@@ -38,8 +38,10 @@
 
 <script>
 
+    //Criamos o livro (a partir da URL para onde ele está sendo servido)
     window.book = ePub("${bookUrl}");
 
+    //Renderizamos o livro
     window.rendition = window.book.renderTo(document.getElementById('reader'), {
 
         width: '100%',
@@ -47,22 +49,36 @@
 
     });
 
+    //Definimos o tema
     window.rendition.themes.register("selected-theme", { "body": { ${nightMode ? '"background": "#1d1f2b", "color": "white",' : "" } "font-size": "${font.fontSize}pt !important", "font-family": "${font.fontFamily} !important", }});
     window.rendition.themes.select("selected-theme");
 
+    //Se o livro ainda não tiver "Locations", as geramos e salvamos
     window.book.ready.then((book) => {
 
         if (${locations.length} == 0) {
 
-            //Gerando e salvando Locations
-            window.book.locations.generate(1200).then(locations => {
+           //Gerando e salvando Locations
+           window.book.locations.generate(1200).then(locations => {
+
+           //Enviamos a lista de Locations, a Location atual e o índice da Location atual na lista de Locations
+
+           var currentLocation = '-1'
+           var newLocationIndex = '-1'
+
+           if (window.rendition.currentLocation().start != undefined) {
+
+                currentLocation = window.rendition.currentLocation().start.cfi
+                newLocationIndex = window.book.locations.locationFromCfi(window.rendition.currentLocation().start.cfi)
+
+           }
 
                 window.ReactNativeWebView.postMessage(
                     JSON.stringify({
                         type: 'locations',
                         locations: locations,
-                        currentLocation: window.rendition.currentLocation().start.cfi,
-                        newLocationIndex: window.book.locations.locationFromCfi(window.rendition.currentLocation().start.cfi)
+                        currentLocation: currentLocation,
+                        newLocationIndex: newLocationIndex
                     })
 
                 );
@@ -73,6 +89,7 @@
         
     })
 
+    //Quando o livro foi renderizado, carregamos a lista de "Locations" (se ela já existir) e enviamos a Location atual e o índice da Location atual
     window.rendition.on('rendered', () => {
 
         if (${locations.length} != 0) {
@@ -93,70 +110,86 @@
 
     window.rendition.on('started', () => {
 
+        //Se o atributo "saveMetadata" for verdadeira, obtemos e enviamos os metadados
         if (${saveMetadata}) {
 
+            //Obtemos o título do livro e o autor
             const title = window.book.package.metadata.title
             const author = window.book.package.metadata.creator
 
-        try {
+            //O código abaixo obtem a imagem a capa do livro (se houver)
+            //Salvamos a imagem da capa em formato "base64", e então enviando os metadados
+            try {
 
-            //Salvando a imagem da capa em formato "base64", e então enviando os metadados
-            window.book.archive.createUrl(window.book.cover).then((url) => {
-                fetch(url)
-                    .then((response) => response.blob()
-                        .then((blob) => {
+                //Obtemos o conteúdo da imagem a partir da URL
+                window.book.archive.createUrl(window.book.cover).then((url) => {
+                    fetch(url)
+                        .then((response) => response.blob()
+                            .then((blob) => {
 
-                            blob.arrayBuffer().then((buffer) => {
-                                const array = new Uint8Array(buffer);
-                                var binary = '';
-                                var len = array.byteLength;
-                                for (var i = 0; i < len; i++) {
-                                    binary += String.fromCharCode( array[ i ] );
-                                }
+                                //Convertemos o resultado obtido para o formato "base64"
+                                blob.arrayBuffer().then((buffer) => {
 
-                                var srcBookCover = btoa(binary);
-                                window.ReactNativeWebView.postMessage(
-                                    JSON.stringify({
-                                        type: 'metadata',
-                                        srcBookCover: srcBookCover,
-                                        title: title,
-                                        author: author
-                                    })
-                                );
-                               window.rendition.display("${initialLocation}");
+                                    const array = new Uint8Array(buffer);
+                                    var binary = '';
+                                    var len = array.byteLength;
+                                    for (var i = 0; i < len; i++) {
+                                        binary += String.fromCharCode( array[ i ] );
+                                    }
 
+                                    var srcBookCover = btoa(binary);
+
+                                    //Enviamos a mensagem com todos os metadados
+                                    window.ReactNativeWebView.postMessage(
+                                        JSON.stringify({
+                                            type: 'metadata',
+                                            srcBookCover: srcBookCover,
+                                            title: title,
+                                            author: author
+                                        })
+
+                                    );
+
+                                   //Mostramos a página definida por "initialLocation" (fazemos isso depois de termos gerado os metadados)
+                                   window.rendition.display(${initialLocation === "-1" ? `` : `'${initialLocation}'`});
+
+                                })
                             })
+                        )
+
+                })
+
+
+            } catch (e) {
+
+                    console.log(e)
+
+                    //Se a imagem não existir, salvamos apenas os outros metadados
+                    window.ReactNativeWebView.postMessage(
+                        JSON.stringify({
+                            type: 'metadata',
+                            title: title,
+                            author: author
                         })
-                    )
+                    );
 
-            })
+                    //Mostramos a página definida por "initialLocation"
+                    window.rendition.display(${initialLocation === "-1"? `` : `'${initialLocation}'`});
 
-
-        } catch (e) {
-
-                console.log(e)
-
-                window.ReactNativeWebView.postMessage(
-                    JSON.stringify({
-                        type: 'metadata',
-                        title: title,
-                        author: author
-                    })
-                );
-
-                window.rendition.display("${initialLocation}");
-
-            }
+                }
            
 
         } else {
-            window.rendition.display("${initialLocation}");
+            //Caso contrário, apenas mostramos a página inicial
+            window.rendition.display(${initialLocation === "-1" ? `` : `'${initialLocation}'`});
         }
 
     })
 
+    //Esse evento ocorre quando o usuário seleciona texto
     window.rendition.on('selected', () => {
 
+        //Obtemos o texto selecionado
         let selected = window.rendition.manager && window.rendition.manager.getContents().length > 0
             ? window.rendition.manager
 					.getContents()[0]
@@ -167,13 +200,14 @@
 
         if (selected) {
 
-            //Código para obter a frase completa de uma palavra da seleção; vamos pegando o pai de cada "node" até encontrarmos um do tipo "parágrafo" (ou quando o pai for "BODY" ou "DIV")
+            //Código para obter a frase completa de uma palavra da seleção
 
             phraseText: ""
 
             try {
 
                 //Identificamos o parágrafo
+                //Tomamos o pai de cada "node" até encontrarmos um do tipo "parágrafo" (ou até o pai ser "BODY" ou "DIV")
                 node = window.rendition.manager.getContents()[0].window.getSelection().anchorNode
                 while ( !( node.nodeName == "P" || node.parentNode.nodeName == "BODY" || node.parentNode.nodeName == "DIV") ) { node = node.parentNode }
                 paragraphText = node.textContent
@@ -184,16 +218,18 @@
                 preCaretRange.selectNodeContents(node);
                 preCaretRange.setEnd(range.endContainer, range.endOffset);
                 caretOffset = preCaretRange.toString().length;
-                console.log(paragraphText, caretOffset)
 
                 //Identificamos a frase em que a palavra está
+                //Primeiro separamos o texto em sentenças
                 var sentences = paragraphText.split(/[.!?。？！]/);
 
+                //Iteramos pelas sentenças
                 for (var i = 0; i < sentences.length; i++) {
 
                    var sentence = sentences[i].trim();
                    var startIndex = paragraphText.indexOf(sentence);
 
+                   //Se o índice do 'caretOffset' estiver na sentença, adicionamos o sinal de pontuação do fim da frase e definimos essa como a sentença buscada
                    if (startIndex <= caretOffset && startIndex + sentence.length >= caretOffset) {
 
                         var punctuationIndex = startIndex + sentence.length;
@@ -211,6 +247,7 @@
                 console.log(e)
             }
 
+            //Enviamos as coordenadas da seleção, a frase encontrada, e o texto da seleção
             window.ReactNativeWebView.postMessage(
 
                 JSON.stringify({

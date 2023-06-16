@@ -38,7 +38,7 @@ const CustomSlider = (props) => {
 
                 <Text style={{ color: props.nightMode ? "white" : "grey" }}>
 
-                    { props.locations.length == 0 ? "n/a" : Math.round (props.sliderValue * 10000 / props.locations.length ) /100 + "%" } 
+                    { props.sliderValue == -1 ? "n/a" : Math.round (props.sliderValue * 10000 / props.locations.length ) /100 + "%" } 
 
                 </Text>
 

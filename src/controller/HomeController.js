@@ -7,14 +7,7 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 const HomeController = (props) => {
 
-    const getBookData = async () => {
-
-        props.setBookIndex(await LocalStorage.getBookIndex())
-        props.setCurrentlyReading(await LocalStorage.getCurrentlyReading())
-
-    }
-
-    //Sempre que a componente é montada, chamamos getBookIndex() para obtermos o índice de livros importados
+    //Sempre que a componente é montada, chamamos getBookIndex() para obtermos o índice de livros importados, setNativeLanguage() para obtermos o idioma escolhido como nativo e setTheme() para obtermos o tema escolhido pelo usuário (modo noturno ou não)
     useFocusEffect(
         useCallback(() => {
 
@@ -24,6 +17,13 @@ const HomeController = (props) => {
 
         }, [])
     );
+
+    const getBookData = async () => {
+
+        props.setBookIndex(await LocalStorage.getBookIndex())
+        props.setCurrentlyReading(await LocalStorage.getCurrentlyReading())
+
+    }
 
     const setNativeLanguage = async () => {
 

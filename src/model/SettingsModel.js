@@ -1,5 +1,5 @@
 import SettingsController from '../controller/SettingsController'
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 
 const SettingsModel = ({ navigation, route }) => {
 

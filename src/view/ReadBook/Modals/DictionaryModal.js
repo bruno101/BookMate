@@ -15,7 +15,7 @@ arr = document.querySelectorAll('.floatright');
 for (i = 0; i < arr.length; i++) {arr[i].style.display = 'none'}
 arr = document.querySelectorAll('.noprint');
 for (i = 0; i < arr.length; i++) {arr[i].style.display = 'none'}
-${props.nightMode ? 'document.body.style.color = "#FFFFFF";   arr = document.querySelectorAll(".mw-body"); for (i = 0; i < arr.length; i++) {arr[i].style.backgroundColor = "#151d4a"}; arr = document.querySelectorAll(".mw-footer"); for (i = 0; i < arr.length; i++) {arr[i].style.backgroundColor = "#151d4a"}' : ''}
+${props.nightMode ? 'document.body.style.color = "#FFFFFF"; arr = document.querySelectorAll(".mw-body"); for (i = 0; i < arr.length; i++) {arr[i].style.backgroundColor = "#151d4a"}; arr = document.querySelectorAll(".mw-footer"); for (i = 0; i < arr.length; i++) {arr[i].style.backgroundColor = "#151d4a"};' : ''}
 const meta = document.createElement('meta'); meta.setAttribute('content', 'width=device-width, initial-scale=0.85, maximum-scale=0.85, user-scalable=1');
 meta.setAttribute('name', 'viewport');
 document.getElementsByTagName('head')[0].appendChild(meta); `

@@ -88,7 +88,7 @@ export const importBook = async (bookUri, name) => {
         const newItem = await RNFS.copyFile(bookUri, newUri).then(async (success) => {
 
             //Após salvarmos o arquivo, adicionamos ela ao nosso banco de dados (a princípio, sem os metadados)
-            var newItem = { bookKey: bookKey, title: name.split('.')[0], author: "", srcBookCover: "https://icon-library.com/images/white-book-icon/white-book-icon-15.jpg", fileName: fileName, locations: [], lastLocationOpened: "1" }
+            var newItem = { bookKey: bookKey, title: name.split('.')[0], author: "", srcBookCover: "https://icon-library.com/images/white-book-icon/white-book-icon-15.jpg", fileName: fileName, locations: [], lastLocationOpened: "-1" }
 
             bookIndex.push(newItem)
             setBookIndex(bookIndex)
@@ -196,6 +196,7 @@ export const getNativeLanguage = async () => {
 
 }
 
+//Salva o idioma nativo do usuário
 export const setNativeLanguage = async (language) => {
 
     try {
@@ -226,6 +227,7 @@ export const getWordList = async () => {
 
 }
 
+//Salva uma nova lista de palavras
 export const setWordList = async (wordList) => {
 
     try {
@@ -239,6 +241,7 @@ export const setWordList = async (wordList) => {
 
 }
 
+//Adiciona à lista de palavras já existente
 export const addToWordList = async (newWord, fullPhrase) => {
 
     try {
@@ -322,6 +325,7 @@ export const getNightMode = async () => {
 
 }
 
+//Salva o tema escolhido (modo noturno ou normal)
 export const setNightMode = async (nightMode) => {
 
     try {
@@ -335,6 +339,7 @@ export const setNightMode = async (nightMode) => {
 
 }
 
+//Retorna a fonte escolhida para o texto do livro
 export const getFont = async () => {
 
     try {
@@ -351,6 +356,7 @@ export const getFont = async () => {
 
 }
 
+//Salva a escolha de fonte
 export const setFont = async (font) => {
 
     try {
@@ -364,12 +370,14 @@ export const setFont = async (font) => {
 
 }
 
+//Salva o tamanho da fonte escolhido
 export const setFontSize = async (fontSize) => {
 
     setFont({ fontSize: fontSize, fontFamily: (await getFont()).fontFamily })
 
 }
 
+//Salva a família da fonte escolhida
 export const setFontFamily = async (fontFamily) => {
 
     setFont({ fontSize: (await getFont()).fontSize, fontFamily: fontFamily })

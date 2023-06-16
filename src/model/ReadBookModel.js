@@ -16,16 +16,16 @@ const ReadBookModel = ({ navigation, route }) => {
     const [positionTranslationModals, setPositionTranslationModals] = useState("bottom")
 
     //"Location" da página a partir do qual o livro deve começar a ser mostrado
-    const [initialPage, setInitialPage] = useState("1")
+    const [initialPage, setInitialPage] = useState("-1")
 
     //"Location" da página atual do livro
-    const currentPageRef = useRef("1")
+    const currentPageRef = useRef("-1")
 
     //Define se o Slider para mudança de página deve ser mostrado
     const [showSlider, setShowSlider] = useState(false)
 
     //Índice da "Location" da página atual do livro; a partir desse número é calculado o valor a ser mostrado ao lado do Slider
-    const [sliderValue, setSliderValue] = useState(1)
+    const [sliderValue, setSliderValue] = useState(-1)
 
     //url em que o livro pode ser acessado
     const [bookUrl, setBookUrl] = useState()

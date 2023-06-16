@@ -13,7 +13,7 @@ import {
 //Ela usa as componentes 'Bookshelf' e 'CurrentlyReading'. 'Bookshelf' usa a componente 'Book', que usa a 'CustomBottomModal'
 const Home = (props) => {
 
-    //No topo da tela aparece a componente UserLanguageBar
+    //No topo da tela aparece a componente UserLanguageBar; a aparência da barra inferior depende do tema escolhido
     useFocusEffect(
         useCallback(() => {
             props.navigation.setOptions({

@@ -15,7 +15,7 @@ const BookDeletionModal = (props) => {
                 modalTitle={
 
                     <ModalTitle
-                        style={{ backgroundColor: props.nightMode ? "#151d4a" : "white", padding: 15, borderColor: props.nightMode? "black" : "white" }}
+                        style={{ backgroundColor: props.nightMode ? "#151d4a" : "white", padding: 15, borderColor: props.nightMode ? "black" : "#DDDDDD" }}
                         textStyle={{ marginLeft: 10, fontSize: 17, color: props.nightMode ? "white" : "black" }}
                         title="Remove from bookshelf?"
                         align="left"
@@ -25,7 +25,7 @@ const BookDeletionModal = (props) => {
             >
 
                 <ModalContent
-                    style={{ backgroundColor: props.nightMode ? "#151d4a" : '#151d4a' }}
+                    style={{ backgroundColor: props.nightMode ? "#151d4a" : 'white' }}
                 >
 
                     <View style={{ width: device.width - 80 }}>

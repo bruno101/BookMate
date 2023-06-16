@@ -6,6 +6,7 @@ const device = Dimensions.get("window")
 //Essa é a lista de livros do usuário
 const Bookshelf = (props) => {
 
+    //Se a lista for vazia, mostramos uma imagem e uma mensagem para o usuário
     const emptyBookshelf = () => {
 
         return (
