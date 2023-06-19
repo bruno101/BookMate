@@ -1,4 +1,5 @@
 ﻿const webviewHtmlContent = (bookUrl, locations, initialLocation, saveMetadata, nightMode, font) => {
+
     //Essa função gera o conteúdo em html que deve ser mostrado na Webview
     //Usamos a biblioteca "epub.js", para JavaScript
     //Quando o texto é selecionado, mandamos uma mensagem em json para a Webview, incluído as coordenadas da seleção e o conteúdo
@@ -218,7 +219,7 @@
 
                 }
 
-            } else {
+            } else if ("${initialLocation}" != undefined) {
 
                 finishedLoading()
 
