@@ -38,8 +38,8 @@ const HomeController = (props) => {
     }
 
     //Essa função leva o usuário para a tela de leitura de livros
-    const goToBook = (bookKey, bookTitle, locations, initialPage, fileName) => {
-        props.navigation.navigate('ReadBook', { bookKey: bookKey, bookTitle: bookTitle, locations: locations, initialPage: initialPage, fileName: fileName, saveMetadata: false })
+    const goToBook = (bookKey, bookTitle, bookAuthor, locations, initialPage, fileName) => {
+        props.navigation.navigate('ReadBook', { bookKey: bookKey, bookTitle: bookTitle, locations: locations, initialPage: initialPage, fileName: fileName, saveMetadata: bookAuthor === "" ? true : false })
     }
 
     //Deve permitir compartilhar um livro

@@ -254,7 +254,7 @@ export const addToWordList = async (newWord, fullPhrase) => {
             //Escolhemos uma chave única para essa palavra (no caso, é a maior chave que há no momento somada a 1)
             const wordId = wordList.length == 0 ? 0 : wordList[wordList.length - 1].id + 1
 
-            var newItem = { id: wordId, word: newWord, translation: '', language: { name: '', code: '' }, fullPhrase: fullPhrase }
+            var newItem = { id: wordId, word: newWord, translation: '', language: { name: 'Unknown', code: '' }, fullPhrase: fullPhrase }
             wordList.push(newItem)
 
             setWordList(wordList)

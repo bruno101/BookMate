@@ -1,7 +1,8 @@
-import { TouchableWithoutFeedback, Dimensions, View } from "react-native"
+import { TouchableWithoutFeedback, Dimensions, View, ActivityIndicator } from "react-native"
 import { WebView } from 'react-native-webview'
 import GestureRecognizer from 'react-native-swipe-gestures'
 import webviewHtmlContent from './webviewHtmlContent'
+import {useState} from 'react'
 
 const device = Dimensions.get("window")
 
@@ -44,6 +45,24 @@ const PageContent = (props) => {
                 </TouchableWithoutFeedback>
 
             </View>
+
+            {
+
+                props.isLoading ?
+
+                    <View style={{ marginTop: -device.height + 80, height: device.height - 80, backgroundColor: props.nightMode ? "#1d1f2b" : "white" }}>
+                    <ActivityIndicator
+                        color="#009688"
+                        size="large"
+                        style={{ marginTop: device.height / 2 - 80 }}
+                    />
+                </View>
+
+                :
+
+                <></>
+
+            }
 
         </GestureRecognizer>
 
