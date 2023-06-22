@@ -254,7 +254,10 @@ export const addToWordList = async (newWord, fullPhrase) => {
             //Escolhemos uma chave única para essa palavra (no caso, é a maior chave que há no momento somada a 1)
             const wordId = wordList.length == 0 ? 0 : wordList[wordList.length - 1].id + 1
 
-            var newItem = { id: wordId, word: newWord, translation: '', language: { name: 'Unknown', code: '' }, fullPhrase: fullPhrase }
+            const currentDate = new Date();
+            const timestamp = currentDate.getTime();
+
+            var newItem = { id: wordId, word: newWord, translation: '', language: { name: 'Unknown', code: '' }, fullPhrase: fullPhrase, lastReviewedTimestamp: timestamp }
             wordList.push(newItem)
 
             setWordList(wordList)
@@ -297,6 +300,29 @@ export const updateWordTranslation = async (word, translation, translationLangua
         objIndex = wordList.findIndex((obj => obj.word == word));
         wordList[objIndex].translation = translation
         wordList[objIndex].language = translationLanguage
+
+        setWordList(wordList)
+
+    } catch (e) {
+
+        console.log(e)
+
+    }
+
+}
+
+//Atualiza a última data em que uma palavra foi revisada
+export const updateWordLastReviewTimestamp = async (word) => {
+
+    try {
+
+        const wordList = await getWordList()
+
+        const currentDate = new Date();
+        const timestamp = currentDate.getTime();
+
+        objIndex = wordList.findIndex((obj => obj.word == word));
+        wordList[objIndex].lastReviewedTimestamp = timestamp
 
         setWordList(wordList)
 

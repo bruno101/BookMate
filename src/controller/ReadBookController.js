@@ -102,6 +102,7 @@ const ReadBookController = (props) => {
 
             props.setWordToTranslate("")
             props.setPhraseToTranslate("")
+            props.setTranslation("")
 
         }
 
@@ -220,7 +221,6 @@ const ReadBookController = (props) => {
 
             //Se a página a ser mostrada na Webview foi carregada, atualizamos "isLoading"
             props.setIsLoading(false)
-            console.log("loc: ", parsedData.loc)
 
         }
 

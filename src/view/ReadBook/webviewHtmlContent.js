@@ -3,6 +3,8 @@
     //Essa função gera o conteúdo em html que deve ser mostrado na Webview
     //Usamos a biblioteca "epub.js", para JavaScript
     //Quando o texto é selecionado, mandamos uma mensagem em json para a Webview, incluído as coordenadas da seleção e o conteúdo
+    //Salvamos Locations se elas não tiverem sido geradas, salvamos metadados caso eles não tenham sido salvos
+    //Também há funções para lidar com um bug com a biblioteca que faz com que a página aberta com o método "display" não seja a indicada: uma vez que o livro é renderizado, verificamos se a página aberta foi a correta (indicada por "initialLocation"); se não for, navegamos pelas páginas adjacentes até encontrarmos a correta
     return (`
 
 <html lang="en">
@@ -53,184 +55,7 @@
     window.rendition.themes.register("selected-theme", { "body": { ${nightMode ? '"background": "#1d1f2b", "color": "white",' : "" } "font-size": "${font.fontSize}pt !important", "font-family": "${font.fontFamily} !important", }});
     window.rendition.themes.select("selected-theme");
 
-    //Se o livro ainda não tiver "Locations", as geramos e salvamos
-    window.book.ready.then((book) => {
-
-        if (${locations.length} == 0) {
-
-           //Gerando e salvando Locations
-           window.book.locations.generate(1200).then(locations => {
-
-           //Enviamos a lista de Locations, a Location atual e o índice da Location atual na lista de Locations
-
-           var currentLocation = '-1'
-           var newLocationIndex = '-1'
-
-           if (window.rendition.currentLocation().start != undefined) {
-
-                currentLocation = window.rendition.currentLocation().start.cfi
-                newLocationIndex = window.book.locations.locationFromCfi(window.rendition.currentLocation().start.cfi)
-
-           }
-
-                window.ReactNativeWebView.postMessage(
-                    JSON.stringify({
-                        type: 'locations',
-                        locations: locations,
-                        currentLocation: currentLocation,
-                        newLocationIndex: newLocationIndex
-                    })
-
-                );
-
-            });
-
-        } 
-        
-    })
-
-    //Função para comparar duas EpubCFIs; retorna -1 se a primeira vem primeiro, 0 se elas são iguais, e 1 se a segunda vem primeiro
-
-    compareEPUBCFIs = (cfi1, cfi2) => {
-      // Remove the "epubcfi(" prefix and ")" suffix from both CFIs
-      cfi1 = cfi1.replace("epubcfi(", "").replace(")", "");
-      cfi2 = cfi2.replace("epubcfi(", "").replace(")", "");
-
-      // Remove the "!" elements from both CFIs
-      cfi1 = cfi1.replace(/!/g, "");
-      cfi2 = cfi2.replace(/!/g, "");
-
-      // Remove the "[...]" elements from both CFIs
-      cfi1 = cfi1.replace(/\\[.*?\\]/g, "");
-      cfi2 = cfi2.replace(/\\[.*?\\]/g, "");
-
-      // Split the CFIs into their individual parts using both "/" and ":"
-      const parts1 = cfi1.split(/[/:]/);
-      const parts2 = cfi2.split(/[/:]/);
-
-      // Compare each part of the CFIs
-      for (let i = 0; i < Math.min(parts1.length, parts2.length); i++) {
-        const part1 = parts1[i];
-        const part2 = parts2[i];
-
-        // Compare the parts
-        if (part1 !== part2) {
-          // Parts are different, determine the ordering
-          return parseInt(part1) < parseInt(part2) ? -1 : 1;
-        }
-      }
-
-      // All parts are equal or one CFI is a subset of the other
-      if (parts1.length === parts2.length) {
-        // Both CFIs are equal
-        return 0;
-      } else {
-        // One CFI is a subset of the other
-        return parts1.length < parts2.length ? -1 : 1;
-      }
-    }
-
-    //Função para buscar a página correta a ser mostrada (caso o método "display" não tenha funcionado corretamente)
-    const searchRightPage = async (numberOfAttempts) => {
-
-        //Se o número de tentativas esgotar, desistimos
-        if (numberOfAttempts == 0) {
-
-            window.display("${initialLocation}")
-            finishedLoading()
-
-        } else {
-
-            //Se não, comparamos a localização atual com a localização correta, e de acordo com o resultado vamos para a próxima página ou para a anterior
-            var comparisonStart = compareEPUBCFIs(window.rendition.currentLocation().start.cfi, "${initialLocation}")
-            var comparisonEnd = compareEPUBCFIs(window.rendition.currentLocation().end.cfi, "${initialLocation}")
-
-            if (comparisonStart === -1 && comparisonEnd === -1) {
-
-                window.rendition.next().then(() => { searchRightPage(numberOfAttempts - 1) })
-
-            } else if (comparisonStart === 1 && comparisonEnd === 1) {
-
-                window.rendition.prev().then(() => { searchRightPage(numberOfAttempts - 1) })
-
-            } else {
-
-                finishedLoading()
-
-            }
-
-        }
-
-    }
-
-    //Manda uma mensagem informando a Location atual e o índice dela (para mostrar no Slider) quando a página é encontrada
-    const sendNewPageMessage = () => {
-
-        if (${locations.length} != 0) {
-
-                window.book.locations.load(${JSON.stringify(locations)})
-
-                window.ReactNativeWebView.postMessage(
-                                    JSON.stringify({
-                                        type: 'newPage',
-                                        location: window.rendition.currentLocation().start.cfi,
-                                        newLocationIndex: window.book.locations.locationFromCfi(window.rendition.currentLocation().start.cfi)
-                                    })
-                                );
-
-            }
-
-    }
-
-    //Manda uma mensagem informando que a página buscada foi carregada
-    const finishedLoading = () => {
-
-        const newLocationIndex = window.book.locations.locationFromCfi(window.rendition.currentLocation().start.cfi)
-
-        window.ReactNativeWebView.postMessage(
-                                        JSON.stringify({
-                                            type: 'loaded'
-                                        })
-
-                                    );
-
-        sendNewPageMessage()
-
-    }
-
-    var firstTimeRendering = true;
-
-    //Quando o livro foi renderizado, carregamos a lista de "Locations" (se ela já existir) e enviamos a Location atual e o índice da Location atual
-    window.rendition.on('rendered', async () => {
-
-        if (firstTimeRendering) {
-
-            //Esse "if" tenta resolver um bug no qual a biblioteca abre o livro em uma localização diferente da indicada (frequentemente a página anterior ou posterior)
-            if ("${initialLocation}" != "-1") {
-
-                if (window.rendition.currentLocation().start.cfi != "${initialLocation}") {
-
-                    //Se a biblioteca abriu o texto na localização errada, tentamos encontrar a correta
-                    searchRightPage(10)
-
-                } else {
-
-                    finishedLoading()
-
-                }
-
-            } else if ("${initialLocation}" != undefined) {
-
-                finishedLoading()
-
-            }
-
-            firstTimeRendering = false
-
-        }
-
-    })
-
+    //Esse evento ocorre assim que a tela é aberta; mostramos a página inicial (que devido a um bug com a biblioteca, pode ser a incorreta) e salvamos metadados se eles ainda não tiverem sido salvos
     window.rendition.on('started', () => {
 
         //Mostramos a página definida por "initialLocation"
@@ -297,9 +122,187 @@
                     );
 
                 }
-           
+
+
+        }
+
+    })
+
+    //Se o livro ainda não tiver "Locations", as geramos e salvamos
+    window.book.ready.then((book) => {
+
+        if (${locations.length} == 0) {
+
+           //Gerando e salvando Locations
+           window.book.locations.generate(1200).then(locations => {
+
+           //Enviamos a lista de Locations, a Location atual e o índice da Location atual na lista de Locations
+
+           var currentLocation = '-1'
+           var newLocationIndex = '-1'
+
+           if (window.rendition.currentLocation().start != undefined) {
+
+                currentLocation = window.rendition.currentLocation().start.cfi
+                newLocationIndex = window.book.locations.locationFromCfi(window.rendition.currentLocation().start.cfi)
+
+           }
+
+                window.ReactNativeWebView.postMessage(
+                    JSON.stringify({
+                        type: 'locations',
+                        locations: locations,
+                        currentLocation: currentLocation,
+                        newLocationIndex: newLocationIndex
+                    })
+
+                );
+
+            });
 
         } 
+        
+    })
+
+    //Função para comparar duas EpubCFIs; retorna -1 se a primeira vem primeiro, 0 se elas são iguais, e 1 se a segunda vem primeiro (EpubCFIs são usadas para identificar unicamente cada elemento do livro)
+
+    compareEPUBCFIs = (cfi1, cfi2) => {
+      // Remove the "epubcfi(" prefix and ")" suffix from both CFIs
+      cfi1 = cfi1.replace("epubcfi(", "").replace(")", "");
+      cfi2 = cfi2.replace("epubcfi(", "").replace(")", "");
+
+      // Remove the "!" elements from both CFIs
+      cfi1 = cfi1.replace(/!/g, "");
+      cfi2 = cfi2.replace(/!/g, "");
+
+      // Remove the "[...]" elements from both CFIs
+      cfi1 = cfi1.replace(/\\[.*?\\]/g, "");
+      cfi2 = cfi2.replace(/\\[.*?\\]/g, "");
+
+      // Split the CFIs into their individual parts using both "/" and ":"
+      const parts1 = cfi1.split(/[/:]/);
+      const parts2 = cfi2.split(/[/:]/);
+
+      // Compare each part of the CFIs
+      for (let i = 0; i < Math.min(parts1.length, parts2.length); i++) {
+        const part1 = parts1[i];
+        const part2 = parts2[i];
+
+        // Compare the parts
+        if (part1 !== part2) {
+          // Parts are different, determine the ordering
+          return parseInt(part1) < parseInt(part2) ? -1 : 1;
+        }
+      }
+
+      // All parts are equal or one CFI is a subset of the other
+      if (parts1.length === parts2.length) {
+        // Both CFIs are equal
+        return 0;
+      } else {
+        // One CFI is a subset of the other
+        return parts1.length < parts2.length ? -1 : 1;
+      }
+    }
+
+    //Manda uma mensagem informando a Location da página atual e o índice dela (para mostrar no Slider)
+    const sendNewPageMessage = () => {
+
+        if (${locations.length} != 0) {
+
+                window.book.locations.load(${JSON.stringify(locations)})
+
+                window.ReactNativeWebView.postMessage(
+                                    JSON.stringify({
+                                        type: 'newPage',
+                                        location: window.rendition.currentLocation().start.cfi,
+                                        newLocationIndex: window.book.locations.locationFromCfi(window.rendition.currentLocation().start.cfi)
+                                    })
+                                );
+
+            }
+
+    }
+
+    //Manda uma mensagem informando que a página buscada foi carregada (e podemos parar de mostrar o indicador de que a página estava carregando)
+    const finishedLoading = () => {
+
+        const newLocationIndex = window.book.locations.locationFromCfi(window.rendition.currentLocation().start.cfi)
+
+        window.ReactNativeWebView.postMessage(
+                                        JSON.stringify({
+                                            type: 'loaded'
+                                        })
+
+                                    );
+
+        sendNewPageMessage()
+
+    }
+
+    //Função para buscar a página correta a ser mostrada (caso o método "display" não tenha funcionado corretamente)
+    const searchRightPage = async (numberOfAttempts) => {
+
+        //Se o número de tentativas esgotar, desistimos
+        if (numberOfAttempts == 0) {
+
+            window.display("${initialLocation}")
+            finishedLoading()
+
+        } else {
+
+            //Se não, comparamos a localização atual com a localização correta, e de acordo com o resultado vamos para a próxima página ou para a anterior
+            var comparisonStart = compareEPUBCFIs(window.rendition.currentLocation().start.cfi, "${initialLocation}")
+            var comparisonEnd = compareEPUBCFIs(window.rendition.currentLocation().end.cfi, "${initialLocation}")
+
+            if (comparisonStart === -1 && comparisonEnd === -1) {
+
+                window.rendition.next().then(() => { searchRightPage(numberOfAttempts - 1) })
+
+            } else if (comparisonStart === 1 && comparisonEnd === 1) {
+
+                window.rendition.prev().then(() => { searchRightPage(numberOfAttempts - 1) })
+
+            } else {
+
+                finishedLoading()
+
+            }
+
+        }
+
+    }
+
+    var firstTimeRendering = true;
+
+    //Quando o livro foi renderizado pela primeira vez, verificamos se ele realmente foi aberto na página correta
+    window.rendition.on('rendered', async () => {
+
+        if (firstTimeRendering) {
+
+            //Esse "if" tenta resolver um bug no qual a biblioteca abre o livro em uma localização diferente da indicada (frequentemente a página anterior ou posterior)
+            if ("${initialLocation}" != "-1") {
+
+                if (window.rendition.currentLocation().start.cfi != "${initialLocation}") {
+
+                    //Se a biblioteca abriu o texto na localização errada, tentamos encontrar a correta
+                    searchRightPage(10)
+
+                } else {
+
+                    finishedLoading()
+
+                }
+
+            } else if ("${initialLocation}" != undefined) {
+
+                finishedLoading()
+
+            }
+
+            firstTimeRendering = false
+
+        }
 
     })
 
