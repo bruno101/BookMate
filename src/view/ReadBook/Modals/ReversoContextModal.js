@@ -45,7 +45,7 @@ const Example = (props) => {
 
                 <Image source={require("../../../assets/turn-down.png")} style={{ width: 15, aspectRatio: 1, marginTop: 2 }} />
 
-                <Text style={{ marginLeft: 3, width: device.width * 0.7 * 0.9 * 0.96 - 22, color: props.nightMode? "white" : "#404040" }}>
+                <Text style={{ marginLeft: 3, width: device.width * 0.67 * 0.9 * 0.96 - 30, color: props.nightMode? "white" : "#404040" }}>
 
                     {
 
@@ -101,6 +101,7 @@ const ReversoContextModal = (props) => {
                 <ScrollView>
                     {exampleList}
                 </ScrollView>
+
             </View>
 
             
