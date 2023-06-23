@@ -106,7 +106,7 @@ const WordReviewController = (props) => {
         }
     }
 
-    //Chamada quando o usuário clica no modal de fechar da modal
+    //Chamada quando o usuário clica no botao de fechar da modal
     const onQuit = async () => {
 
         props.setShowModal(false)
@@ -116,12 +116,10 @@ const WordReviewController = (props) => {
     //Função que gera quatro palavras aleatórias
     const generateRandomWords = () => {
 
-        let wordsArray = []
+        let wordsArray = props.wordListData.map(x => x.translation).filter(x => ((x != props.wordsToReview[props.currentWord].translation) & (x != "")))
 
-        if (props.wordListData.length < 5) {
+        if (wordsArray.length < 5) {
             wordsArray = ["borboleta", "lâmpada", "livro", "loja", "motocicleta", "poltrona", "perna", "queijo", "abrigo", "tesoura", "acima", "cozinhar", "chocolate", "verde", "peixe", "sapato", "bebida", "rosto"]
-        } else {
-            wordsArray = props.wordListData.map(x => x.translation).filter(x => ((x != props.wordsToReview[props.currentWord].translation) & (x != "")))
         }
 
         let shuffledArray = wordsArray

@@ -5,9 +5,6 @@ const device = Dimensions.get("window")
 
 const TranslationModal = (props) => {
 
-    console.log(props.translation.length)
-
-
     //Mostramos a tradução da palavra/trecho e um "DropDownPicker" em que o usuário pode alterar o idioma do qual se traduz
     return (
 
