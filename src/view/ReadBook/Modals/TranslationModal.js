@@ -20,7 +20,7 @@ const TranslationModal = (props) => {
                 <View style={{ height: 40, flexDirection: "row", backgroundColor: props.nightMode ? "#151d4a" : "white", borderBottomColor: "#E5E5E5", borderBottomWidth: props.nightMode? 0.5: 0 }}>
                     <View style={{ width: "45%", justifyContent: "center" }}><LanguagePicker selectedLanguage={props.translationSourceLanguage} languages={props.supportedTranslationSourceLanguages} setLanguage={props.setTranslationSourceLanguage} showArrow={false} nightMode={props.nightMode} /></View>
                     <View style={{ width: "10%", justifyContent: "center" }}>
-                        <Image source={require("../../../assets/exchange.png")} style={{ height: 15, aspectRatio: 1 }} />
+                        <Image source={props.nightMode ? require("../../../assets/exchange-white.png") : require("../../../assets/exchange.png")} style={{ height: 15, aspectRatio: 1 }} />
                     </View>
                     <View style={{ width: "45%", justifyContent: "center" }}><LanguagePicker selectedLanguage={props.translationTargetLanguage} languages={props.supportedTranslationTargetLanguages} setLanguage={props.setTranslationTargetLanguage} showArrow={false} nightMode={props.nightMode}/></View>
                 </View>

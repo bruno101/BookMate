@@ -43,7 +43,7 @@ const Example = (props) => {
 
             <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
 
-                <Image source={require("../../../assets/turn-down.png")} style={{ width: 15, aspectRatio: 1, marginTop: 2 }} />
+                <Image source={props.nightMode ? require("../../../assets/turn-down-white.png") : require("../../../assets/turn-down.png") } style={{ width: 15, aspectRatio: 1, marginTop: 2 }} />
 
                 <Text style={{ marginLeft: 3, width: device.width * 0.67 * 0.9 * 0.96 - 30, color: props.nightMode? "white" : "#404040" }}>
 

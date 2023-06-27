@@ -13,7 +13,7 @@ const SettingsModel = ({ navigation, route }) => {
     const [nightMode, setNightMode] = useState(false)
 
     return (
-        <SettingsController navigation={navigation} nightMode={nightMode} setNightMode={setNightMode} fontSize={fontSize} setFontSize={setFontSize} fontFamily={fontFamily} setFontFamily={setFontFamily} reviewNotifications={reviewNotifications} setReviewNotifications={setReviewNotifications} readingNotifications={readingNotifications} setReadingNotifications={setReadingNotifications} fontSizePickerOpen={fontSizePickerOpen} setFontSizePickerOpen={setFontSizePickerOpen} fontFamilyPickerOpen={fontFamilyPickerOpen} setFontFamilyPickerOpen={setFontFamilyPickerOpen} />
+        <SettingsController navigation={navigation} nightMode={nightMode} setNightMode={setNightMode} fontSize={fontSize} setFontSize={setFontSize} fontFamily={fontFamily} setFontFamily={setFontFamily} reviewNotifications={reviewNotifications} setReviewNotifications={setReviewNotifications} readingNotifications={readingNotifications} setReadingNotifications={setReadingNotifications} fontSizePickerOpen={fontSizePickerOpen} setFontSizePickerOpen={setFontSizePickerOpen} fontFamilyPickerOpen={fontFamilyPickerOpen} setFontFamilyPickerOpen={setFontFamilyPickerOpen}/>
     )
 }
 

@@ -235,7 +235,7 @@ const Settings = (props) => {
 
             <SectionHeader text={"MORE"} />
 
-            <Help nightMode={props.nightMode}/>
+            <Help nightMode={props.nightMode} />
 
         </View>
 
