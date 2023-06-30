@@ -56,16 +56,15 @@ const SettingsController = (props) => {
     const setTheme = async () => {
 
         nightModeChosen = await LocalStorage.getNightMode()
-        console.log(nightModeChosen)
 
         props.setNightMode(nightModeChosen)
         props.navigation.setOptions({
             tabBarStyle: {
                 backgroundColor: nightModeChosen ? "#151d4a" : "white",
                 borderTopWidth: nightModeChosen? 0 : 0.5,
-                tabBarInactiveTintColor: props.nightMode ? "white" : "#A0A0A0",
+                tabBarInactiveTintColor: nightModeChosen ? "white" : "#A0A0A0",
             },
-            tabBarInactiveTintColor: props.nightMode ? "white" : "#A0A0A0",
+            tabBarInactiveTintColor: nightModeChosen ? "white" : "#A0A0A0",
         });
 
     }
