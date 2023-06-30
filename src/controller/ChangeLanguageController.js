@@ -16,6 +16,7 @@ const ChangeLanguageController = (props) => {
     const initialNativeLanguage = async () => {
 
         props.nativeLanguageRef.current = await LocalStorage.getNativeLanguage()
+        props.setNativeLanguage(props.nativeLanguageRef.current)
 
     }
 

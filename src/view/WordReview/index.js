@@ -1,5 +1,5 @@
 ﻿import { useEffect } from 'react'
-import { View, Dimensions, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Dimensions, Text, TouchableOpacity } from 'react-native'
 import Header from './Header'
 import SearchBar from './SearchBar'
 import SearchFilter from './SearchFilter'
